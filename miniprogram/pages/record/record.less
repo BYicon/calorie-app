@@ -1,0 +1,150 @@
+/**record.less**/
+page {
+  font-family: 'Arial', sans-serif;
+  background-color: #FFF5F7;
+  color: #5D4037;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  background-color: #FFCDD2;
+  padding: 30rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.1);
+}
+
+.title {
+  margin: 0;
+  font-size: 36rpx;
+  color: #E91E63;
+  font-weight: bold;
+}
+
+.main-content {
+  flex: 1;
+  padding: 40rpx;
+  max-width: 600rpx;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.date-selector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+
+.date-selector button {
+  background: none;
+  border: none;
+  font-size: 36rpx;
+  color: #FF4081;
+  padding: 0;
+  width: 80rpx;
+  line-height: 1;
+}
+
+.date-selector .current-date {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #D81B60;
+  text-align: center;
+}
+
+.meal-section {
+  background-color: white;
+  border-radius: 40rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 8rpx 16rpx rgba(0,0,0,0.05);
+  border: 4rpx solid #FFE0E5;
+}
+
+.meal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  color: #D81B60;
+}
+
+.meal-title {
+  margin: 0;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.meal-title .icon {
+  margin-right: 20rpx;
+  font-size: 36rpx;
+}
+
+.calories {
+  font-weight: bold;
+  color: #FF4081;
+  font-size: 28rpx;
+}
+
+.food-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx;
+  border-bottom: 1px dashed #FFE0E5;
+  align-items: center;
+}
+
+.food-item:last-child {
+  border-bottom: none;
+}
+
+.food-name {
+  display: flex;
+  align-items: center;
+}
+
+.food-name .emoji {
+  margin-right: 20rpx;
+  font-size: 32rpx;
+}
+
+.food-calories {
+  color: #795548;
+  font-weight: bold;
+  font-size: 28rpx;
+}
+
+.add-food-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx;
+  background-color: #F8BBD0;
+  color: #D81B60;
+  border: none;
+  border-radius: 20rpx;
+  margin-top: 20rpx;
+  width: 100%;
+  font-weight: bold;
+  font-size: 28rpx;
+}
+
+.add-food-btn .btn-icon {
+  margin-right: 10rpx;
+  font-size: 32rpx;
+}
+
+.daily-total {
+  background-color: #F8BBD0;
+  padding: 30rpx;
+  border-radius: 30rpx;
+  margin-top: 40rpx;
+  text-align: center;
+  color: #880E4F;
+  font-weight: bold;
+  font-size: 32rpx;
+} 

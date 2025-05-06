@@ -1,0 +1,245 @@
+/**analyze.less**/
+page {
+  font-family: 'Arial', sans-serif;
+  background-color: #FFF5F7;
+  color: #5D4037;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  background-color: #FFCDD2;
+  padding: 30rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.1);
+}
+
+.title {
+  margin: 0;
+  font-size: 36rpx;
+  color: #E91E63;
+  font-weight: bold;
+}
+
+.main-content {
+  flex: 1;
+  padding: 40rpx;
+  max-width: 600rpx;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.period-selector {
+  display: flex;
+  background-color: white;
+  border-radius: 40rpx;
+  overflow: hidden;
+  margin-bottom: 40rpx;
+  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.05);
+}
+
+.period-selector button {
+  flex: 1;
+  padding: 24rpx;
+  border: none;
+  background: none;
+  font-weight: bold;
+  color: #BDBDBD;
+  border-radius: 0;
+  line-height: 1;
+  font-size: 26rpx;
+}
+
+.period-selector button.active {
+  background-color: #F8BBD0;
+  color: #D81B60;
+}
+
+.chart-container {
+  background-color: white;
+  border-radius: 40rpx;
+  padding: 40rpx;
+  margin-bottom: 40rpx;
+  box-shadow: 0 8rpx 16rpx rgba(0,0,0,0.05);
+  border: 4rpx solid #FFE0E5;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.chart-title {
+  margin: 0;
+  color: #D81B60;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.chart-title .icon {
+  margin-right: 20rpx;
+  font-size: 36rpx;
+}
+
+/* 添加日期显示样式 */
+.chart-date {
+  color: #795548;
+  font-size: 24rpx;
+  font-weight: bold;
+  background-color: #FFF5F7;
+  padding: 10rpx 20rpx;
+  border-radius: 20rpx;
+}
+
+.chart {
+  height: 400rpx;
+  position: relative;
+  margin-bottom: 20rpx;
+}
+
+/* 添加swiper样式 */
+.chart-swiper {
+  height: 100%;
+  width: 100%;
+}
+
+.chart-bars {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 100%;
+  padding-bottom: 50rpx;
+}
+
+.chart-bar {
+  width: 12%;
+  background-color: #F8BBD0;
+  border-radius: 20rpx 20rpx 0 0;
+  position: relative;
+  transition: height 0.3s;
+}
+
+/* 年视图的柱子样式，使其更细 */
+.year .chart-bar {
+  width: 6%;
+  margin: 0 2rpx;
+}
+
+.chart-bar.over-limit {
+  background-color: #FF80AB;
+}
+
+.chart-bar-value {
+  position: absolute;
+  top: -50rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 22rpx;
+  font-weight: bold;
+  color: #D81B60;
+}
+
+/* 年视图的数值标签样式调整 */
+.year .chart-bar-value {
+  font-size: 18rpx;
+}
+
+.chart-bar-label {
+  position: absolute;
+  bottom: -50rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 22rpx;
+  color: #795548;
+  white-space: nowrap;
+}
+
+/* 年视图的标签样式调整 */
+.year .chart-bar-label {
+  font-size: 18rpx;
+  transform: translateX(-50%) rotate(-45deg);
+  transform-origin: top left;
+}
+
+.limit-line {
+  position: absolute;
+  width: 100%;
+  border-top: 4rpx dashed #E91E63;
+  top: 35%;
+  z-index: 1;
+}
+
+.limit-label {
+  position: absolute;
+  right: 0;
+  top: 35%;
+  transform: translateY(-100%);
+  font-size: 22rpx;
+  color: #E91E63;
+  background-color: white;
+  padding: 4rpx 10rpx;
+  z-index: 2;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30rpx;
+  margin-bottom: 40rpx;
+}
+
+.stat-card {
+  background-color: white;
+  border-radius: 30rpx;
+  padding: 30rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.05);
+  border: 4rpx solid #FFE0E5;
+}
+
+.stat-card .value {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #D81B60;
+  margin-bottom: 10rpx;
+}
+
+.stat-card .label {
+  font-size: 24rpx;
+  color: #795548;
+}
+
+.analysis-card {
+  background-color: white;
+  border-radius: 40rpx;
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 8rpx 16rpx rgba(0,0,0,0.05);
+  border: 4rpx solid #FFE0E5;
+}
+
+.card-title {
+  margin-top: 0;
+  margin-bottom: 20rpx;
+  color: #D81B60;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.card-title .icon {
+  margin-right: 20rpx;
+  font-size: 36rpx;
+}
+
+.card-content {
+  color: #795548;
+  line-height: 1.5;
+  font-size: 28rpx;
+} 

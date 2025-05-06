@@ -1,0 +1,86 @@
+<!-- 头部标题 -->
+<view class="header">
+  <text class="title">数据分析</text>
+</view>
+
+<!-- 主要内容 -->
+<view class="main-content">
+  <!-- 周期选择器 -->
+  <view class="period-selector">
+    <button class="{{period === 'day' ? 'active' : ''}}" bindtap="changePeriod" data-period="day">日</button>
+    <button class="{{period === 'week' ? 'active' : ''}}" bindtap="changePeriod" data-period="week">周</button>
+    <button class="{{period === 'month' ? 'active' : ''}}" bindtap="changePeriod" data-period="month">月</button>
+    <button class="{{period === 'year' ? 'active' : ''}}" bindtap="changePeriod" data-period="year">年</button>
+  </view>
+  
+  <!-- 热量摄入趋势图表 -->
+  <view class="chart-container">
+    <view class="chart-header">
+      <!-- <view class="chart-title">
+        <text class="icon">📈</text>
+        <text>热量摄入趋势</text>
+      </view> -->
+      <!-- 添加当前显示的时间范围 -->
+      <view class="chart-date">{{currentDateRange}}</view>
+    </view>
+    
+    <view class="chart {{period === 'year' ? 'year' : ''}}">
+      <view class="limit-line"></view>
+      <view class="limit-label">目标 {{calorieGoal}}卡</view>
+      
+      <!-- 使用swiper实现左右滑动 -->
+      <swiper class="chart-swiper" bindchange="onSwiperChange" current="{{currentSwiperIndex}}">
+        <swiper-item wx:for="{{chartDataList}}" wx:key="index">
+          <view class="chart-bars">
+            <view wx:for="{{item.data}}" wx:key="index" wx:for-item="barItem" class="chart-bar {{barItem.value > calorieGoal ? 'over-limit' : ''}}" style="height: {{barItem.height}};">
+              <view class="chart-bar-value">{{barItem.value}}</view>
+              <view class="chart-bar-label">{{barItem.label}}</view>
+            </view>
+          </view>
+        </swiper-item>
+      </swiper>
+    </view>
+  </view>
+  
+  <!-- 统计数据 -->
+  <view class="stats-grid">
+    <view class="stat-card">
+      <view class="value">{{stats.avgCalories}}</view>
+      <view class="label">平均每日摄入 (卡)</view>
+    </view>
+    <view class="stat-card">
+      <view class="value">{{stats.overLimitDays}}</view>
+      <view class="label">超标天数</view>
+    </view>
+    <view class="stat-card">
+      <view class="value">{{stats.maxCalories}}</view>
+      <view class="label">最高摄入 (卡)</view>
+    </view>
+    <view class="stat-card">
+      <view class="value">{{stats.minCalories}}</view>
+      <view class="label">最低摄入 (卡)</view>
+    </view>
+  </view>
+  
+  <!-- 智能分析 -->
+  <view class="analysis-card">
+    <view class="card-title">
+      <text class="icon">💡</text>
+      <text>智能分析</text>
+    </view>
+    <view class="card-content">
+      <text>{{analysis.insight}}</text>
+    </view>
+  </view>
+  
+  <!-- 建议 -->
+  <view class="analysis-card">
+    <view class="card-title">
+      <text class="icon">🥗</text>
+      <text>建议</text>
+    </view>
+    <view class="card-content">
+      <text>{{analysis.suggestion}}</text>
+    </view>
+  </view>
+</view> 

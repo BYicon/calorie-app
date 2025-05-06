@@ -1,0 +1,69 @@
+<!-- 头部标题 -->
+<view class="header">
+  <text class="title">食物查询</text>
+</view>
+
+<!-- 主要内容 -->
+<view class="main-content">
+  <!-- 搜索框 -->
+  <view class="search-container">
+    <view class="search-bar">
+      <input type="text" placeholder="搜索食物..." bindinput="onSearchInput"/>
+      <button bindtap="onSearch" size="mini">搜索</button>
+    </view>
+  </view>
+  
+  <!-- 搜索选项卡 -->
+  <view class="search-tabs">
+    <button class="{{activeTab === 'popular' ? 'active' : ''}}" bindtap="switchTab" data-tab="popular">热门食物</button>
+    <button class="{{activeTab === 'favorite' ? 'active' : ''}}" bindtap="switchTab" data-tab="favorite">我的收藏</button>
+    <button class="{{activeTab === 'history' ? 'active' : ''}}" bindtap="switchTab" data-tab="history">历史记录</button>
+  </view>
+  
+  <!-- 食物列表 -->
+  <view class="food-list">
+    <view class="food-card" wx:for="{{foodList}}" wx:key="index">
+      <view class="food-emoji">{{item.emoji}}</view>
+      <view class="food-info">
+        <view class="food-name">{{item.name}}</view>
+        <view class="food-calories">{{item.calories}}卡路里/100g</view>
+        <view class="food-detail">
+          <view class="food-detail-item">碳水 {{item.carbs}}g</view>
+          <view class="food-detail-item">蛋白质 {{item.protein}}g</view>
+          <view class="food-detail-item">脂肪 {{item.fat}}g</view>
+        </view>
+      </view>
+      <button class="food-add-btn" size="mini" bindtap="addFood" data-index="{{index}}">+</button>
+    </view>
+  </view>
+  
+  <!-- 最近搜索 -->
+  <view class="recent-searches">
+    <view class="section-title">
+      <text class="icon">🕒</text>
+      <text>最近搜索</text>
+    </view>
+    <view class="recent-search-list">
+      <view class="recent-search-item" 
+            wx:for="{{recentSearches}}" 
+            wx:key="index"
+            bindtap="onRecentSearchTap"
+            data-keyword="{{item}}">{{item}}</view>
+    </view>
+  </view>
+  
+  <!-- AI助手部分 -->
+  <view class="ai-section">
+    <view class="section-title">
+      <text class="icon">🤖</text>
+      <text>AI 食物热量助手</text>
+    </view>
+    <view class="ai-input">
+      <input type="text" placeholder="描述你想了解的食物..." bindinput="onAiInputChange"/>
+      <button bindtap="askAi">询问</button>
+    </view>
+    <view class="ai-response">
+      {{aiResponse || '您好！我可以帮您查询食物的热量信息。请描述您想了解的食物，例如"一碗麻辣火锅的卡路里是多少？"'}}
+    </view>
+  </view>
+</view> 
