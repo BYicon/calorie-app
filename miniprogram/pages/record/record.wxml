@@ -1,7 +1,4 @@
-<!-- 头部标题 -->
-<view class="header">
-  <text class="title">每日记录</text>
-</view>
+<navigation-bar title="记录" back="{{false}}"></navigation-bar>
 
 <!-- 主要内容 -->
 <view class="main-content">

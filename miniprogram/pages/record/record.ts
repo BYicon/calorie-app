@@ -126,9 +126,9 @@ Page({
     const meal = e.currentTarget.dataset.meal;
     console.log('添加食物到:', meal);
     
-    // 实际项目中，应该跳转到食物搜索页面
+    // 跳转到添加食物页面
     wx.navigateTo({
-      url: '/pages/search/search?meal=' + meal
+      url: '/pages/add-food/add-food?meal=' + meal
     });
   },
 

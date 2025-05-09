@@ -1,8 +1,4 @@
-<!-- 头部标题 -->
-<!-- <view class="header">
-  <text class="title">卡路里小帮手</text>
-</view> -->
-
+<navigation-bar title="首页" back="{{false}}"></navigation-bar>
 <!-- 主要内容 -->
 <view class="main-content">
   <!-- 今日摄入总结 -->

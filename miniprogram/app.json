@@ -1,21 +1,29 @@
 {
   "tabBar": {
+    "color": "#BDBDBD",
+    "selectedColor": "#FF4081",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/index/index",
         "text": "首页"
       },
       {
-        "pagePath": "pages/search/search",
-        "text": "搜索"
-      },
-      {
         "pagePath": "pages/record/record",
         "text": "记录"
       },
       {
+        "pagePath": "pages/search/search",
+        "text": "搜索"
+      },
+      {
         "pagePath": "pages/analyze/analyze",
         "text": "分析"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
       }
     ]
   },
@@ -24,8 +32,13 @@
     "pages/search/search",
     "pages/record/record",
     "pages/analyze/analyze",
+    "pages/profile/profile",
+    "pages/add-food/add-food",
     "pages/logs/logs"
   ],
+  "usingComponents": {
+    "navigation-bar": "./components/navigation-bar/navigation-bar"
+  },
   "window": {
     "navigationBarTextStyle": "black",
     "navigationStyle": "custom" 
