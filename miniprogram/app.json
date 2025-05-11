@@ -14,10 +14,6 @@
         "text": "记录"
       },
       {
-        "pagePath": "pages/search/search",
-        "text": "搜索"
-      },
-      {
         "pagePath": "pages/analyze/analyze",
         "text": "分析"
       },
@@ -29,11 +25,10 @@
   },
   "pages": [
     "pages/index/index",
-    "pages/search/search",
     "pages/record/record",
     "pages/analyze/analyze",
     "pages/profile/profile",
-    "pages/add-food/add-food",
+    "pages/record/add-food/add-food",
     "pages/logs/logs"
   ],
   "usingComponents": {

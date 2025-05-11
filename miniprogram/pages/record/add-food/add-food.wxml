@@ -1,0 +1,62 @@
+<view class="container">
+  <view class="main-content">
+    <!-- AI智能添加部分 -->
+    <view class="ai-input-section">
+      <view class="section-title">
+        <text class="title-icon">🤖</text>
+        <text class="title-text">AI 智能添加</text>
+      </view>
+      <textarea class="ai-textarea" placeholder="请描述您想添加的食物，例如：&#10;1. 今天中午吃了一碗牛肉面&#10;2. 早餐：两片全麦面包加一杯牛奶&#10;3. 一个苹果和一根香蕉" bindinput="onAiInputChange" value="{{aiInput}}"></textarea>
+      <button class="ai-submit-btn" bindtap="onAiSubmit">AI 识别</button>
+    </view>
+    
+    <!-- 食物列表部分 -->
+    <view class="food-list">
+      <view class="section-title">
+        <text class="title-icon">🍽️</text>
+        <text class="title-text">食物列表</text>
+      </view>
+      
+      <block wx:if="{{isLoading}}">
+        <view class="loading">
+          <text class="loading-icon">🔄</text>
+          <text class="loading-text">AI正在识别中...</text>
+        </view>
+      </block>
+      
+      <block wx:if="{{!isLoading}}">
+        <view class="food-item" wx:for="{{foodList}}" wx:key="id">
+          <view class="food-header">
+            <input class="food-name" value="{{item.name}}" data-index="{{index}}" bindinput="onFoodNameChange"/>
+            <view class="food-actions">
+              <button class="food-action-btn" bindtap="onDeleteFood" data-index="{{index}}">🗑️</button>
+            </view>
+          </view>
+          <view class="food-details">
+            <view class="food-detail-item">
+              <text class="food-detail-label">份量：</text>
+              <input class="food-detail-input" value="{{item.amount}}" placeholder="例如：1碗、200g、2片" data-index="{{index}}" bindinput="onAmountChange"/>
+            </view>
+            <view class="food-detail-tip">请输入数量和单位，如：1碗、200g、2片、1个等</view>
+            <view class="food-detail-item">
+              <text class="food-detail-label">热量：</text>
+              <input class="food-detail-input" type="number" value="{{item.calories}}" min="0" data-index="{{index}}" bindinput="onCaloriesChange"/>
+              <text>卡路里</text>
+            </view>
+          </view>
+        </view>
+        
+        <button class="add-manual-btn" bindtap="onAddManualFood">
+          <text class="add-icon">+</text>
+          <text>手动添加食物</text>
+        </button>
+      </block>
+    </view>
+    
+    <!-- 底部按钮 -->
+    <view class="bottom-buttons">
+      <button class="bottom-btn back-btn" bindtap="onBack">返回</button>
+      <button class="bottom-btn save-btn" bindtap="onSave">保存</button>
+    </view>
+  </view>
+</view> 

@@ -1,5 +1,3 @@
-<navigation-bar title="记录" back="{{false}}"></navigation-bar>
-
 <!-- 主要内容 -->
 <view class="main-content">
   <!-- 日期选择器 -->

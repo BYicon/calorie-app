@@ -1,4 +1,3 @@
-<navigation-bar title="首页" back="{{false}}"></navigation-bar>
 <!-- 主要内容 -->
 <view class="main-content">
   <!-- 今日摄入总结 -->
@@ -27,17 +26,6 @@
       <text>早餐: 全麦面包 + 牛奶 (320卡)</text>
       <text>午餐: 鸡胸肉沙拉 (430卡)</text>
       <text>点击查看详细记录...</text>
-    </view>
-  </view>
-  
-  <!-- 食物热量查询卡片 -->
-  <view class="card">
-    <view class="card-title">
-      <text class="icon">🔍</text>
-      <text>食物热量查询</text>
-    </view>
-    <view class="card-content">
-      <text>搜索或向AI询问食物的热量信息</text>
     </view>
   </view>
   

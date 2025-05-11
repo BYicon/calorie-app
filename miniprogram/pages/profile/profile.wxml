@@ -1,5 +1,3 @@
-<navigation-bar title="我的" back="{{false}}"></navigation-bar>
-
 <view class="main-content">
   <view class="profile-header">
     <view class="avatar">😊</view>

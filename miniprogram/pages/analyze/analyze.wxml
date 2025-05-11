@@ -1,4 +1,3 @@
-<navigation-bar title="分析" back="{{false}}"></navigation-bar>
 <!-- 主要内容 -->
 <view class="main-content">
   <!-- 周期选择器 -->
