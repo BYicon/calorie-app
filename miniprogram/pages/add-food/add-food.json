@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "添加食物",
+  "navigationBarBackgroundColor": "#FFCDD2",
+  "navigationBarTextStyle": "black",
+  "navigationStyle": "default",
+  "usingComponents": {},
+  "enablePullDownRefresh": false,
+  "disableScroll": false
+} 

@@ -1,0 +1,263 @@
+// 定义安全区域
+@bottom-btns-height: 100rpx;
+
+/* 添加食物页面样式 */
+.add-food-container {
+  padding: 20rpx;
+  background-color: #FFF5F7;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding-bottom: calc(env(safe-area-inset-bottom) + @bottom-btns-height);
+}
+
+/* AI 智能添加部分 */
+.ai-input-section {
+  background-color: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.05);
+  border: 2rpx solid #FFE0E5;
+}
+
+.section-title {
+  color: #D81B60;
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+  display: flex;
+  align-items: center;
+}
+
+.emoji {
+  margin-right: 10rpx;
+  font-size: 36rpx;
+}
+
+.ai-textarea {
+  width: 100%;
+  height: 200rpx;
+  padding: 20rpx;
+  border: 2rpx solid #FFE0E5;
+  border-radius: 15rpx;
+  font-size: 28rpx;
+  color: #5D4037;
+  margin-bottom: 20rpx;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+.ai-submit-btn {
+  background-color: #FF4081;
+  color: white;
+  border: none;
+  border-radius: 40rpx;
+  padding: 20rpx 0;
+  font-weight: bold;
+  width: 100%;
+  font-size: 30rpx;
+}
+
+/* 食物列表部分 */
+.food-list {
+  background-color: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.05);
+  border: 2rpx solid #FFE0E5;
+}
+
+.food-item {
+  padding: 20rpx;
+  border-radius: 15rpx;
+  background-color: #FFF5F7;
+  margin-bottom: 20rpx;
+}
+
+.food-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 15rpx;
+  border-bottom: 1rpx dashed #FFE0E5;
+}
+
+.food-name {
+  font-weight: bold;
+  color: #D81B60;
+  flex: 1;
+  margin-right: 10rpx;
+  padding: 10rpx 15rpx;
+  border: 1rpx solid #FFE0E5;
+  border-radius: 10rpx;
+  font-size: 28rpx;
+  background-color: white;
+}
+
+.food-actions {
+  display: flex;
+  gap: 10rpx;
+}
+
+.food-action-btn {
+  background: none;
+  border: none;
+  font-size: 34rpx;
+  margin: 0;
+  padding: 10rpx;
+  line-height: normal;
+}
+
+.food-action-btn::after {
+  border: none;
+}
+
+.food-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15rpx;
+}
+
+.food-detail-item {
+  display: flex;
+  align-items: center;
+}
+
+.food-detail-unit {
+  margin-left: 10rpx;
+  width: 80rpx;
+  color: #FF4081;
+  font-size: 26rpx;
+}
+
+.food-detail-label {
+  color: #795548;
+  margin-right: 20rpx;
+  font-size: 26rpx;
+  width: 80rpx;
+}
+
+.food-detail-input {
+  width: 300rpx;
+  padding: 10rpx 15rpx;
+  border: 1rpx solid #FFE0E5;
+  border-radius: 10rpx;
+  text-align: left;
+  background-color: white;
+  font-size: 26rpx;
+}
+
+.food-detail-tip {
+  font-size: 22rpx;
+  color: #BDBDBD;
+  margin-top: 5rpx;
+  margin-left: 100rpx;
+}
+
+.add-manual-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx;
+  background-color: #F8BBD0;
+  color: #D81B60;
+  border: none;
+  border-radius: 15rpx;
+  margin-top: 20rpx;
+  width: 100%;
+  font-weight: bold;
+  font-size: 28rpx;
+}
+
+.add-manual-btn::after {
+  border: none;
+}
+
+.add-icon {
+  margin-right: 10rpx;
+  font-size: 32rpx;
+}
+
+/* 底部按钮 */
+.bottom-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  padding: 20rpx;
+  padding-bottom: 40rpx;
+  border-top: 1rpx solid #FFE0E5;
+  display: flex;
+  gap: 20rpx;
+  z-index: 999;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-btn {
+  flex: 1;
+  padding: 20rpx;
+  border-radius: 40rpx;
+  font-weight: bold;
+  font-size: 28rpx;
+}
+
+.back-btn {
+  background-color: white;
+  color: #D81B60;
+  border: 2rpx solid #FFE0E5;
+}
+
+.back-btn::after {
+  border: none;
+}
+
+.save-btn {
+  background-color: #FF4081;
+  color: white;
+  border: none;
+}
+
+.save-btn::after {
+  border: none;
+}
+
+/* 加载提示 */
+.loading-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.loading {
+  background-color: white;
+  padding: 40rpx;
+  border-radius: 20rpx;
+  text-align: center;
+}
+
+.loading-icon {
+  font-size: 60rpx;
+  display: block;
+  margin-bottom: 15rpx;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #5D4037;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+} 

@@ -128,7 +128,7 @@ Page({
     
     // 跳转到添加食物页面
     wx.navigateTo({
-      url: '/pages/record/add-food/add-food?meal=' + meal
+      url: '/pages/add-food/add-food?meal=' + meal
     });
   },
 

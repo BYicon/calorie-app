@@ -6,10 +6,6 @@
     "borderStyle": "white",
     "list": [
       {
-        "pagePath": "pages/index/index",
-        "text": "首页"
-      },
-      {
         "pagePath": "pages/record/record",
         "text": "记录"
       },
@@ -24,12 +20,10 @@
     ]
   },
   "pages": [
-    "pages/index/index",
     "pages/record/record",
     "pages/analyze/analyze",
     "pages/profile/profile",
-    "pages/record/add-food/add-food",
-    "pages/logs/logs"
+    "pages/add-food/add-food"
   ],
   "usingComponents": {
     "navigation-bar": "./components/navigation-bar/navigation-bar"
