@@ -6,14 +6,20 @@
     "borderStyle": "white",
     "list": [
       {
+        "iconPath": "./static/images/ca.png",
+        "selectedIconPath": "./static/images/ca-a.png",
         "pagePath": "pages/record/record",
         "text": "记录"
       },
       {
+        "iconPath": "./static/images/stat.png",
+        "selectedIconPath": "./static/images/stat-a.png",
         "pagePath": "pages/analyze/analyze",
         "text": "分析"
       },
       {
+        "iconPath": "./static/images/mine.png",
+        "selectedIconPath": "./static/images/mine-a.png",
         "pagePath": "pages/profile/profile",
         "text": "我的"
       }

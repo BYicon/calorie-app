@@ -1,4 +1,6 @@
 // pages/record/record.ts
+import { login } from "../../api/login";
+
 Page({
   data: {
     currentDate: '',
@@ -50,6 +52,8 @@ Page({
   },
 
   onLoad() {
+    console.log("onLoad 🚀🚀🚀");
+    login();
     // 设置当前日期
     this.setCurrentDate(new Date());
   },

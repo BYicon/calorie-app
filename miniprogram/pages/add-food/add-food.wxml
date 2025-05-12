@@ -17,7 +17,7 @@
         <view class="food-header">
           <input class="food-name" value="{{item.name}}" data-index="{{index}}" bindinput="onFoodNameChange" />
           <view class="food-actions">
-            <button class="food-action-btn" bindtap="deleteFoodItem" data-index="{{index}}">🗑️</button>
+            <icon class="icon-small" type="cancel" size="23" data-index="{{index}}"  bindtap="deleteFoodItem"></icon>
           </view>
         </view>
         <view class="food-details">

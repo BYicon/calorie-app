@@ -42,6 +42,7 @@ Page({
   },
   
   onLoad() {
+    console.log("onLoad 🚀🚀🚀");
     // 加载用户数据
     this.loadUserData();
   },
