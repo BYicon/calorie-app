@@ -6,20 +6,27 @@
     <view class="current-date">{{currentDate}}</view>
     <button bindtap="nextDay">▶</button>
   </view>
+
+  <!-- 每日总计 -->
+  <view class="daily-total">
+    今日总计: {{totalCalories}} / {{calorieGoal}} 卡路里
+  </view>
   
   <!-- 早餐部分 -->
   <view class="meal-section">
     <view class="meal-header">
       <view class="meal-title">
-        <text class="icon">🌞</text>
+         <image class="meal-icon" src="/static/images/taiyang.png" mode="heightFix"></image>
         <text>早餐</text>
       </view>
-      <view class="calories">{{breakfast.totalCalories}}卡路里</view>
+      <view class="calories">{{breakfast.totalCalories}}
+        <text class="iconfont icon-reliang"></text>
+      </view>
     </view>
     
     <view class="food-item" wx:for="{{breakfast.foods}}" wx:key="index">
       <view class="food-name">
-        <text class="emoji">{{item.emoji}}</text>
+        <!-- <text class="emoji">{{item.emoji}}</text> -->
         <text>{{item.name}} {{item.amount ? '(' + item.amount + ')' : ''}}</text>
       </view>
       <view class="food-calories">{{item.calories}}卡</view>
@@ -34,15 +41,15 @@
   <view class="meal-section">
     <view class="meal-header">
       <view class="meal-title">
-        <text class="icon">🌮</text>
+        <image class="meal-icon" src="/static/images/hanbao.png" mode="heightFix"></image>
         <text>午餐</text>
       </view>
-      <view class="calories">{{lunch.totalCalories}}卡路里</view>
+      <view class="calories">{{lunch.totalCalories}}<text class="iconfont icon-reliang"></text></view>
     </view>
     
     <view class="food-item" wx:for="{{lunch.foods}}" wx:key="index">
       <view class="food-name">
-        <text class="emoji">{{item.emoji}}</text>
+        <!-- <text class="emoji">{{item.emoji}}</text> -->
         <text>{{item.name}} {{item.amount ? '(' + item.amount + ')' : ''}}</text>
       </view>
       <view class="food-calories">{{item.calories}}卡</view>
@@ -57,15 +64,15 @@
   <view class="meal-section">
     <view class="meal-header">
       <view class="meal-title">
-        <text class="icon">🌙</text>
+         <image class="meal-icon" src="/static/images/yueliang.png" mode="heightFix"></image>
         <text>晚餐</text>
       </view>
-      <view class="calories">{{dinner.totalCalories}}卡路里</view>
+      <view class="calories">{{dinner.totalCalories}}<text class="iconfont icon-reliang"></text></view>
     </view>
     
     <view class="food-item" wx:for="{{dinner.foods}}" wx:key="index">
       <view class="food-name">
-        <text class="emoji">{{item.emoji}}</text>
+        <!-- <text class="emoji">{{item.emoji}}</text> -->
         <text>{{item.name}} {{item.amount ? '(' + item.amount + ')' : ''}}</text>
       </view>
       <view class="food-calories">{{item.calories}}卡</view>
@@ -80,15 +87,15 @@
   <view class="meal-section">
     <view class="meal-header">
       <view class="meal-title">
-        <text class="icon">🍪</text>
+        <image class="meal-icon" src="/static/images/lingshi.png" mode="heightFix"></image>
         <text>零食</text>
       </view>
-      <view class="calories">{{snacks.totalCalories}}卡路里</view>
+      <view class="calories">{{snacks.totalCalories}}<text class="iconfont icon-reliang"></text></view>
     </view>
     
     <view class="food-item" wx:for="{{snacks.foods}}" wx:key="index">
       <view class="food-name">
-        <text class="emoji">{{item.emoji}}</text>
+        <!-- <text class="emoji">{{item.emoji}}</text> -->
         <text>{{item.name}} {{item.amount ? '(' + item.amount + ')' : ''}}</text>
       </view>
       <view class="food-calories">{{item.calories}}卡</view>
@@ -97,10 +104,5 @@
     <button class="add-food-btn" bindtap="addFood" data-meal="snacks">
       <text class="btn-icon">+</text> 添加食物
     </button>
-  </view>
-  
-  <!-- 每日总计 -->
-  <view class="daily-total">
-    今日总计: {{totalCalories}} / {{calorieGoal}} 卡路里
   </view>
 </view> 

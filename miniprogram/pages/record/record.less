@@ -79,15 +79,23 @@ page {
   font-weight: bold;
 }
 
-.meal-title .icon {
-  margin-right: 20rpx;
-  font-size: 36rpx;
+.meal-title .meal-icon {
+  margin-right: 10rpx;
+  height: 36rpx;
 }
 
 .calories {
+  display: flex;
+  align-items: center;
   font-weight: bold;
   color: #FF4081;
   font-size: 28rpx;
+  .iconfont {
+    font-size: 24rpx;
+    line-height: 28rpx;
+    color: #ea4a1d;
+    margin-left: 10rpx;
+  }
 }
 
 .food-item {
@@ -142,7 +150,7 @@ page {
   background-color: #F8BBD0;
   padding: 30rpx;
   border-radius: 30rpx;
-  margin-top: 40rpx;
+  margin-bottom: 40rpx;
   text-align: center;
   color: #880E4F;
   font-weight: bold;
