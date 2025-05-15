@@ -7,12 +7,11 @@ export const login = () => {
       if (res.code) {
         console.log("res.code 🚀🚀🚀", res.code);
         //发起网络请求
-        // wx.request({
-        //   url: "https://example.com/onLogin",
-        //   data: {
-        //     code: res.code,
-        //   },
-        // });
+        post('/users/login', {
+          js_code: res.code,
+        }).then(res => {
+          console.log("登录成功 🟢🟢🟢", res);
+        })
       } else {
         console.log("登录失败！" + res.errMsg);
       }

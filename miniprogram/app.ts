@@ -1,11 +1,16 @@
 // app.ts
 App<IAppOption>({
-  globalData: {},
+  globalData: {
+    navBarHeight: 0
+  },
   onLaunch() {
     // 展示本地存储能力
     const logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
+
+    const windowInfo = wx.getWindowInfo()
+    this.globalData.navBarHeight = windowInfo.screenTop + 44
 
     // 登录
     wx.login({

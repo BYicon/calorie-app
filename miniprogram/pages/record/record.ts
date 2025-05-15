@@ -1,12 +1,20 @@
 // pages/record/record.ts
 import { login } from "../../api/login";
 
+const app = getApp<IAppOption>()
+
 Page({
   data: {
+    active: 0,
     currentDate: '',
     currentDateObj: new Date() as Date,
     calorieGoal: 1200,
     totalCalories: 750,
+    navHeight: 0,
+    selectedDate: new Date().getTime(),
+    currentMonth: '',
+    minDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1).getTime(),
+    maxDate: Date.now(),
     breakfast: {
       totalCalories: 320,
       foods: [
@@ -48,14 +56,60 @@ Page({
     snacks: {
       totalCalories: 0,
       foods: []
-    }
+    },
+    // 日历展示文字
+    formatter(day: any) {
+      console.log("formatter 🚀🚀🚀", day);
+      const month = day.date.getMonth() + 1;
+      const date = day.date.getDate();
+
+      if (month === 5) {
+        if (date === 1) {
+          day.bottomInfo = '200';
+        } else if (date === 4) {
+          day.bottomInfo = '200';
+        } else if (date === new Date().getDate()) {
+          day.text = '今天';
+        }
+      }
+
+      return day;
+    },
+  },
+
+  onChange(e: any) {
+    console.log("onChange 🚀🚀🚀", e);
+    this.setData({
+      active: e.detail.index
+    })
+  },
+
+  initDate() {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth() + 1;
+    this.setData({
+      currentMonth: `${year}-${month}`
+    })
+    this.setCurrentDate(currentDate);
+  },
+
+  onSelectDate(e: any) {
+    console.log("onSelectDate 🚀🚀🚀", e);
+    this.setData({
+      selectedDate: new Date(e.detail).getTime()
+    })
   },
 
   onLoad() {
     console.log("onLoad 🚀🚀🚀");
+    const windowInfo = wx.getWindowInfo()
+    console.log("windowInfo 🚀🚀🚀", windowInfo);
+    this.setData({
+      navHeight: app.globalData.navBarHeight
+    })
     login();
-    // 设置当前日期
-    this.setCurrentDate(new Date());
+    this.initDate();
   },
 
   // 设置当前日期
@@ -78,22 +132,53 @@ Page({
     this.loadMealDataByDate(date);
   },
 
-  // 上一天
-  prevDay() {
-    const currentDate = this.data.currentDateObj;
-    const prevDate = new Date(currentDate);
-    prevDate.setDate(prevDate.getDate() - 1);
-    
-    this.setCurrentDate(prevDate);
+  // 将minDate设置为上个月的第一天，将maxDate设置为上个月的最后一天
+  prevDayMonth() {
+    // const currentMonth = this.data.currentMonth;
+    // const year = parseInt(currentMonth.split('-')[0]);
+    // const month = parseInt(currentMonth.split('-')[1]);
+    // const preMonth = month - 2 < 0 ? 12 : month - 1;
+    // const prevMonthFirstDay = new Date(year, preMonth, 1);
+    // let prevMonthLastDay = new Date(year, month - 1, 0);
+    // console.log("prevMonthFirstDay 🚀🚀🚀", prevMonthFirstDay);
+    // console.log("prevMonthLastDay 🚀🚀🚀", prevMonthLastDay); 
+    // this.setData({
+    //   currentMonth: year + '-' + (preMonth),
+    //   minDate: prevMonthFirstDay.getTime(),
+    //   maxDate: prevMonthLastDay.getTime()
+    // });
   },
 
-  // 下一天
-  nextDay() {
-    const currentDate = this.data.currentDateObj;
-    const nextDate = new Date(currentDate);
-    nextDate.setDate(nextDate.getDate() + 1);
-    
-    this.setCurrentDate(nextDate);
+  // 将minDate设置为下个月的第一天，将maxDate设置为下个月的最后一天
+  nextDayMonth() {
+    // if (this.disableNextMonth()) {
+    //   return;
+    // }
+    // const currentMonth = this.data.currentMonth;
+    // const year = parseInt(currentMonth.split('-')[0]);
+    // const month = parseInt(currentMonth.split('-')[1]);
+    // let nextMonthFirstDay = new Date(year, month, 1);
+    // let nextMonthLastDay = new Date(year, month + 1, 0);
+    // console.log("nextMonthFirstDay 🚀🚀🚀", nextMonthFirstDay);
+    // console.log("nextMonthLastDay 🚀🚀🚀", nextMonthLastDay);
+    // // 如果nextMonthLastDay大于当前日期，则将nextMonthLastDay设置为当前日期
+    // if (nextMonthLastDay > new Date()) {
+    //   nextMonthLastDay = new Date();
+    // }
+    // this.setData({
+    //   currentMonth: year + '-' + (month + 1),
+    //   minDate: nextMonthFirstDay.getTime(),
+    //   maxDate: nextMonthLastDay.getTime()
+    // });
+  },
+
+  // 判断是否可以切换到下个月
+  disableNextMonth() {
+    const currentMonth = this.data.currentMonth;
+    const year = parseInt(currentMonth.split('-')[0]);
+    const month = parseInt(currentMonth.split('-')[1]);
+    const nextMonthFirstDay = new Date(year, month, 1);
+    return nextMonthFirstDay > new Date();
   },
 
   // 根据日期加载饮食数据

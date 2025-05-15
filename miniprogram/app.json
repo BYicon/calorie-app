@@ -32,13 +32,16 @@
     "pages/add-food/add-food"
   ],
   "usingComponents": {
-    "navigation-bar": "./components/navigation-bar/navigation-bar"
+    "van-nav-bar": "@vant/weapp/nav-bar/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-tab": "@vant/weapp/tab/index",
+    "van-tabs": "@vant/weapp/tabs/index"
   },
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationStyle": "custom" 
+    "navigationStyle": "custom"
   },
-  "style": "v2",
   "rendererOptions": {
     "skyline": {
       "defaultDisplayBlock": true,

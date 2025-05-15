@@ -8,6 +8,11 @@ page {
   min-height: 100vh;
 }
 
+.tabs-nav {
+  margin: 0 auto;
+  width: 240rpx;
+}
+
 .header {
   background-color: #FFCDD2;
   padding: 30rpx;
@@ -47,11 +52,12 @@ page {
   line-height: 1;
 }
 
-.date-selector .current-date {
+.current-date {
   font-size: 32rpx;
   font-weight: bold;
   color: #D81B60;
   text-align: center;
+  margin-bottom: 20rpx;
 }
 
 .meal-section {
@@ -130,12 +136,12 @@ page {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20rpx;
-  background-color: #F8BBD0;
-  color: #D81B60;
+  padding: 12rpx;
+  background-color: var(--button-primary-background-color);
+  color: var(--button-primary-color);
   border: none;
   border-radius: 20rpx;
-  margin-top: 20rpx;
+  margin-top: 24rpx;
   width: 100%;
   font-weight: bold;
   font-size: 28rpx;
@@ -156,3 +162,24 @@ page {
   font-weight: bold;
   font-size: 32rpx;
 } 
+
+.van-calendar__top-info {
+  color: #880E4F;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 120rpx;
+}
+.van-calendar__month-title {
+  // display: none;
+}
+
+.calendar-btn {
+  background: none;
+  border: none;
+  font-size: 36rpx;
+  color: #FF4081;
+}

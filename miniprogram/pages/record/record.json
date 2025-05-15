@@ -1,7 +1,9 @@
 {
   "navigationBarTitleText": "每日记录",
-  "usingComponents": {},
+  "usingComponents": {
+    "van-calendar": "@vant/weapp/calendar/index"
+  },
   "navigationBarBackgroundColor": "#FFCDD2",
   "navigationBarTextStyle": "black",
-  "navigationStyle": "default"
+  "navigationStyle": "custom"
 } 

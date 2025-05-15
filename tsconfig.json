@@ -16,6 +16,9 @@
     "noUnusedParameters": true,
     "strict": true,
     "strictPropertyInitialization": true,
+    "paths": {
+      "@vant/weapp/*": ["./node_modules/@vant/weapp/dist/*"]
+    },
     "lib": ["ES2020"],
     "typeRoots": [
       "./typings"
