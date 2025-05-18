@@ -1,4 +1,4 @@
-import { BASE_URL, JWT_KEY } from '../config/index';
+import { BASE_URL, JWT_KEY } from "../config/index";
 
 // 定义请求选项接口
 interface RequestOptions extends WechatMiniprogram.RequestOption {

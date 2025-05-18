@@ -1,6 +1,5 @@
 // pages/record/record.ts
 import { login } from "../../api/login";
-
 const app = getApp<IAppOption>()
 
 Page({

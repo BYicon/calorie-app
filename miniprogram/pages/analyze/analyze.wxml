@@ -21,7 +21,7 @@
     
     <view class="chart {{period === 'year' ? 'year' : ''}}">
       <view class="limit-line"></view>
-      <view class="limit-label">目标 {{calorieGoal}}卡</view>
+      <view class="limit-label">目标 {{calorieGoal}}千卡</view>
       
       <!-- 使用swiper实现左右滑动 -->
       <swiper class="chart-swiper" bindchange="onSwiperChange" current="{{currentSwiperIndex}}">
@@ -41,7 +41,7 @@
   <view class="stats-grid">
     <view class="stat-card">
       <view class="value">{{stats.avgCalories}}</view>
-      <view class="label">平均每日摄入 (卡)</view>
+      <view class="label">平均每日摄入 (千卡)</view>
     </view>
     <view class="stat-card">
       <view class="value">{{stats.overLimitDays}}</view>
@@ -49,11 +49,11 @@
     </view>
     <view class="stat-card">
       <view class="value">{{stats.maxCalories}}</view>
-      <view class="label">最高摄入 (卡)</view>
+      <view class="label">最高摄入 (千卡)</view>
     </view>
     <view class="stat-card">
       <view class="value">{{stats.minCalories}}</view>
-      <view class="label">最低摄入 (卡)</view>
+      <view class="label">最低摄入 (千卡)</view>
     </view>
   </view>
   

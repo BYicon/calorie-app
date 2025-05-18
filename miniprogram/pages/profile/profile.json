@@ -1,6 +1,9 @@
 {
   "usingComponents": {
-    "navigation-bar": "/components/navigation-bar/navigation-bar"
+    "navigation-bar": "/components/navigation-bar/navigation-bar",
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-button": "@vant/weapp/button/index"
   },
   "navigationBarTitleText": "我的",
   "navigationBarBackgroundColor": "#FFCDD2",

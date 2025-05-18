@@ -13,14 +13,14 @@
 
   <!-- 每日总计 -->
   <view class="daily-total">
-    今日总计: {{totalCalories}} / {{calorieGoal}} 卡路里
+    今日总计: {{totalCalories}} / {{calorieGoal}} 千卡
   </view>
   
   <!-- 早餐部分 -->
   <view class="meal-section">
     <view class="meal-header">
       <view class="meal-title">
-         <image class="meal-icon" src="/static/images/taiyang.png" mode="heightFix"></image>
+         <image class="meal-icon" src="/static/images/taiyang.png"></image>
         <text>早餐</text>
       </view>
       <view class="calories">{{breakfast.totalCalories}}
@@ -33,7 +33,7 @@
         <!-- <text class="emoji">{{item.emoji}}</text> -->
         <text>{{item.name}} {{item.amount ? '(' + item.amount + ')' : ''}}</text>
       </view>
-      <view class="food-calories">{{item.calories}}卡</view>
+      <view class="food-calories">{{item.calories}}千卡</view>
     </view>
     
     <button class="add-food-btn" bindtap="addFood" data-meal="breakfast">
@@ -45,7 +45,7 @@
   <view class="meal-section">
     <view class="meal-header">
       <view class="meal-title">
-        <image class="meal-icon" src="/static/images/hanbao.png" mode="heightFix"></image>
+        <image class="meal-icon" src="/static/images/hanbao.png"></image>
         <text>午餐</text>
       </view>
       <view class="calories">{{lunch.totalCalories}}<text class="iconfont icon-reliang"></text></view>
@@ -56,7 +56,7 @@
         <!-- <text class="emoji">{{item.emoji}}</text> -->
         <text>{{item.name}} {{item.amount ? '(' + item.amount + ')' : ''}}</text>
       </view>
-      <view class="food-calories">{{item.calories}}卡</view>
+      <view class="food-calories">{{item.calories}}千卡</view>
     </view>
     
     <button class="add-food-btn" bindtap="addFood" data-meal="lunch">
@@ -68,7 +68,7 @@
   <view class="meal-section">
     <view class="meal-header">
       <view class="meal-title">
-         <image class="meal-icon" src="/static/images/yueliang.png" mode="heightFix"></image>
+         <image class="meal-icon" src="/static/images/yueliang.png"></image>
         <text>晚餐</text>
       </view>
       <view class="calories">{{dinner.totalCalories}}<text class="iconfont icon-reliang"></text></view>
@@ -79,7 +79,7 @@
         <!-- <text class="emoji">{{item.emoji}}</text> -->
         <text>{{item.name}} {{item.amount ? '(' + item.amount + ')' : ''}}</text>
       </view>
-      <view class="food-calories">{{item.calories}}卡</view>
+      <view class="food-calories">{{item.calories}}千卡</view>
     </view>
     
     <button class="add-food-btn" bindtap="addFood" data-meal="dinner">
@@ -91,7 +91,7 @@
   <view class="meal-section">
     <view class="meal-header">
       <view class="meal-title">
-        <image class="meal-icon" src="/static/images/lingshi.png" mode="heightFix"></image>
+        <image class="meal-icon" src="/static/images/lingshi.png"></image>
         <text>零食</text>
       </view>
       <view class="calories">{{snacks.totalCalories}}<text class="iconfont icon-reliang"></text></view>
@@ -102,7 +102,7 @@
         <!-- <text class="emoji">{{item.emoji}}</text> -->
         <text>{{item.name}} {{item.amount ? '(' + item.amount + ')' : ''}}</text>
       </view>
-      <view class="food-calories">{{item.calories}}卡</view>
+      <view class="food-calories">{{item.calories}}千卡</view>
     </view>
     
     <button class="add-food-btn" bindtap="addFood" data-meal="snacks">

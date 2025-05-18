@@ -17,7 +17,7 @@
     "strict": true,
     "strictPropertyInitialization": true,
     "paths": {
-      "@vant/weapp/*": ["./node_modules/@vant/weapp/dist/*"]
+      "@vant/weapp/*": ["./node_modules/@vant/weapp/dist/*"],
     },
     "lib": ["ES2020"],
     "typeRoots": [

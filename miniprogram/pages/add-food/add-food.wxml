@@ -16,7 +16,7 @@
       <view class="food-item">
         <view class="food-header">
           <input class="food-name" value="{{item.name}}" data-index="{{index}}" bindinput="onFoodNameChange" />
-          <view class="food-detail-desc"> {{item.calories_per_100g}} 卡/100g</view>
+          <view class="food-detail-desc"> {{item.calories_per_100g}} 千卡/100g</view>
           <view class="food-actions">
             <icon class="icon-small" type="cancel" size="23" data-index="{{index}}"  bindtap="deleteFoodItem"></icon>
           </view>
@@ -31,7 +31,7 @@
           <view class="food-detail-item">
             <text class="food-detail-label">热量：</text>
             <input class="food-detail-input" type="digit" value="{{item.calories}}" data-index="{{index}}" bindinput="onFoodCaloriesChange" /> 
-            <text class="food-detail-unit">卡路里</text>
+            <text class="food-detail-unit">千卡</text>
           </view>
         </view>
       </view>
