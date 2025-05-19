@@ -17,3 +17,20 @@ const formatNumber = (n: number) => {
   const s = n.toString()
   return s[1] ? s : '0' + s
 }
+
+/**
+ * 解析url参数
+ * @param obj 
+ * @returns 
+ */
+export const queryParams = (obj: any) => {
+  return Object.entries(obj).map(([key, value]) => {
+    if (value === undefined || value === null || value === '') {
+      return '';
+    }
+    if (typeof value === 'string') {
+      return `${key}=${encodeURIComponent(value)}`;
+    }
+    return `${key}=${value}`;
+  }).join('&');
+}

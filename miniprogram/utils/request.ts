@@ -24,6 +24,7 @@ const request = <T = any>(options: RequestOptions): Promise<ResponseData<T>> => 
   return new Promise((resolve, reject) => {
     const { url, method = 'GET', data, header = {}, skipErrorHandler = false } = options;
 
+
     // --- 请求拦截器 ---
     const token = wx.getStorageSync(JWT_KEY);
     const finalHeader: WechatMiniprogram.IAnyObject = { // 显式指定类型为 IAnyObject 或 Record<string, any>
@@ -33,7 +34,6 @@ const request = <T = any>(options: RequestOptions): Promise<ResponseData<T>> => 
     if (token) {
       finalHeader['Authorization'] = `Bearer ${token}`; // 现在类型兼容了
     }
-    // 可以添加其他请求头或处理逻辑...
 
     const requestTask = wx.request({
       url: `${BASE_URL}${url}`, // 拼接基础 URL
