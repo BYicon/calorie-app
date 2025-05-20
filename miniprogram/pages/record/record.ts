@@ -18,7 +18,44 @@ Page({
     currentMonth: "",
     calorieGoal: 1200,
     totalCalories: 0,
-    mealList: [] as Meal[],
+    mealList: [
+      {
+        type: EnumMealType.BREAKFAST,
+        label: EnumMealTypeLabel[EnumMealType.BREAKFAST],
+        totalCalories: 0,
+        foods: [],
+      },
+      {
+        type: EnumMealType.LUNCH,
+        label: EnumMealTypeLabel[EnumMealType.LUNCH],
+        totalCalories: 0,
+        foods: [],
+      },
+      {
+        type: EnumMealType.DINNER,
+        label: EnumMealTypeLabel[EnumMealType.DINNER],
+        totalCalories: 0,
+        foods: [],
+      },
+      {
+        type: EnumMealType.MORNING_SNACK,
+        label: EnumMealTypeLabel[EnumMealType.MORNING_SNACK],
+        totalCalories: 0,
+        foods: [],
+      },
+      {
+        type: EnumMealType.AFTERNOON_SNACK,
+        label: EnumMealTypeLabel[EnumMealType.AFTERNOON_SNACK],
+        totalCalories: 0,
+        foods: [],
+      },
+      {
+        type: EnumMealType.EVENING_SNACK,
+        label: EnumMealTypeLabel[EnumMealType.EVENING_SNACK],
+        totalCalories: 0,
+        foods: [],
+      },
+    ] as Partial<Meal>[],
     /** 日历 */
     minDate: new Date(
       new Date().getFullYear(),
@@ -60,7 +97,6 @@ Page({
   },
 
   onSelectDate(e: any) {
-    console.log("onSelectDate 🚀🚀🚀", e);
     this.setData({
       selectedDate: new Date(e.detail).getTime(),
     });
@@ -73,7 +109,7 @@ Page({
       dayjs(this.data.selectedDate).format("YYYY-MM-DD")
     ).then((res) => {
       const resData = res.data;
-      const mealList: any[] = []; // TODO: optimize type
+      const mealList: Partial<Meal>[] = []; // TODO: optimize type
       Object.values(EnumMealType).forEach((mealType: string) => {
         if(resData[mealType]) {
           mealList.push({
@@ -83,7 +119,7 @@ Page({
           });
         } else {
           mealList.push({
-            type: mealType,
+            type: mealType as EnumMealType,
             label: EnumMealTypeLabel[mealType as EnumMealType],
             totalCalories: 0,
             foods: [],
@@ -170,7 +206,7 @@ Page({
   // 更新总卡路里
   updateTotalCalories() {
     const { mealList } = this.data;
-    const total = mealList.reduce((sum, meal: Meal) => sum + (meal.totalCalories as number), 0);
+    const total = mealList.reduce((sum, meal: Partial<Meal>) => sum + (meal.totalCalories as number), 0);
 
     this.setData({
       totalCalories: total,
