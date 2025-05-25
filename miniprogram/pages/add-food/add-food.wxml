@@ -15,8 +15,8 @@
     <block wx:for="{{foodList}}" wx:key="id">
       <view class="food-item">
         <view class="food-header">
+          <text class="food-detail-label">名称：</text>
           <input class="food-name" value="{{item.name}}" data-index="{{index}}" bindinput="onFoodNameChange" />
-          <view class="food-detail-desc"> {{item.caloriesPer100g}} 千卡/100g</view>
           <view class="food-actions">
             <icon class="icon-small" type="cancel" size="23" data-index="{{index}}"  bindtap="deleteFoodItem"></icon>
           </view>
@@ -26,8 +26,19 @@
             <text class="food-detail-label">份量：</text>
             <input class="food-detail-input" value="{{item.serving}}" placeholder="例如：1碗、200g、2片" data-index="{{index}}" />
           </view>
-          <view class="food-detail-tip">请输入数量和单位，如：1碗、200g、2片、1个等</view>
-          
+          <!-- <view class="food-detail-tip">请输入数量和单位，如：1碗、200g、2片、1个等</view> -->
+
+          <view class="food-detail-item">
+            <text class="food-detail-label">重量：</text>
+            <input class="food-detail-input" value="{{item.grams}}" placeholder="输入重量" data-index="{{index}}" />
+            <text class="food-detail-unit">克</text>
+          </view>  
+
+          <view class="food-detail-item">
+            <text class="food-detail-label">参考热量：</text>
+            <input class="food-detail-input" value="{{item.caloriesPer100g}}" placeholder="输入热量" data-index="{{index}}" />
+            <text class="food-detail-unit">千卡/100g</text>
+          </view>  
           <view class="food-detail-item">
             <text class="food-detail-label">热量：</text>
             <input class="food-detail-input" type="digit" value="{{item.calories}}" data-index="{{index}}" bindinput="onFoodCaloriesChange" /> 

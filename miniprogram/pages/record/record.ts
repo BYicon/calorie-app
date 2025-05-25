@@ -109,12 +109,13 @@ Page({
       dayjs(this.data.selectedDate).format("YYYY-MM-DD")
     ).then((res) => {
       const resData = res.data;
-      const mealList: Partial<Meal>[] = []; // TODO: optimize type
+      const mealList: Partial<Meal>[] = [];
       Object.values(EnumMealType).forEach((mealType: string) => {
         if(resData[mealType]) {
           mealList.push({
             ...resData[mealType],
             type: mealType,
+            servingText: resData[mealType].serving ? resData[mealType].serving : resData[mealType].grams + "g",
             label: EnumMealTypeLabel[mealType as EnumMealType],
           });
         } else {

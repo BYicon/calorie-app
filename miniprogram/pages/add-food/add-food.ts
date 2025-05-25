@@ -37,10 +37,7 @@ Page({
       isAiLoading: true,
     });
 
-    aiChat({
-      userId: "1",
-      message: this.data.aiInputText,
-    })
+    aiChat({message: this.data.aiInputText,})
       .then((res) => {
         console.log("aiChat res 🟢🟢🟢", res);
         const foods = res.data.message;
