@@ -61,7 +61,7 @@ Page({
 
   // 手动添加食物项
   addManualFood() {
-    const newFood = this.generateFoodItem("新食物", "1份", 0);
+    const newFood = this.generateFoodItem("", "", 0);
     this.setData({
       foodList: [...this.data.foodList, newFood],
     });
@@ -79,23 +79,18 @@ Page({
     };
   },
 
-  // 食物名称变更
-  onFoodNameChange(e: WechatMiniprogram.Input) {
-    const { index } = e.currentTarget.dataset;
+  onFieldChange(e: WechatMiniprogram.Input) {
+    const { index, field } = e.currentTarget.dataset as { index: number; field: keyof FoodItem };
     const { value } = e.detail;
-    const newList = [...this.data.foodList];
-    newList[index].name = value;
-    this.setData({
-      foodList: newList,
-    });
-  },
-
-  // 食物热量变更
-  onFoodCaloriesChange(e: WechatMiniprogram.Input) {
-    const { index } = e.currentTarget.dataset;
-    const value = parseFloat(e.detail.value) || 0;
-    const newList = [...this.data.foodList];
-    newList[index].calories = value;
+    const newList: FoodItem[] = [...this.data.foodList];
+    const target: any = newList[index];
+    
+    if (field === 'grams' || field === 'calories' || field === 'caloriesPer100g') {
+      target[field] = parseFloat(value) || 0;
+    } else {
+      target[field] = value;
+    }
+    
     this.setData({
       foodList: newList,
     });

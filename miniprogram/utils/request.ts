@@ -1,4 +1,5 @@
-import { BASE_URL, JWT_KEY } from "../config/index";
+import { BASE_URL } from "../config/index";
+import { EnumStorageKey } from "../enum/index";
 
 // 定义请求选项接口
 interface RequestOptions extends WechatMiniprogram.RequestOption {
@@ -13,9 +14,6 @@ interface ResponseData<T = any> {
   data: T;
 }
 
-// 存储请求任务，用于取消等操作 (可选)
-// const requestTasks = new Map<string, WechatMiniprogram.RequestTask>();
-
 /**
  * 统一请求处理
  * @param options 请求选项
@@ -26,9 +24,10 @@ const request = <T = any>(options: RequestOptions): Promise<ResponseData<T>> => 
 
 
     // --- 请求拦截器 ---
-    const token = wx.getStorageSync(JWT_KEY);
-    const finalHeader: WechatMiniprogram.IAnyObject = { // 显式指定类型为 IAnyObject 或 Record<string, any>
+    const token = wx.getStorageSync(EnumStorageKey.TOKEN);
+    const finalHeader: WechatMiniprogram.IAnyObject = {
       ...header,
+      'Authorization': `Bearer ${token}`,
       'content-type': header['content-type'] || 'application/json',
     };
     if (token) {
@@ -50,7 +49,7 @@ const request = <T = any>(options: RequestOptions): Promise<ResponseData<T>> => 
             resolve(response);
           } else if (response.code === 401) { // 假设 401 为未授权
             // 清除本地 token
-            wx.removeStorageSync(JWT_KEY);
+            wx.removeStorageSync(EnumStorageKey.TOKEN);
             // 跳转到登录页 (根据你的项目路由配置调整)
             wx.navigateTo({ url: '/pages/login/index' }); // 示例路径
             reject(new Error('请重新登录'));

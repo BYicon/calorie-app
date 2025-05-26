@@ -1,5 +1,5 @@
 // pages/record/record.ts
-import { login } from "../../api/login";
+import { login } from "../../api/auth";
 import { getDailyCalories } from "../../api/calories";
 import { EnumStorageKey } from "../../enum/common";
 import dayjs from "dayjs";
@@ -220,7 +220,9 @@ Page({
   },
 
   onLoad() {
-    login();
-    this.initDate();
+    login().then((userInfo) => {
+      console.log("onLoad userInfo 🚀🚀🚀", userInfo);
+      this.initDate();
+    });
   },
 });

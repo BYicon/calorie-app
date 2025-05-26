@@ -1,0 +1,82 @@
+<view class="container">
+  
+  <view class="main-content">
+    <!-- 头像部分 -->
+    <view class="avatar-section">
+      <view class="section-title">
+        <text class="title-icon">👤</text>
+        <text class="title-text">头像</text>
+      </view>
+      <view class="avatar-container">
+        <image class="avatar-image" src="{{userInfo.avatar || '/images/default-avatar.png'}}" bindtap="onChooseAvatar"></image>
+        <button class="avatar-btn" bindtap="onChooseAvatar">更换头像</button>
+      </view>
+    </view>
+    
+    <!-- 基本信息部分 -->
+    <view class="info-section">
+      <view class="section-title">
+        <text class="title-icon">📝</text>
+        <text class="title-text">基本信息</text>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">用户名</text>
+        <input class="form-input" value="{{userInfo.username}}" placeholder="请输入用户名" bindinput="onUsernameChange" maxlength="50"/>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">昵称</text>
+        <input class="form-input" value="{{userInfo.nickname}}" placeholder="请输入昵称" bindinput="onNicknameChange"/>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">邮箱</text>
+        <input class="form-input" value="{{userInfo.email}}" placeholder="请输入邮箱" bindinput="onEmailChange" type="email"/>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">性别</text>
+        <picker class="form-picker" bindchange="onGenderChange" value="{{genderIndex}}" range="{{genderOptions}}">
+          <view class="picker-text">{{userInfo.gender || '请选择性别'}}</view>
+        </picker>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">生日</text>
+        <picker class="form-picker" mode="date" value="{{userInfo.birthday}}" bindchange="onBirthdayChange">
+          <view class="picker-text">{{userInfo.birthday || '请选择生日'}}</view>
+        </picker>
+      </view>
+    </view>
+    
+    <!-- 健康目标部分 -->
+    <view class="goal-section">
+      <view class="section-title">
+        <text class="title-icon">🎯</text>
+        <text class="title-text">健康目标</text>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">每日卡路里目标</text>
+        <view class="calorie-input-container">
+          <input class="calorie-input" type="number" value="{{userInfo.calorieTarget}}" placeholder="2000" bindinput="onCalorieTargetChange"/>
+          <text class="calorie-unit">卡路里</text>
+        </view>
+      </view>
+      
+      <view class="calorie-tips">
+        <text class="tip-title">💡 建议参考：</text>
+        <text class="tip-item">• 成年女性：1800-2000卡路里/天</text>
+        <text class="tip-item">• 成年男性：2200-2500卡路里/天</text>
+        <text class="tip-item">• 减重期间：减少300-500卡路里</text>
+      </view>
+    </view>
+    
+    <!-- 底部按钮 -->
+    <view class="bottom-buttons">
+      <button class="bottom-btn cancel-btn" bindtap="onCancel">取消</button>
+      <button class="bottom-btn save-btn" bindtap="onSave">保存</button>
+    </view>
+  </view>
+</view> 

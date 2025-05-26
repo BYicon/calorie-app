@@ -86,7 +86,7 @@
     </view>
   </view>
   
-  <button class="logout-btn" bindtap="logout">退出登录</button>
+  <!-- <button class="logout-btn" bindtap="logout">退出登录</button> -->
   
   <!-- 目标设置对话框 -->
   <van-dialog

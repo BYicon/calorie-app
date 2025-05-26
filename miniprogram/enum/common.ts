@@ -1,4 +1,4 @@
 export enum EnumStorageKey {
-    TOKEN = 'token',
+    TOKEN = 'access_token',
     USER_INFO = 'userInfo',
   }

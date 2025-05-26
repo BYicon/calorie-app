@@ -1,0 +1,208 @@
+/* 全局容器 */
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #FFF5F7;
+  color: #5D4037;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+/* 头部样式 */
+.header {
+  background-color: #FFCDD2;
+  padding: 30rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.1);
+}
+
+.header-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #E91E63;
+}
+
+/* 主要内容区域 */
+.main-content {
+  flex: 1;
+  padding: 40rpx;
+}
+
+/* 通用区块样式 */
+.avatar-section,
+.info-section,
+.goal-section {
+  background-color: white;
+  border-radius: 40rpx;
+  padding: 40rpx;
+  margin-bottom: 40rpx;
+  box-shadow: 0 8rpx 16rpx rgba(0,0,0,0.05);
+  border: 4rpx solid #FFE0E5;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 2rpx solid #FFE0E5;
+}
+
+.title-icon {
+  margin-right: 20rpx;
+  font-size: 40rpx;
+}
+
+.title-text {
+  color: #D81B60;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+/* 头像部分 */
+.avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30rpx;
+}
+
+.avatar-image {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 80rpx;
+  border: 4rpx solid #FFE0E5;
+}
+
+.avatar-btn {
+  background-color: #F8BBD0;
+  color: #D81B60;
+  border: none;
+  border-radius: 30rpx;
+  padding: 20rpx 40rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+
+.avatar-btn::after {
+  border: none;
+}
+
+/* 表单项样式 */
+.form-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30rpx;
+  padding: 20rpx 0;
+}
+
+.form-label {
+  color: #795548;
+  font-size: 28rpx;
+  width: 100rpx;
+  margin-right: 20rpx;
+  text-align: right;
+}
+
+.form-input {
+  flex: 1;
+  padding: 20rpx 24rpx;
+  border: 2rpx solid #FFE0E5;
+  border-radius: 20rpx;
+  font-size: 28rpx;
+  background-color: #FAFAFA;
+}
+
+.form-picker {
+  flex: 1;
+  padding: 20rpx 24rpx;
+  border: 2rpx solid #FFE0E5;
+  border-radius: 20rpx;
+  background-color: #FAFAFA;
+}
+
+.picker-text {
+  font-size: 28rpx;
+  color: #5D4037;
+}
+
+/* 卡路里输入特殊样式 */
+.calorie-input-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  border: 2rpx solid #FFE0E5;
+  border-radius: 20rpx;
+  background-color: #FAFAFA;
+  padding: 20rpx 24rpx;
+}
+
+.calorie-input {
+  flex: 1;
+  font-size: 28rpx;
+  border: none;
+  background: transparent;
+}
+
+.calorie-unit {
+  color: #795548;
+  font-size: 24rpx;
+  margin-left: 20rpx;
+}
+
+/* 卡路里建议提示 */
+.calorie-tips {
+  background-color: #FFF5F7;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-top: 30rpx;
+  border: 2rpx solid #FFE0E5;
+}
+
+.tip-title {
+  display: block;
+  color: #D81B60;
+  font-size: 28rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+
+.tip-item {
+  display: block;
+  color: #795548;
+  font-size: 24rpx;
+  line-height: 1.6;
+  margin-bottom: 10rpx;
+}
+
+/* 底部按钮 */
+.bottom-buttons {
+  display: flex;
+  gap: 30rpx;
+  margin-top: 40rpx;
+  padding: 0 40rpx 40rpx;
+}
+
+.bottom-btn {
+  flex: 1;
+  padding: 10rpx 0;
+  border-radius: 40rpx;
+  font-weight: bold;
+  font-size: 32rpx;
+}
+
+.cancel-btn {
+  background-color: white;
+  color: #D81B60;
+  border: 4rpx solid #FFE0E5;
+}
+
+.save-btn {
+  background-color: #FF4081;
+  color: white;
+  border: none;
+}
+
+.bottom-btn::after {
+  border: none;
+} 

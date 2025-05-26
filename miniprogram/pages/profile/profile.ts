@@ -65,9 +65,8 @@ Page({
 
   // 编辑个人资料
   editProfile() {
-    wx.showToast({
-      title: "功能开发中",
-      icon: "none",
+    wx.navigateTo({
+      url: '/pages/profile-edit/profile-edit'
     });
   },
 
@@ -162,24 +161,6 @@ Page({
     wx.showToast({
       title: "评分功能开发中",
       icon: "none",
-    });
-  },
-
-  // 退出登录
-  logout() {
-    wx.showModal({
-      title: "提示",
-      content: "确定要退出登录吗？",
-      success: (res) => {
-        if (res.confirm) {
-          // 清除登录状态
-          console.log("用户确认退出登录");
-          // 跳转到登录页
-          wx.reLaunch({
-            url: "/pages/index/index",
-          });
-        }
-      },
     });
   },
 });

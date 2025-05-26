@@ -29,7 +29,8 @@
     "pages/record/record",
     "pages/analyze/analyze",
     "pages/profile/profile",
-    "pages/add-food/add-food"
+    "pages/add-food/add-food",
+    "pages/profile-edit/profile-edit"
   ],
   "usingComponents": {
     "van-nav-bar": "@vant/weapp/nav-bar/index",
