@@ -8,8 +8,7 @@
         <text class="title-text">头像</text>
       </view>
       <view class="avatar-container">
-        <image class="avatar-image" src="{{userInfo.avatar || '/images/default-avatar.png'}}" bindtap="onChooseAvatar"></image>
-        <button class="avatar-btn" bindtap="onChooseAvatar">更换头像</button>
+        <image class="avatar-image" src="{{userInfo.avatar || '/images/cute.png'}}" bindtap="onChooseAvatar"></image>
       </view>
     </view>
     
@@ -21,20 +20,10 @@
       </view>
       
       <view class="form-item">
-        <text class="form-label">用户名</text>
-        <input class="form-input" value="{{userInfo.username}}" placeholder="请输入用户名" bindinput="onUsernameChange" maxlength="50"/>
-      </view>
-      
-      <view class="form-item">
         <text class="form-label">昵称</text>
         <input class="form-input" value="{{userInfo.nickname}}" placeholder="请输入昵称" bindinput="onNicknameChange"/>
       </view>
-      
-      <view class="form-item">
-        <text class="form-label">邮箱</text>
-        <input class="form-input" value="{{userInfo.email}}" placeholder="请输入邮箱" bindinput="onEmailChange" type="email"/>
-      </view>
-      
+
       <view class="form-item">
         <text class="form-label">性别</text>
         <picker class="form-picker" bindchange="onGenderChange" value="{{genderIndex}}" range="{{genderOptions}}">
@@ -56,12 +45,11 @@
         <text class="title-icon">🎯</text>
         <text class="title-text">健康目标</text>
       </view>
-      
+      <view>每日卡路里目标</view>
       <view class="form-item">
-        <text class="form-label">每日卡路里目标</text>
         <view class="calorie-input-container">
           <input class="calorie-input" type="number" value="{{userInfo.calorieTarget}}" placeholder="2000" bindinput="onCalorieTargetChange"/>
-          <text class="calorie-unit">卡路里</text>
+          <text class="calorie-unit">千卡</text>
         </view>
       </view>
       
