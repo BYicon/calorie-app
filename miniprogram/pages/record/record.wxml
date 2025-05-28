@@ -1,13 +1,11 @@
 <van-nav-bar placeholder fixed border="{{false}}">
-  <view class="nav-title" slot="title">
-    <van-tabs custom-class="tabs-nav" active="{{ active }}" bind:change="onChange">
-      <van-tab title="今日"></van-tab>
-      <van-tab title="日历"></van-tab>
-    </van-tabs>
+  <view class="nav-title" slot="title" bindtap="showCalendar">
+    <text>{{currentDateText}}</text>
+    <van-icon name="arrow-down" />
   </view>
 </van-nav-bar>
 <!-- 主要内容 -->
-<view wx:if="{{active === 0}}" class="main-content">
+<view class="main-content">
   <!-- 日期选择器 -->
   <view class="current-date">{{currentDate}}</view>
 
@@ -41,27 +39,18 @@
 
 </view> 
 <!-- 日历 -->
-<view wx:if="{{active === 1}}" class="calendar-content">
-  <van-calendar
-    poppable="{{ false }}"
-    show-subtitle="{{ false }}"
-    show-confirm="{{ false }}"
-    default-date="{{ selectedDate }}"
-    min-date="{{ minDate }}"
-    max-date="{{ maxDate }}"
-    class="calendar"
-    first-day-of-week="{{ 1 }}"
-    formatter="{{ formatter }}"
-    bind:select="onSelectDate"
-  >
-    <view class="calendar-header" slot="title">
-        <!-- <button class="calendar-btn" bindtap="prevDayMonth">
-          <van-icon name="arrow-left" />
-        </button> -->
-        <text>{{currentMonth}}</text>
-        <!-- <button class="calendar-btn" bindtap="nextDayMonth">
-          <van-icon name="arrow" />
-        </button> -->
-    </view>
-  </van-calendar>
-</view>
+<van-calendar
+  show="{{showCalendar}}"
+  show-subtitle="{{ false }}"
+  show-confirm="{{ false }}"
+  position="bottom"
+  default-date="{{ selectedDate }}"
+  min-date="{{ minDate }}"
+  max-date="{{ maxDate }}"
+  class="calendar"
+  first-day-of-week="{{ 1 }}"
+  formatter="{{ formatter }}"
+  bind:select="onSelectDate"
+  bind:close="onCloseCalendar"
+>
+</van-calendar>

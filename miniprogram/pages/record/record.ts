@@ -6,18 +6,21 @@ import dayjs from "dayjs";
 import { EnumMealType, EnumMealTypeLabel } from "../../enum/meal-type";
 import { Meal } from "../../../typings/models/calories";
 import { queryParams } from "../../utils/util";
+import { DEFAULT_TARGET_CALORIE } from "../../config/index";
 
 const app = getApp<IAppOption>();
 
+const today = new Date();
+
 Page({
   data: {
-    active: 0,
-    todayDate: new Date() as Date,
-    selectedDate: new Date().getTime(),
-    currentDateText: "",
-    currentMonth: "",
-    calorieGoal: 1200,
+    today: today,
+    selectedDate: today.getTime(),
+    currentDateText: dayjs(today).format("YYYY-MM-DD"),
+    currentMonth: dayjs(today).format("YYYY-MM"),
+    calorieGoal: DEFAULT_TARGET_CALORIE,
     totalCalories: 0,
+    showCalendar: false,
     mealList: [
       {
         type: EnumMealType.BREAKFAST,
@@ -80,25 +83,33 @@ Page({
     },
   },
 
-  // 切换tab
-  onChange(e: any) {
+  showCalendar() {
     this.setData({
-      active: e.detail.index,
+      showCalendar: true,
     });
   },
 
-  initDate() {
+  onCloseCalendar() {
     this.setData({
-      selectedDate: Date.now(),
-      currentDateText: dayjs(this.data.todayDate).format("YYYY-MM-DD"),
-      currentMonth: dayjs(this.data.todayDate).format("YYYY-MM"),
+      showCalendar: false,
+    });
+  },
+
+  init() {
+    const userInfo = wx.getStorageSync(EnumStorageKey.USER_INFO);
+    this.setData({
+      calorieGoal: userInfo.calorieGoal,
     });
     this.getDailyCalories();
   },
 
   onSelectDate(e: any) {
+    const date = new Date(e.detail);
     this.setData({
-      selectedDate: new Date(e.detail).getTime(),
+      selectedDate: date.getTime(),
+      currentDateText: dayjs(date).format("YYYY-MM-DD"),
+      currentMonth: dayjs(date).format("YYYY-MM"),
+      showCalendar: false,
     });
   },
 
