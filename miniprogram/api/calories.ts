@@ -7,8 +7,8 @@ import { post, get } from "../utils/request";
  * @param date 日期
  * @returns 
  */
-export const getDailyCalories = (userId: string, date: string) => {
-  return get(`/calories/meals/daily?userId=${userId}&date=${date}`);
+export const getDailyCalories = (date: string) => {
+  return get(`/calories/meals/daily?date=${date}`);
 };
 
 

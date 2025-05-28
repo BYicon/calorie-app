@@ -110,13 +110,13 @@ Page({
       currentDateText: dayjs(date).format("YYYY-MM-DD"),
       currentMonth: dayjs(date).format("YYYY-MM"),
       showCalendar: false,
+    }, () => {
+      this.getDailyCalories();
     });
   },
 
   getDailyCalories() {
-    const userInfo = wx.getStorageSync(EnumStorageKey.USER_INFO);
     getDailyCalories(
-      userInfo.id,
       dayjs(this.data.selectedDate).format("YYYY-MM-DD")
     ).then((res) => {
       const resData = res.data;
@@ -185,7 +185,6 @@ Page({
     const urlParams = {
       type: mealType,
       date: dayjs(this.data.selectedDate).format("YYYY-MM-DD"),
-      id: e.currentTarget.dataset.id,
     };
     wx.navigateTo({
       url: "/pages/add-food/add-food?" + queryParams(urlParams),
@@ -233,7 +232,7 @@ Page({
   onLoad() {
     login().then((userInfo) => {
       console.log("onLoad userInfo 🚀🚀🚀", userInfo);
-      this.initDate();
+      this.init();
     });
   },
 });

@@ -104,7 +104,6 @@ Page({
     }
 
     updateCalorieTarget({
-      userId: wx.getStorageSync(EnumStorageKey.USER_INFO).id,
       calorieTarget: calorieGoal,
     })
       .then((res) => {
