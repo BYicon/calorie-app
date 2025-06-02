@@ -39,3 +39,25 @@ export const getMeal = (id: string) => {
 export const updateMeal = (data: Meal) => {
   return post("/calories/meals/update", data);
 };
+
+
+/**
+ * 根据餐食类型获取食物
+ * @param date 日期
+ * @param mealType 餐食类型
+ * @returns 
+ */
+export const findFoodsByMealType = (date: string, mealType: string) => {
+  return get(`/calories/foods/byMealType?date=${date}&mealType=${mealType}`);
+};  
+
+
+/**
+ * 获取日历数据
+ * @param startDate 开始日期 格式: YYYY-MM-DD
+ * @param endDate 结束日期 格式: YYYY-MM-DD
+ * @returns 
+ */
+export const getCalendarData = (startDate: string, endDate: string) => {
+  return get(`/calories/calendar?startDate=${startDate}&endDate=${endDate}`);
+};

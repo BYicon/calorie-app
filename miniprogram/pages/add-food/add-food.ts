@@ -191,11 +191,11 @@ Page({
       mealTypeText: EnumMealTypeLabel[type as EnumMealType],
     });
     if (id) {
-      caloriesApi.getMeal(id).then((res) => {
-        console.log("getMeal res 🟢🟢🟢", res);
-        const meal = res.data;
+      caloriesApi.findFoodsByMealType(this.data.currentDate, this.data.mealType).then((res) => {
+        console.log("findFoodsByMealType res 🟢🟢🟢", res);
+        const foods = res.data;
         this.setData({
-          foodList: meal.foods,
+          foodList: foods,
         });
       });
     }

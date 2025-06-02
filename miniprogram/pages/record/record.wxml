@@ -1,5 +1,5 @@
 <van-nav-bar placeholder fixed border="{{false}}">
-  <view class="nav-title" slot="title" bindtap="showCalendar">
+  <view class="nav-title" slot="title" bindtap="openCalendar">
     <text>{{currentDateText}}</text>
     <van-icon name="arrow-down" />
   </view>
@@ -11,13 +11,13 @@
 
   <!-- 每日总计 -->
   <view class="daily-total">
-    今日总计: {{totalCalories}} / {{calorieGoal}} 千卡
+    今日总计: {{totalCalories}} / {{calorieTarget}} 千卡
   </view>
   
   <view class="meal-section" wx:for="{{mealList}}" wx:key="index">
     <view class="meal-header">
       <view class="meal-title">
-         <image class="meal-icon" src="/static/images/taiyang.png"></image>
+         <image class="meal-icon" src="{{item.icon}}"></image>
         <text>{{item.label}}</text>
       </view>
       <view class="calories">{{item.totalCalories}}
@@ -27,7 +27,8 @@
     
     <view class="food-item" wx:for="{{item.foods}}" wx:key="index">
       <view class="food-name">
-        <text>{{item.name}} {{item.serving ? '(' + item.serving + ')' : ''}}</text>
+        <text>{{item.name}}</text>
+        <text class="serving-text">（{{ item.servingText }}）</text>
       </view>
       <view class="food-calories">{{item.calories}}千卡</view>
     </view>
@@ -40,6 +41,7 @@
 </view> 
 <!-- 日历 -->
 <van-calendar
+  wx:if="{{showCalendar}}"
   show="{{showCalendar}}"
   show-subtitle="{{ false }}"
   show-confirm="{{ false }}"

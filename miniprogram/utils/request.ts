@@ -3,7 +3,8 @@ import { EnumStorageKey } from "../enum/index";
 
 // 定义请求选项接口
 interface RequestOptions extends WechatMiniprogram.RequestOption {
-  // 可以添加自定义选项
+  baseUrl?: string;
+  headers?: WechatMiniprogram.IAnyObject;
   skipErrorHandler?: boolean;
 }
 
@@ -35,7 +36,7 @@ const request = <T = any>(options: RequestOptions): Promise<ResponseData<T>> => 
     }
 
     const requestTask = wx.request({
-      url: `${BASE_URL}${url}`, // 拼接基础 URL
+      url: `${options.baseUrl || BASE_URL}${url}`, // 拼接基础 URL
       method,
       data,
       header: finalHeader,

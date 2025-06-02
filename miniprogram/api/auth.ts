@@ -1,11 +1,14 @@
 import { post } from "../utils/request";
 import { EnumStorageKey } from "../enum/index";
+import { removeCache } from "../utils/helper";
+import { User } from "../../typings/models/response";
 
 /**
  * 登录
  * @returns 用户信息
  */
-export const login = () => new Promise((resolve, reject) => {
+export const login = () => new Promise<User>((resolve, reject) => {
+  removeCache();
   wx.login({
     success(res) {
       if (res.code) {

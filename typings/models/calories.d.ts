@@ -18,4 +18,11 @@ export interface Meal {
   userId: number;
   foods?: FoodItem[];
   totalCalories?: number;
+  icon?: string;
+}
+
+
+export interface CalendarData {
+  date: string;
+  totalCalories: number;
 }

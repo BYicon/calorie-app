@@ -1,16 +1,22 @@
 // pages/record/record.ts
-import { login } from "../../api/auth";
-import { getDailyCalories } from "../../api/calories";
-import { EnumStorageKey } from "../../enum/common";
 import dayjs from "dayjs";
+import { login } from "../../api/auth";
+import * as CaloriesApi from "../../api/calories";
 import { EnumMealType, EnumMealTypeLabel } from "../../enum/meal-type";
-import { Meal } from "../../../typings/models/calories";
 import { queryParams } from "../../utils/util";
 import { DEFAULT_TARGET_CALORIE } from "../../config/index";
+import { hasLogin } from "../../utils/helper";
+import { CalendarData, FoodItem, Meal } from "../../../typings/models/calories";
+import { MEAL_TYPE_ICON } from "../../config/common";
 
 const app = getApp<IAppOption>();
 
 const today = new Date();
+const currentYear = today.getFullYear();
+const currentMonth = today.getMonth();
+const currentDate = today.getDate();
+
+let calendarData = [] as CalendarData[];
 
 Page({
   data: {
@@ -18,7 +24,7 @@ Page({
     selectedDate: today.getTime(),
     currentDateText: dayjs(today).format("YYYY-MM-DD"),
     currentMonth: dayjs(today).format("YYYY-MM"),
-    calorieGoal: DEFAULT_TARGET_CALORIE,
+    calorieTarget: DEFAULT_TARGET_CALORIE,
     totalCalories: 0,
     showCalendar: false,
     mealList: [
@@ -60,47 +66,45 @@ Page({
       },
     ] as Partial<Meal>[],
     /** 日历 */
-    minDate: new Date(
-      new Date().getFullYear(),
-      new Date().getMonth(),
-      1
-    ).getTime(),
+    minDate: new Date('2025/01/01').getTime(),
     maxDate: Date.now(),
     formatter(day: any) {
-      const month = day.date.getMonth() + 1;
-      const date = day.date.getDate();
-
-      if (month === 5) {
-        if (date === 1) {
-          day.bottomInfo = "200";
-        } else if (date === 4) {
-          day.bottomInfo = "200";
-        } else if (date === new Date().getDate()) {
-          day.text = "今天";
-        }
+      console.log("formatter day 🚀🚀🚀", day);
+      const _year = day.date.getFullYear();
+      const _month = day.date.getMonth();
+      const _date = day.date.getDate();
+      const _dateText = dayjs(day.date).format("YYYY-MM-DD");
+      const _calendarData = calendarData.find((item: any) => item.date === _dateText);
+      if(_calendarData) {
+        day.bottomInfo = _calendarData.totalCalories;
+      }
+      // 如果是本月的今天则显示今天
+      if (_year === currentYear &&  _month === currentMonth && _date === currentDate) {
+        day.text = "今天";
       }
       return day;
     },
   },
 
-  showCalendar() {
-    this.setData({
-      showCalendar: true,
+  openCalendar() {
+    const startDate = dayjs(this.data.minDate).format("YYYY-MM-DD");
+    const endDate = dayjs(this.data.maxDate).format("YYYY-MM-DD");
+    CaloriesApi.getCalendarData(startDate, endDate).then((res) => {
+      console.log("openCalendar res 🚀🚀🚀", res);
+      calendarData = res.data;
+      console.log("openCalendar calendarData 🚀🚀🚀", calendarData);
+      
+      this.setData({
+        showCalendar: true,
+      });
     });
+
   },
 
   onCloseCalendar() {
     this.setData({
       showCalendar: false,
     });
-  },
-
-  init() {
-    const userInfo = wx.getStorageSync(EnumStorageKey.USER_INFO);
-    this.setData({
-      calorieGoal: userInfo.calorieGoal,
-    });
-    this.getDailyCalories();
   },
 
   onSelectDate(e: any) {
@@ -116,18 +120,25 @@ Page({
   },
 
   getDailyCalories() {
-    getDailyCalories(
+    CaloriesApi.getDailyCalories(
       dayjs(this.data.selectedDate).format("YYYY-MM-DD")
     ).then((res) => {
       const resData = res.data;
       const mealList: Partial<Meal>[] = [];
       Object.values(EnumMealType).forEach((mealType: string) => {
         if(resData[mealType]) {
+          const foods = resData[mealType].foods.map((food: FoodItem) => {
+            return {
+              ...food,
+              servingText: food.grams + "g" || food.serving,
+            };
+          });
           mealList.push({
             ...resData[mealType],
             type: mealType,
-            servingText: resData[mealType].serving ? resData[mealType].serving : resData[mealType].grams + "g",
             label: EnumMealTypeLabel[mealType as EnumMealType],
+            foods,
+            icon: MEAL_TYPE_ICON[mealType as EnumMealType],
           });
         } else {
           mealList.push({
@@ -135,6 +146,7 @@ Page({
             label: EnumMealTypeLabel[mealType as EnumMealType],
             totalCalories: 0,
             foods: [],
+            icon: MEAL_TYPE_ICON[mealType as EnumMealType],
           });
         }
       });
@@ -181,8 +193,9 @@ Page({
   // 添加食物
   addFood(e: any) {
     const mealType = e.currentTarget.dataset.type;
-    
+    const mealId = e.currentTarget.dataset.id;
     const urlParams = {
+      id: mealId,
       type: mealType,
       date: dayjs(this.data.selectedDate).format("YYYY-MM-DD"),
     };
@@ -226,13 +239,18 @@ Page({
 
   // 这个方法将在从搜索页面返回时调用，用于更新食物列表
   onShow() {
-    this.getDailyCalories();
+    if (hasLogin()) {
+      this.getDailyCalories();
+    }
   },
 
   onLoad() {
     login().then((userInfo) => {
       console.log("onLoad userInfo 🚀🚀🚀", userInfo);
-      this.init();
+      this.setData({
+        calorieTarget: userInfo.calorieTarget,
+      });
+      this.getDailyCalories();
     });
   },
 });

@@ -1,4 +1,4 @@
-import { EnumStorageKey } from "../enum";
+import { EnumStorageKey } from "../enum/index";
 
 
 /**
@@ -8,4 +8,13 @@ import { EnumStorageKey } from "../enum";
 export const hasLogin = () => {
   const token = wx.getStorageSync(EnumStorageKey.TOKEN);
   return token !== "";
+};
+
+
+/**
+ * 清除缓存
+ */
+export const removeCache = () => {
+  wx.removeStorageSync(EnumStorageKey.TOKEN);
+  wx.removeStorageSync(EnumStorageKey.USER_INFO);
 };
