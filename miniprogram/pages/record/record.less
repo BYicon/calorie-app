@@ -206,14 +206,26 @@ page {
   color: #FF4081;
 }
 
-.van-calendar__bottom-info {
-  color: orange;
-  font-size: 32rpx;
-}
-
 .calendar-title {
   height: 100rpx;
   .van-icon {
     font-weight: 900;
+  }
+}
+
+
+
+.van-calendar__bottom-info {
+  color: orange;
+  font-size: 32rpx;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
