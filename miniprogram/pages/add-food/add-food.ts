@@ -23,7 +23,9 @@ Page({
     });
   },
 
-  // AI识别提交
+  /*
+   * AI识别提交
+   */
   onAiSubmit() {
     if (!this.data.aiInputText.trim()) {
       wx.showToast({
@@ -37,10 +39,20 @@ Page({
       isAiLoading: true,
     });
 
-    aiChat({message: this.data.aiInputText,})
+    aiChat({ message: this.data.aiInputText })
       .then((res) => {
-        console.log("aiChat res 🟢🟢🟢", res);
         const foods = res.data.message;
+        console.log("foods 🟢🟢🟢", foods);
+        if (foods.length === 0) {
+          wx.showToast({
+            title: "未识别到食物",
+            icon: "none",
+          });
+          this.setData({
+            isAiLoading: false,
+          });
+          return;
+        }
         const newFoodList = [...foods, ...this.data.foodList];
         this.setData({
           foodList: newFoodList,
@@ -59,7 +71,9 @@ Page({
       });
   },
 
-  // 手动添加食物项
+  /*
+   * 手动添加食物项
+   */
   addManualFood() {
     const newFood = this.generateFoodItem("", "", 0);
     this.setData({
@@ -67,7 +81,9 @@ Page({
     });
   },
 
-  // 生成食物项
+  /*
+   * 生成食物项
+   */
   generateFoodItem(name: string, serving: string, calories: number): FoodItem {
     return {
       id: Date.now().toString() + Math.floor(Math.random() * 1000),
@@ -79,24 +95,35 @@ Page({
     };
   },
 
+  /*
+   * 食物项字段变化
+   */
   onFieldChange(e: WechatMiniprogram.Input) {
-    const { index, field } = e.currentTarget.dataset as { index: number; field: keyof FoodItem };
+    const { index, field } = e.currentTarget.dataset as {
+      index: number;
+      field: keyof FoodItem;
+    };
     const { value } = e.detail;
     const newList: FoodItem[] = [...this.data.foodList];
     const target: any = newList[index];
-    
-    if (field === 'grams' || field === 'calories' || field === 'caloriesPer100g') {
+
+    if (field === "grams" || field === "caloriesPer100g") {
       target[field] = parseFloat(value) || 0;
+      target.calories = Math.round(
+        (target.grams * target.caloriesPer100g) / 100
+      );
     } else {
       target[field] = value;
     }
-    
+
     this.setData({
       foodList: newList,
     });
   },
 
-  // 删除食物项
+  /*
+   * 删除食物项
+   */
   deleteFoodItem(e: WechatMiniprogram.BaseEvent) {
     const { index } = e.currentTarget.dataset;
     const newList = this.data.foodList.filter((_, i) => i !== index);
@@ -123,10 +150,31 @@ Page({
     }
   },
 
+  /*
+   * 校验食物列表
+   * 1. 食物名称不能为空
+   * 2. 重量不能为空
+   * 3. 热量不能为空
+   */
+  validateFoodList() {
+    const validFoodList = this.data.foodList.filter(
+      (food) => food.name && food.grams && food.caloriesPer100g
+    );
+    if (validFoodList.length !== this.data.foodList.length) {
+      return false;
+    }
+    return true;
+  },
+
   // 保存按钮处理
   onSave() {
-    console.log("onSave foodList 🚀🚀🚀", this.data.foodList);
-
+    if (!this.validateFoodList()) {
+      wx.showToast({
+        title: "食物名称、重量和热量不能为空",
+        icon: "none",
+      });
+      return;
+    }
     const userId = wx.getStorageSync("userInfo").id;
     const mealParams: Meal = {
       type: this.data.mealType,
@@ -191,9 +239,9 @@ Page({
       mealTypeText: EnumMealTypeLabel[type as EnumMealType],
     });
     if (id) {
-      caloriesApi.findFoodsByMealType(this.data.currentDate, this.data.mealType).then((res) => {
-        console.log("findFoodsByMealType res 🟢🟢🟢", res);
-        const foods = res.data;
+      caloriesApi.getMeal(id).then((res) => {
+        console.log("getMeal res 🟢🟢🟢", res);
+        const foods = res.data.foods || [];
         this.setData({
           foodList: foods,
         });

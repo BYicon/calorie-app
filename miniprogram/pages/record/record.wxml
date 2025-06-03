@@ -1,6 +1,6 @@
 <van-nav-bar placeholder fixed border="{{false}}">
   <view class="nav-title" slot="title" bindtap="openCalendar">
-    <text>{{currentDateText}}</text>
+    <text class="text-sm font-bold">{{currentDateText}}</text>
     <van-icon name="arrow-down" />
   </view>
 </van-nav-bar>
@@ -30,7 +30,7 @@
         <text>{{item.name}}</text>
         <text class="serving-text">（{{ item.servingText }}）</text>
       </view>
-      <view class="food-calories">{{item.calories}}千卡</view>
+      <view class="food-calories"><text class="text-md calories-color mr-1 font-thin">{{item.calories}}</text>千卡</view>
     </view>
     
     <button class="add-food-btn" bindtap="addFood" data-type="{{item.type}}" data-id="{{item.id}}">
@@ -41,7 +41,6 @@
 </view> 
 <!-- 日历 -->
 <van-calendar
-  wx:if="{{showCalendar}}"
   show="{{showCalendar}}"
   show-subtitle="{{ false }}"
   show-confirm="{{ false }}"
@@ -55,4 +54,11 @@
   bind:select="onSelectDate"
   bind:close="onCloseCalendar"
 >
+<view slot="title">
+  <view class="calendar-title flex items-center justify-center">
+    <van-icon name="arrow-left" class="font-black" bindtap="prevDayMonth" />
+    <text class="text-lg font-bold mx-2">{{ currentMonthText }}</text>
+    <van-icon name="arrow" class="font-black" bindtap="nextDayMonth" />
+  </view>
+</view>
 </van-calendar>

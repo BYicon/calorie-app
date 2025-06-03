@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { login } from "../../api/auth";
 import * as CaloriesApi from "../../api/calories";
 import { EnumMealType, EnumMealTypeLabel } from "../../enum/meal-type";
-import { queryParams } from "../../utils/util";
+import { getMonthFirstAndLastDay, queryParams, formatLocaleDate } from "../../utils/util";
 import { DEFAULT_TARGET_CALORIE } from "../../config/index";
 import { hasLogin } from "../../utils/helper";
 import { CalendarData, FoodItem, Meal } from "../../../typings/models/calories";
@@ -15,18 +15,48 @@ const today = new Date();
 const currentYear = today.getFullYear();
 const currentMonth = today.getMonth();
 const currentDate = today.getDate();
+const { firstDay, lastDay } = getMonthFirstAndLastDay(today);
 
 let calendarData = [] as CalendarData[];
+// 添加月份数据缓存
+let monthDataCache = new Map<string, CalendarData[]>();
+// 防抖计时器
+let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+/**
+ * 创建日历格式化函数
+ * @returns 
+ */
+const createFormatter = () => {
+  const formatter = function(day: any) {
+    const _year = day.date.getFullYear();
+    const _month = day.date.getMonth();
+    const _date = day.date.getDate();
+    const _dateText = dayjs(day.date).format("YYYY-MM-DD");
+    const _calendarData = calendarData.find((item: any) => item.date === _dateText);
+    if(_calendarData) {
+      day.bottomInfo = _calendarData.totalCalories;
+    }
+    // 如果是本月的今天则显示今天
+    if (_year === currentYear &&  _month === currentMonth && _date === currentDate) {
+      day.text = "今天";
+    }
+    return day;
+  }
+  return formatter;
+}
 
 Page({
   data: {
     today: today,
-    selectedDate: today.getTime(),
-    currentDateText: dayjs(today).format("YYYY-MM-DD"),
-    currentMonth: dayjs(today).format("YYYY-MM"),
+    selectedDate: today.getTime(), // timestamp
+    currentDateText: formatLocaleDate(today), // 当前日期文本
+    currentMonthText: dayjs(today).format("YYYY年MM月"), // 当前月份文本
     calorieTarget: DEFAULT_TARGET_CALORIE,
     totalCalories: 0,
     showCalendar: false,
+    // 添加加载状态
+    isLoadingCalendar: false,
     mealList: [
       {
         type: EnumMealType.BREAKFAST,
@@ -66,59 +96,132 @@ Page({
       },
     ] as Partial<Meal>[],
     /** 日历 */
-    minDate: new Date('2025/01/01').getTime(),
-    maxDate: Date.now(),
-    formatter(day: any) {
-      console.log("formatter day 🚀🚀🚀", day);
-      const _year = day.date.getFullYear();
-      const _month = day.date.getMonth();
-      const _date = day.date.getDate();
-      const _dateText = dayjs(day.date).format("YYYY-MM-DD");
-      const _calendarData = calendarData.find((item: any) => item.date === _dateText);
-      if(_calendarData) {
-        day.bottomInfo = _calendarData.totalCalories;
-      }
-      // 如果是本月的今天则显示今天
-      if (_year === currentYear &&  _month === currentMonth && _date === currentDate) {
-        day.text = "今天";
-      }
-      return day;
-    },
+    minDate: firstDay, // timestamp
+    maxDate: lastDay, // timestamp
+    formatter: createFormatter(),
   },
 
-  openCalendar() {
-    const startDate = dayjs(this.data.minDate).format("YYYY-MM-DD");
-    const endDate = dayjs(this.data.maxDate).format("YYYY-MM-DD");
-    CaloriesApi.getCalendarData(startDate, endDate).then((res) => {
-      console.log("openCalendar res 🚀🚀🚀", res);
-      calendarData = res.data;
-      console.log("openCalendar calendarData 🚀🚀🚀", calendarData);
+  /**
+   * 根据日期范围获取日历数据（带缓存）
+   * @param startDate 开始日期 timestamp
+   * @param endDate 结束日期 timestamp
+   */
+  getCalendarData(startDate: number, endDate: number) {
+    return new Promise((resolve, reject) => {
+      const startDateStr = dayjs(startDate).format('YYYY-MM-DD');
+      const endDateStr = dayjs(endDate).format('YYYY-MM-DD');
+      const cacheKey = `${startDateStr}_${endDateStr}`;
       
+      // 检查缓存
+      if (monthDataCache.has(cacheKey)) {
+        calendarData = monthDataCache.get(cacheKey)!;
+        resolve(calendarData);
+        return;
+      }
+
+      CaloriesApi.getCalendarData(startDateStr, endDateStr).then((res) => {
+        calendarData = res.data;
+        // 存入缓存
+        monthDataCache.set(cacheKey, calendarData);
+        resolve(calendarData);
+      }).catch(reject);
+    });
+  },
+
+  /**
+   * 防抖加载日历数据
+   * @param startDate 开始日期
+   * @param endDate 结束日期
+   * @param delay 延迟时间（毫秒）
+   */
+  debounceLoadCalendarData(startDate: number, endDate: number, delay: number = 300) {
+    if (debounceTimer) {
+      clearTimeout(debounceTimer);
+    }
+    debounceTimer = setTimeout(() => {
+      if (!this.data.isLoadingCalendar) {
+        this.setData({ isLoadingCalendar: true });
+        this.getCalendarData(startDate, endDate).then((calendarData) => {
+          const _formatter = createFormatter();
+          if (this.data.showCalendar) {
+            this.setData({ calendarData, formatter: _formatter });
+          }
+        }).finally(() => {
+          this.setData({ isLoadingCalendar: false });
+        });
+      }
+    }, delay);
+  },
+
+  /**
+   * 打开日历
+   */
+  openCalendar() {
+    this.getCalendarData(this.data.minDate, this.data.maxDate).then((calendarData) => {
+      const _formatter = createFormatter();
       this.setData({
+        calendarData,
         showCalendar: true,
+        formatter: _formatter,
       });
     });
-
   },
-
   onCloseCalendar() {
     this.setData({
       showCalendar: false,
     });
   },
 
-  onSelectDate(e: any) {
-    const date = new Date(e.detail);
+  /**
+   * 上个月
+   */
+  prevDayMonth() {
+    const { minDate } = this.data;
+    const prevMonth = dayjs(minDate).subtract(1, 'month').toDate();
+    const { firstDay, lastDay } = getMonthFirstAndLastDay(prevMonth);
+    const _currentMonthText = dayjs(prevMonth).format('YYYY年MM月');
     this.setData({
-      selectedDate: date.getTime(),
-      currentDateText: dayjs(date).format("YYYY-MM-DD"),
-      currentMonth: dayjs(date).format("YYYY-MM"),
+      minDate: firstDay,
+      maxDate: lastDay,
+      currentMonthText: _currentMonthText,
+    });
+    // 使用防抖机制延迟加载数据
+    this.debounceLoadCalendarData(firstDay, lastDay);
+  },
+
+  /**
+   * 下个月
+   */
+  nextDayMonth() {
+    const { maxDate } = this.data;
+    const nextMonth = dayjs(maxDate).add(1, 'month').toDate();
+    const { firstDay, lastDay } = getMonthFirstAndLastDay(nextMonth);
+    const _currentMonthText = dayjs(nextMonth).format('YYYY年MM月');
+    this.setData({
+      minDate: firstDay,
+      maxDate: lastDay,
+      currentMonthText: _currentMonthText,
+    });
+    // 使用防抖机制延迟加载数据
+    this.debounceLoadCalendarData(firstDay, lastDay);
+  },
+
+  /**
+   * 选择日期
+   */
+  onSelectDate(e: any) {
+    this.setData({
+      selectedDate: e.detail.getTime(),
       showCalendar: false,
+      currentDateText: formatLocaleDate(new Date(e.detail.getTime())),
     }, () => {
       this.getDailyCalories();
     });
   },
 
+  /**
+   * 获取每日饮食数据
+   */
   getDailyCalories() {
     CaloriesApi.getDailyCalories(
       dayjs(this.data.selectedDate).format("YYYY-MM-DD")
@@ -160,43 +263,14 @@ Page({
     });
   },
 
-  // 将minDate设置为上个月的第一天，将maxDate设置为上个月的最后一天
-  prevDayMonth() {},
-
-  // 将minDate设置为下个月的第一天，将maxDate设置为下个月的最后一天
-  nextDayMonth() {},
-
-  // 判断是否可以切换到下个月
-  disableNextMonth() {
-    const currentMonth = this.data.currentMonth;
-    const year = parseInt(currentMonth.split("-")[0]);
-    const month = parseInt(currentMonth.split("-")[1]);
-    const nextMonthFirstDay = new Date(year, month, 1);
-    return nextMonthFirstDay > new Date();
-  },
-
-  // 根据日期加载饮食数据
-  loadMealDataByDate() {
-    this.getDailyCalories();
-  },
-
-  // 判断是否为今天
-  isToday(date: Date) {
-    const today = new Date();
-    return (
-      date.getDate() === today.getDate() &&
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear()
-    );
-  },
-
-  // 添加食物
+  /**
+   * 添加食物
+   */
   addFood(e: any) {
-    const mealType = e.currentTarget.dataset.type;
-    const mealId = e.currentTarget.dataset.id;
+    const { type, id } = e.currentTarget.dataset;
     const urlParams = {
-      id: mealId,
-      type: mealType,
+      id,
+      type,
       date: dayjs(this.data.selectedDate).format("YYYY-MM-DD"),
     };
     wx.navigateTo({
@@ -204,53 +278,38 @@ Page({
     });
   },
 
-  // 更新餐饮类别中的食物
-  updateMealWithFood(mealType: string, food: any) {
-    // 使用类型断言，处理动态属性访问
-    const data = this.data as any;
-    const meal = data[mealType];
-    const newFoods = [...meal.foods, food];
-
-    // 计算新的总卡路里
-    const newTotalCalories = newFoods.reduce(
-      (sum, food) => sum + food.calories,
-      0
-    );
-
-    // 更新数据
-    this.setData({
-      [`${mealType}.foods`]: newFoods,
-      [`${mealType}.totalCalories`]: newTotalCalories,
-    });
-
-    // 更新总卡路里
-    this.updateTotalCalories();
-  },
-
-  // 更新总卡路里
-  updateTotalCalories() {
-    const { mealList } = this.data;
-    const total = mealList.reduce((sum, meal: Partial<Meal>) => sum + (meal.totalCalories as number), 0);
-
-    this.setData({
-      totalCalories: total,
-    });
-  },
-
-  // 这个方法将在从搜索页面返回时调用，用于更新食物列表
   onShow() {
     if (hasLogin()) {
+      monthDataCache.clear();
       this.getDailyCalories();
     }
   },
 
   onLoad() {
     login().then((userInfo) => {
-      console.log("onLoad userInfo 🚀🚀🚀", userInfo);
+      console.log('onLoad userInfo 🚀🚀🚀', userInfo);
       this.setData({
         calorieTarget: userInfo.calorieTarget,
       });
       this.getDailyCalories();
+      this.setCurrentDateText();
     });
+  },
+
+  /**
+   * 页面卸载时清理资源
+   */
+  onUnload() {
+    // 清理防抖计时器
+    if (debounceTimer) {
+      clearTimeout(debounceTimer);
+      debounceTimer = null;
+    }
+    // 限制缓存大小，只保留最近10个月的数据
+    if (monthDataCache.size > 10) {
+      const keys = Array.from(monthDataCache.keys());
+      const oldestKeys = keys.slice(0, keys.length - 10);
+      oldestKeys.forEach(key => monthDataCache.delete(key));
+    }
   },
 });

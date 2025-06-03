@@ -30,18 +30,19 @@
 
           <view class="food-detail-item">
             <text class="food-detail-label">重量：</text>
-            <input class="food-detail-input" value="{{item.grams}}" placeholder="输入重量" data-index="{{index}}" data-field="grams" bind:blur="onFieldChange" />
+            <input class="food-detail-input" value="{{item.grams}}" placeholder="输入重量" data-index="{{index}}" data-field="grams" bind:input="onFieldChange" />
             <text class="food-detail-unit">克</text>
           </view>  
 
           <view class="food-detail-item">
             <text class="food-detail-label">参考热量：</text>
-            <input class="food-detail-input" value="{{item.caloriesPer100g}}" placeholder="输入热量" data-index="{{index}}" data-field="caloriesPer100g" bind:blur="onFieldChange" />
+            <input class="food-detail-input" value="{{item.caloriesPer100g}}" placeholder="输入热量" data-index="{{index}}" data-field="caloriesPer100g" bind:input="onFieldChange" />
             <text class="food-detail-unit">千卡/100g</text>
           </view>  
           <view class="food-detail-item">
             <text class="food-detail-label">热量：</text>
-            <input class="food-detail-input" type="digit" value="{{item.calories}}" data-index="{{index}}" data-field="calories" bind:blur="onFieldChange" /> 
+            <!-- <input class="food-detail-input" type="digit" value="{{item.calories}}" disabled="{{true}}" data-index="{{index}}" data-field="calories" bind:blur="onFieldChange" />  -->
+            <text class="text-lg calories-color font-bold">{{item.calories}}</text>
             <text class="food-detail-unit">千卡</text>
           </view>
         </view>
