@@ -1,12 +1,11 @@
-import { updateCalorieTarget } from "../../api/users";
+import * as usersApi from "../../api/users";
+import { FILE_URL, DEFAULT_AVATAR } from "../../config/index";
 import { EnumStorageKey } from "../../enum/index";
 
 Page({
   data: {
-    userInfo: {
-      name: "小粉丝",
-      daysRecorded: 28,
-    },
+    avatarUrl: DEFAULT_AVATAR,
+    userInfo: {},
     stats: {
       daysLogged: 28,
       targetDays: 5,
@@ -47,6 +46,10 @@ Page({
     currentGoal: 0,
   },
 
+  onShow() {
+    this.loadUserData();
+  },
+
   onLoad() {
     console.log("onLoad 🚀🚀🚀");
     // 加载用户数据
@@ -58,8 +61,11 @@ Page({
     console.log("加载用户数据");
     // 获取用户的卡路里目标
     const calorieGoal = wx.getStorageSync(EnumStorageKey.USER_INFO).calorieTarget || 0;
+    const userInfo = wx.getStorageSync(EnumStorageKey.USER_INFO);
     this.setData({
       currentGoal: calorieGoal,
+      userInfo,
+      avatarUrl: userInfo.avatar ? FILE_URL + userInfo.avatar : DEFAULT_AVATAR,
     });
   },
 
@@ -103,7 +109,7 @@ Page({
       return;
     }
 
-    updateCalorieTarget({
+    usersApi.updateCalorieTarget({
       calorieTarget: calorieGoal,
     })
       .then((res) => {

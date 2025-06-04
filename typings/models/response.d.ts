@@ -7,7 +7,7 @@ export interface User {
   openid?: string;
   unionid?: string;
   birthday?: string;
-  gender?: string;
+  gender?: number;
   avatar?: string;
   calorieTarget?: number;
 }

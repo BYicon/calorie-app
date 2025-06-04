@@ -5,7 +5,7 @@ import * as CaloriesApi from "../../api/calories";
 import { EnumMealType, EnumMealTypeLabel } from "../../enum/meal-type";
 import { getMonthFirstAndLastDay, queryParams, formatLocaleDate } from "../../utils/util";
 import { DEFAULT_TARGET_CALORIE } from "../../config/index";
-import { hasLogin } from "../../utils/helper";
+import { hasLogin, redirectPage } from "../../utils/helper";
 import { CalendarData, FoodItem, Meal } from "../../../typings/models/calories";
 import { MEAL_TYPE_ICON } from "../../config/common";
 
@@ -285,14 +285,18 @@ Page({
     }
   },
 
-  onLoad() {
+  onLoad(e) {
     login().then((userInfo) => {
       console.log('onLoad userInfo 🚀🚀🚀', userInfo);
       this.setData({
         calorieTarget: userInfo.calorieTarget,
       });
       this.getDailyCalories();
-      this.setCurrentDateText();
+      console.log('onLoad e 🚀🚀🚀', e);
+      const pageKey = e.t;
+      if (pageKey) {
+        redirectPage(pageKey);
+      }
     });
   },
 

@@ -2,10 +2,10 @@
 <view class="main-content">
   <!-- 周期选择器 -->
   <view class="period-selector">
-    <button class="{{period === 'day' ? 'active' : ''}}" bindtap="changePeriod" data-period="day">日</button>
-    <button class="{{period === 'week' ? 'active' : ''}}" bindtap="changePeriod" data-period="week">周</button>
-    <button class="{{period === 'month' ? 'active' : ''}}" bindtap="changePeriod" data-period="month">月</button>
-    <button class="{{period === 'year' ? 'active' : ''}}" bindtap="changePeriod" data-period="year">年</button>
+    <button class="{{period === 'day7' ? 'active' : ''}}" bindtap="changePeriod" data-period="day7" data-days="7">7天</button>
+    <button class="{{period === 'day30' ? 'active' : ''}}" bindtap="changePeriod" data-period="day30" data-days="30">30天</button>
+    <button class="{{period === 'day90' ? 'active' : ''}}" bindtap="changePeriod" data-period="day90" data-days="90">90天</button>
+    <!-- <button class="{{period === 'day365' ? 'active' : ''}}" bindtap="changePeriod" data-period="day365">365天</button>  -->
   </view>
   
   <!-- 热量摄入趋势图表 -->
@@ -19,21 +19,26 @@
       <view class="chart-date">{{currentDateRange}}</view>
     </view>
     
-    <view class="chart {{period === 'year' ? 'year' : ''}}">
+    <view class="chart {{period}}">
       <view class="limit-line"></view>
       <view class="limit-label">目标 {{calorieGoal}}千卡</view>
       
-      <!-- 使用swiper实现左右滑动 -->
-      <swiper class="chart-swiper" bindchange="onSwiperChange" current="{{currentSwiperIndex}}">
-        <swiper-item wx:for="{{chartDataList}}" wx:key="index">
-          <view class="chart-bars">
-            <view wx:for="{{item.data}}" wx:key="index" wx:for-item="barItem" class="chart-bar {{barItem.value > calorieGoal ? 'over-limit' : ''}}" style="height: {{barItem.height}};">
-              <view class="chart-bar-value">{{barItem.value}}</view>
-              <view class="chart-bar-label">{{barItem.label}}</view>
-            </view>
-          </view>
-        </swiper-item>
-      </swiper>
+      <!-- 悬浮提示框 -->
+      <view class="chart-tooltip {{selectedIndex !== -1 ? 'show' : ''}}" style="left: {{tooltipLeft}}px;">
+        <view class="tooltip-content">
+          <view class="tooltip-date">{{selectedBar.label}}</view>
+          <view class="tooltip-value">{{selectedBar.value}}千卡</view>
+        </view>
+      </view>
+      
+      <view class="chart-bars" bindtouchmove="onChartTouchMove" bindtouchend="onChartTouchEnd">
+        <view wx:for="{{chartData}}" wx:key="index" wx:for-item="barItem" 
+              class="chart-bar {{selectedIndex === index ? 'highlight' : ''}}" 
+              style="height: {{barItem.height}};" 
+              data-index="{{index}}">
+          <view class="chart-bar-label" wx:if="{{barItem.showLabel}}">{{barItem.label}}</view>
+        </view>
+      </view>
     </view>
   </view>
   

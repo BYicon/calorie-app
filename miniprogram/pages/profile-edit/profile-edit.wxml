@@ -8,7 +8,7 @@
         <text class="title-text">头像</text>
       </view>
       <view class="avatar-container">
-        <image class="avatar-image" src="{{userInfo.avatar || '/images/cute.png'}}" bindtap="onChooseAvatar"></image>
+        <image class="avatar-image" src="{{ avatarUrl }}" bindtap="onChooseAvatar"></image>
       </view>
     </view>
     
@@ -27,7 +27,7 @@
       <view class="form-item">
         <text class="form-label">性别</text>
         <picker class="form-picker" bindchange="onGenderChange" value="{{genderIndex}}" range="{{genderOptions}}">
-          <view class="picker-text">{{userInfo.gender || '请选择性别'}}</view>
+          <view class="picker-text">{{genderText || '请选择性别'}}</view>
         </picker>
       </view>
       

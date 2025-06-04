@@ -1,8 +1,10 @@
 <view class="main-content">
   <view class="profile-header">
-    <view class="avatar">😊</view>
+    <view class="avatar">
+      <image class="avatar-image" src="{{ avatarUrl }}"></image>
+    </view>
     <view class="user-info">
-      <view class="user-name">小粉丝</view>
+      <view class="user-name">{{ userInfo.nickname }}</view>
       <view class="user-details">已坚持记录: 28天</view>
       <button class="edit-profile-btn" bindtap="editProfile">编辑资料</button>
     </view>

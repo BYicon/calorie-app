@@ -11,7 +11,7 @@
 
   <!-- 每日总计 -->
   <view class="daily-total">
-    今日总计: {{totalCalories}} / {{calorieTarget}} 千卡
+    今日总计: <text class="calories-color">{{totalCalories}}</text> / <text class="calorie-target">{{calorieTarget}}</text> 千卡
   </view>
   
   <view class="meal-section" wx:for="{{mealList}}" wx:key="index">
@@ -30,7 +30,7 @@
         <text>{{item.name}}</text>
         <text class="serving-text">（{{ item.servingText }}）</text>
       </view>
-      <view class="food-calories"><text class="text-md calories-color mr-1 font-thin">{{item.calories}}</text>千卡</view>
+      <view class="food-calories"><text class="text-md calories-color mr-1 font-thin">{{item.calories}}</text><text class="text-md">千卡</text></view>
     </view>
     
     <button class="add-food-btn" bindtap="addFood" data-type="{{item.type}}" data-id="{{item.id}}">

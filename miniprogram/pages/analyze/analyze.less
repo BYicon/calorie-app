@@ -102,10 +102,40 @@ page {
   margin-bottom: 20rpx;
 }
 
-/* 添加swiper样式 */
-.chart-swiper {
-  height: 100%;
-  width: 100%;
+/* 悬浮提示框样式 */
+.chart-tooltip {
+  position: absolute;
+  top: 20rpx;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  opacity: 0;
+  transform: translateX(-50%);
+  transition: opacity 0.2s ease;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.chart-tooltip.show {
+  opacity: 1;
+}
+
+.tooltip-content {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.tooltip-date {
+  font-size: 22rpx;
+  margin-bottom: 8rpx;
+  color: #F8BBD0;
+}
+
+.tooltip-value {
+  font-size: 26rpx;
+  font-weight: bold;
 }
 
 .chart-bars {
@@ -113,40 +143,44 @@ page {
   justify-content: space-between;
   align-items: flex-end;
   height: 100%;
-  padding-bottom: 50rpx;
+  padding-bottom: 60rpx;
+  gap: 4rpx; /* 添加柱子间隔 */
 }
 
+/* 基础柱子样式 */
 .chart-bar {
-  width: 12%;
   background-color: #F8BBD0;
   border-radius: 20rpx 20rpx 0 0;
   position: relative;
-  transition: height 0.3s;
+  transition: all 0.3s ease;
+  flex: 1;
+  max-width: 60rpx; /* 限制最大宽度 */
+  min-width: 8rpx; /* 最小宽度 */
 }
 
-/* 年视图的柱子样式，使其更细 */
-.year .chart-bar {
-  width: 6%;
-  margin: 0 2rpx;
+/* 高亮状态 */
+.chart-bar.highlight {
+  background-color: #E91E63;
+  transform: scale(1.1);
+  box-shadow: 0 4rpx 12rpx rgba(233, 30, 99, 0.3);
 }
 
-.chart-bar.over-limit {
-  background-color: #FF80AB;
+/* 7天视图 - 宽一些的柱子 */
+.chart.day7 .chart-bar {
+  max-width: 60rpx;
+  min-width: 40rpx;
 }
 
-.chart-bar-value {
-  position: absolute;
-  top: -50rpx;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 22rpx;
-  font-weight: bold;
-  color: #D81B60;
+/* 30天视图 - 中等宽度 */
+.chart.day30 .chart-bar {
+  max-width: 30rpx;
+  min-width: 15rpx;
 }
 
-/* 年视图的数值标签样式调整 */
-.year .chart-bar-value {
-  font-size: 18rpx;
+/* 90天视图 - 较细的柱子 */
+.chart.day90 .chart-bar {
+  max-width: 20rpx;
+  min-width: 10rpx;
 }
 
 .chart-bar-label {
@@ -159,11 +193,23 @@ page {
   white-space: nowrap;
 }
 
-/* 年视图的标签样式调整 */
-.year .chart-bar-label {
+/* 7天视图 - 正常显示 */
+.chart.day7 .chart-bar-label {
+  font-size: 20rpx;
+}
+
+/* 30天视图 - 斜着显示，隔一个显示 */
+.chart.day30 .chart-bar-label {
   font-size: 18rpx;
+  transform: translateX(-50%) rotate(-30deg);
+  transform-origin: center top;
+}
+
+/* 90天视图 - 更斜，隔两个显示 */
+.chart.day90 .chart-bar-label {
+  font-size: 16rpx;
   transform: translateX(-50%) rotate(-45deg);
-  transform-origin: top left;
+  transform-origin: center top;
 }
 
 .limit-line {

@@ -1,14 +1,12 @@
 // pages/analyze/analyze.ts
 
+import dayjs from "dayjs";
+
 interface ChartItem {
   value: number;
   label: string;
   height: string;
-}
-
-interface ChartDataSet {
-  data: ChartItem[];
-  dateRange: string;
+  showLabel: boolean;
 }
 
 interface Stats {
@@ -25,11 +23,16 @@ interface Analysis {
 
 Page({
   data: {
-    period: 'week',
+    period: 'day7',
     calorieGoal: 1200,
-    chartDataList: [] as ChartDataSet[],
-    currentSwiperIndex: 0,
     currentDateRange: '',
+    chartData: [] as ChartItem[],
+    selectedIndex: -1,
+    selectedBar: {
+      label: '',
+      value: 0
+    },
+    tooltipLeft: 0,
     stats: {
       avgCalories: 0,
       overLimitDays: 0,
@@ -43,234 +46,151 @@ Page({
   },
 
   onLoad() {
-    this.loadWeekData();
+    this.loadDayData(7);
   },
 
   // 切换周期
   changePeriod(e: any) {
     const period = e.currentTarget.dataset.period;
+    const days = parseInt(e.currentTarget.dataset.days);
     this.setData({ 
       period,
-      currentSwiperIndex: 0
+      selectedIndex: -1 // 重置选中状态
     });
 
-    // 根据不同周期加载数据
-    switch (period) {
-      case 'day':
-        this.loadDayData();
-        break;
-      case 'week':
-        this.loadWeekData();
-        break;
-      case 'month':
-        this.loadMonthData();
-        break;
-      case 'year':
-        this.loadYearData();
-        break;
+    this.loadDayData(days);
+  },
+
+  // 生成模拟热量数据
+  generateMockCalorieData(): number {
+    // 生成800-1600之间的随机热量值，大部分在目标范围内
+    const random = Math.random();
+    if (random < 0.7) {
+      // 70%的数据在目标范围内 (800-1200)
+      return Math.floor(Math.random() * 400) + 800;
+    } else if (random < 0.9) {
+      // 20%的数据稍微超标 (1200-1400)
+      return Math.floor(Math.random() * 200) + 1200;
+    } else {
+      // 10%的数据明显超标 (1400-1600)
+      return Math.floor(Math.random() * 200) + 1400;
     }
   },
 
-  // swiper切换事件
-  onSwiperChange(e: any) {
-    const currentIndex = e.detail.current;
-    
-    this.setData({
-      currentSwiperIndex: currentIndex,
-      currentDateRange: this.data.chartDataList[currentIndex].dateRange
-    });
-    
-    // 更新统计和分析数据
-    this.updateStatsAndAnalysis(this.data.chartDataList[currentIndex].data);
-  },
-
   // 加载日视图数据
-  loadDayData() {
-    // 获取多天的数据用于滑动
-    const chartDataList = [
-      {
-        dateRange: '2023年6月15日 星期四',
-        data: [
-          { value: 320, label: '早餐' },
-          { value: 430, label: '午餐' },
-          { value: 380, label: '晚餐' },
-          { value: 150, label: '零食' }
-        ]
-      },
-      {
-        dateRange: '2023年6月14日 星期三',
-        data: [
-          { value: 280, label: '早餐' },
-          { value: 520, label: '午餐' },
-          { value: 420, label: '晚餐' },
-          { value: 90, label: '零食' }
-        ]
-      },
-      {
-        dateRange: '2023年6月13日 星期二',
-        data: [
-          { value: 350, label: '早餐' },
-          { value: 380, label: '午餐' },
-          { value: 450, label: '晚餐' },
-          { value: 70, label: '零食' }
-        ]
-      }
-    ];
+  loadDayData(days: number) {
+    const currentDate = dayjs();
+    const startDate = currentDate.subtract(days - 1, 'day');
+    
+    // 生成日期范围字符串
+    const dateRange = `${startDate.format('MM/DD')} - ${currentDate.format('MM/DD')}`;
 
-    this.processChartDataList(chartDataList);
-  },
-
-  // 加载周视图数据
-  loadWeekData() {
-    // 获取多周的数据用于滑动
-    const chartDataList = [
-      {
-        dateRange: '2023年6月12日 - 6月18日',
-        data: [
-          { value: 1100, label: '周一' },
-          { value: 1250, label: '周二' },
-          { value: 1450, label: '周三' },
-          { value: 1180, label: '周四' },
-          { value: 900, label: '周五' },
-          { value: 1550, label: '周六' },
-          { value: 750, label: '周日' }
-        ]
-      },
-      {
-        dateRange: '2023年6月5日 - 6月11日',
-        data: [
-          { value: 1050, label: '周一' },
-          { value: 1200, label: '周二' },
-          { value: 1320, label: '周三' },
-          { value: 950, label: '周四' },
-          { value: 1100, label: '周五' },
-          { value: 1400, label: '周六' },
-          { value: 880, label: '周日' }
-        ]
-      },
-      {
-        dateRange: '2023年5月29日 - 6月4日',
-        data: [
-          { value: 980, label: '周一' },
-          { value: 1150, label: '周二' },
-          { value: 1220, label: '周三' },
-          { value: 1050, label: '周四' },
-          { value: 1300, label: '周五' },
-          { value: 1500, label: '周六' },
-          { value: 920, label: '周日' }
-        ]
-      }
-    ];
-
-    this.processChartDataList(chartDataList);
-  },
-
-  // 加载月视图数据
-  loadMonthData() {
-    // 获取多月的数据用于滑动
-    const chartDataList = [
-      {
-        dateRange: '2023年6月',
-        data: [
-          { value: 1150, label: '第1周' },
-          { value: 1250, label: '第2周' },
-          { value: 1050, label: '第3周' },
-          { value: 1320, label: '第4周' }
-        ]
-      },
-      {
-        dateRange: '2023年5月',
-        data: [
-          { value: 1100, label: '第1周' },
-          { value: 1180, label: '第2周' },
-          { value: 1230, label: '第3周' },
-          { value: 1150, label: '第4周' }
-        ]
-      },
-      {
-        dateRange: '2023年4月',
-        data: [
-          { value: 1050, label: '第1周' },
-          { value: 1120, label: '第2周' },
-          { value: 1300, label: '第3周' },
-          { value: 1200, label: '第4周' }
-        ]
-      }
-    ];
-
-    this.processChartDataList(chartDataList);
-  },
-
-  // 加载年视图数据
-  loadYearData() {
-    // 获取多年的数据用于滑动
-    const chartDataList = [
-      {
-        dateRange: '2023年',
-        data: [
-          { value: 1100, label: '1月' },
-          { value: 1050, label: '2月' },
-          { value: 1150, label: '3月' },
-          { value: 1200, label: '4月' },
-          { value: 1250, label: '5月' },
-          { value: 1300, label: '6月' },
-          { value: 1350, label: '7月' },
-          { value: 1400, label: '8月' },
-          { value: 1250, label: '9月' },
-          { value: 1200, label: '10月' },
-          { value: 1150, label: '11月' },
-          { value: 1300, label: '12月' }
-        ]
-      },
-      {
-        dateRange: '2022年',
-        data: [
-          { value: 1050, label: '1月' },
-          { value: 1100, label: '2月' },
-          { value: 1200, label: '3月' },
-          { value: 1150, label: '4月' },
-          { value: 1300, label: '5月' },
-          { value: 1350, label: '6月' },
-          { value: 1250, label: '7月' },
-          { value: 1300, label: '8月' },
-          { value: 1200, label: '9月' },
-          { value: 1150, label: '10月' },
-          { value: 1100, label: '11月' },
-          { value: 1250, label: '12月' }
-        ]
-      }
-    ];
-
-    this.processChartDataList(chartDataList);
-  },
-
-  // 处理多组图表数据
-  processChartDataList(chartDataList: { dateRange: string, data: { value: number, label: string }[] }[]) {
-    // 对每组数据计算柱高
-    const processedChartDataList = chartDataList.map(dataSet => {
-      const maxValue = Math.max(...dataSet.data.map(item => item.value));
+    const chartData: ChartItem[] = [];
+    
+    // 生成模拟数据
+    for (let i = days - 1; i >= 0; i--) {
+      const date = currentDate.subtract(i, 'day');
+      let label: string;
       
-      // 计算每个柱子的高度
-      const processedData = dataSet.data.map(item => ({
-        value: item.value,
-        label: item.label,
-        height: `${Math.max(5, (item.value / maxValue) * 100)}%`
-      }));
+      // 根据天数决定标签格式
+      if (days <= 7) {
+        label = date.format('MM/DD');
+      } else if (days <= 30) {
+        label = date.format('MM/DD');
+      } else {
+        label = date.format('MM/DD');
+      }
+
+      const value = this.generateMockCalorieData();
       
-      return {
-        dateRange: dataSet.dateRange,
-        data: processedData
-      };
-    });
+      chartData.push({
+        value,
+        label,
+        height: '0%', // 初始高度，后面会计算
+        showLabel: this.shouldShowLabel(days - 1 - i, days) // 计算是否显示标签
+      });
+    }
+
+    // 使用定时器模拟数据加载动画
+    setTimeout(() => {
+      this.processChartData(chartData, dateRange);
+    }, 300);
+  },
+
+  // 判断是否应该显示标签
+  shouldShowLabel(index: number, totalDays: number): boolean {
+    if (totalDays <= 7) {
+      // 7天及以下，显示所有标签
+      return true;
+    } else if (totalDays <= 30) {
+      // 30天，每2个显示一个
+      return index % 2 === 0;
+    } else {
+      // 90天，只显示几个关键时间点：开始、1/4、1/2、3/4、结束
+      const keyPoints = [0, Math.floor(totalDays / 4), Math.floor(totalDays / 2), Math.floor(totalDays * 3 / 4), totalDays - 1];
+      return keyPoints.includes(index);
+    }
+  },
+
+  // 图表触摸移动事件
+  onChartTouchMove(e: any) {
+    const touch = e.touches[0];
+    const query = this.createSelectorQuery();
+    
+    query.select('.chart-bars').boundingClientRect((rect: any) => {
+      if (!rect) return;
+      
+      const relativeX = touch.clientX - rect.left;
+      const barWidth = rect.width / this.data.chartData.length;
+      const index = Math.floor(relativeX / barWidth);
+      
+      if (index >= 0 && index < this.data.chartData.length) {
+        const selectedBar = this.data.chartData[index];
+        const tooltipLeft = rect.left + (index + 0.5) * barWidth;
+        
+        this.setData({
+          selectedIndex: index,
+          selectedBar: {
+            label: selectedBar.label,
+            value: selectedBar.value
+          },
+          tooltipLeft: tooltipLeft - rect.left
+        });
+      }
+    }).exec();
+  },
+
+  // 图表触摸结束事件
+  onChartTouchEnd() {
+    setTimeout(() => {
+      this.setData({
+        selectedIndex: -1,
+        tooltipLeft: 0
+      });
+    }, 1000); // 1秒后隐藏提示
+  },
+
+  // 处理图表数据
+  processChartData(chartData: ChartItem[], dateRange: string) {
+    // 计算最大值，用于计算柱子高度
+    const maxValue = Math.max(...chartData.map(item => item.value));
+    const minValue = Math.min(...chartData.map(item => item.value));
+    
+    // 计算每个柱子的高度（相对于最大值的百分比）
+    const processedData = chartData.map(item => ({
+      value: item.value,
+      label: item.label,
+      height: `${Math.max(10, (item.value / maxValue) * 80)}%`, // 最小10%，最大80%
+      showLabel: item.showLabel
+    }));
     
     this.setData({
-      chartDataList: processedChartDataList,
-      currentDateRange: processedChartDataList[0].dateRange,
-      currentSwiperIndex: 0
+      chartData: processedData,
+      currentDateRange: dateRange
     });
     
     // 更新统计和分析
-    this.updateStatsAndAnalysis(processedChartDataList[0].data);
+    this.updateStatsAndAnalysis(processedData);
   },
 
   // 更新统计和分析数据
@@ -298,8 +218,10 @@ Page({
 
   // 生成智能分析
   generateAnalysis(data: ChartItem[]) {
-    // 获取超标的日期
-    const overLimitDays = data.filter(item => item.value > this.data.calorieGoal);
+    const { calorieGoal } = this.data;
+    const overLimitDays = data.filter(item => item.value > calorieGoal);
+    const totalDays = data.length;
+    const avgCalories = Math.round(data.reduce((sum, item) => sum + item.value, 0) / data.length);
     
     // 查找摄入量最高和最低的日期
     const maxDay = data.reduce((prev, current) => (prev.value > current.value) ? prev : current);
@@ -310,14 +232,18 @@ Page({
     let suggestion = '';
     
     if (overLimitDays.length > 0) {
-      const overDayLabels = overLimitDays.map(day => day.label).join('和');
-      insight = `您在${overDayLabels}摄入超过目标卡路里。${maxDay.label}的摄入量尤其高，建议检查这些天的饮食记录，找出可能的原因。整体而言，${minDay.label}控制得最好，可以参考这天的食物选择。`;
+      const overRate = Math.round((overLimitDays.length / totalDays) * 100);
+      insight = `在过去${totalDays}天中，您有${overLimitDays.length}天超过目标热量（${overRate}%）。平均每日摄入${avgCalories}千卡，${maxDay.label}摄入最高（${maxDay.value}千卡），${minDay.label}控制最好（${minDay.value}千卡）。`;
       
-      suggestion = `考虑在高热量摄入的日子准备健康餐点，避免外出就餐导致的高热量摄入。保持${minDay.label}的良好习惯，多摄入蛋白质食物和蔬菜，减少加工食品的比例。`;
+      if (overRate > 30) {
+        suggestion = `超标天数较多，建议：1) 减少高热量食物摄入；2) 增加蔬菜和蛋白质比例；3) 控制零食和饮料；4) 规律三餐时间。`;
+      } else {
+        suggestion = `整体控制良好，继续保持。建议参考${minDay.label}的饮食习惯，在超标日子适当调整食物选择。`;
+      }
     } else {
-      insight = `您的热量摄入控制良好，所有时间段都在目标范围内。${maxDay.label}的摄入量相对较高，${minDay.label}的摄入量最低。`;
+      insight = `恭喜！过去${totalDays}天的热量摄入都在目标范围内。平均每日摄入${avgCalories}千卡，${maxDay.label}摄入相对较高（${maxDay.value}千卡），${minDay.label}摄入最低（${minDay.value}千卡）。`;
       
-      suggestion = `继续保持良好的饮食习惯，确保摄入足够的营养物质。可以适当增加一些健康的零食，如水果、坚果等，保持能量水平。`;
+      suggestion = `继续保持良好的饮食习惯！可以适当增加一些健康零食如坚果、水果，确保营养均衡。注意不要过度限制热量摄入。`;
     }
     
     this.setData({

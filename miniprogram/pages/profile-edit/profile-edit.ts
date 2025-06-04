@@ -1,19 +1,24 @@
-import { updateUserInfo } from "../../api/users";
-import { EnumStorageKey } from "../../enum/index";
+import * as usersApi from "../../api/users";
+import { EnumStorageKey, EnumGenderLabel } from "../../enum/index";
+import * as uploadApi from "../../api/upload";
+import { User } from "../../../typings/models/response";
+import { DEFAULT_AVATAR, FILE_URL } from "../../config/index";
 
 Page({
   /**
    * 页面的初始数据
    */
   data: {
+    avatarUrl: DEFAULT_AVATAR, // 用于显示头像
     userInfo: {
       nickname: "",
       birthday: "",
-      gender: 0,
+      gender: 3,
       avatar: "",
       calorieTarget: 2000,
-    },
-    genderOptions: ["男", "女", "保密"],
+    } as User,
+    genderText: EnumGenderLabel.SECRET,
+    genderOptions: [EnumGenderLabel.MALE, EnumGenderLabel.FEMALE, EnumGenderLabel.SECRET],
     genderIndex: -1,
     originalUserInfo: {}, // 保存原始数据，用于取消时恢复
   },
@@ -29,25 +34,17 @@ Page({
    * 加载用户信息
    */
   loadUserInfo: function () {
-    // 这里应该从服务器或本地存储加载用户信息
-    // 示例数据
-    const userInfo = {
-      username: "",
-      email: "",
-      nickname: "",
-      birthday: "",
-      gender: "",
-      avatar: "../../static/images/cute.png",
-      calorieTarget: 2000,
-    };
-
-    // 设置性别选择器的索引
-    const genderIndex = this.data.genderOptions.indexOf(userInfo.gender) || 0;
-
-    this.setData({
-      userInfo: userInfo,
-      originalUserInfo: JSON.parse(JSON.stringify(userInfo)), // 深拷贝
-      genderIndex: genderIndex >= 0 ? genderIndex : -1,
+    usersApi.getUserInfo().then((res) => {
+      console.log(' 获取用户信息 🟢🟢🟢', res);
+      // 1 男 2 女 3 保密
+      const genderText = this.data.genderOptions[res.data.gender - 1];
+      console.log('genderText 🚀🚀🚀', genderText);
+      this.setData({
+        userInfo: res.data,
+        avatarUrl: FILE_URL + res.data.avatar,
+        genderIndex: res.data.gender - 1,
+        genderText,
+      });
     });
   },
 
@@ -62,20 +59,26 @@ Page({
       sourceType: ["album", "camera"],
       success: function (res) {
         const tempFilePath = res.tempFiles[0].tempFilePath;
-
-        // 这里应该上传图片到服务器，获取图片URL
-        // 暂时使用本地路径
-        that.setData({
-          "userInfo.avatar": tempFilePath,
+        console.log('上传头像 tempFilePath 🚀🚀🚀', tempFilePath);
+        uploadApi.uploadFile(tempFilePath).then((res) => {
+          console.log('上传头像成功 🟢🟢🟢', res);
+          that.setData({
+            avatarUrl: tempFilePath,
+            "userInfo.avatar": res.data.filename,
+          });
+        }).catch((err) => {
+          that.setData({
+            avatarUrl: DEFAULT_AVATAR,
+          });
         });
 
-        wx.showToast({
-          title: "头像已更新",
-          icon: "success",
-        });
       },
       fail: function (err) {
         console.error("选择头像失败:", err);
+        // errMsg: "chooseMedia:fail cancel"
+        if (err.errMsg === "chooseMedia:fail cancel") {
+          return;
+        }
         wx.showToast({
           title: "选择头像失败",
           icon: "none",
@@ -87,7 +90,7 @@ Page({
   /**
    * 昵称输入变化
    */
-  onNicknameChange: function (e) {
+  onNicknameChange: function (e: any) {
     this.setData({
       "userInfo.nickname": e.detail.value,
     });
@@ -96,18 +99,18 @@ Page({
   /**
    * 性别选择变化
    */
-  onGenderChange: function (e) {
+  onGenderChange: function (e: any) {
     const index = e.detail.value;
     this.setData({
       genderIndex: index,
-      "userInfo.gender": this.data.genderOptions[index],
+      "userInfo.gender": index + 1,
     });
   },
 
   /**
    * 生日选择变化
    */
-  onBirthdayChange: function (e) {
+  onBirthdayChange: function (e: any) {
     this.setData({
       "userInfo.birthday": e.detail.value,
     });
@@ -116,19 +119,11 @@ Page({
   /**
    * 卡路里目标输入变化
    */
-  onCalorieTargetChange: function (e) {
+  onCalorieTargetChange: function (e: any) {
     const value = parseInt(e.detail.value) || 0;
     this.setData({
       "userInfo.calorieTarget": value,
     });
-  },
-
-  /**
-   * 验证邮箱格式
-   */
-  validateEmail: function (email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
   },
 
   /**
@@ -145,7 +140,7 @@ Page({
       return false;
     }
 
-    if (userInfo.calorieTarget < 800 || userInfo.calorieTarget > 5000) {
+    if (userInfo.calorieTarget && (userInfo.calorieTarget < 800 || userInfo.calorieTarget > 5000)) {
       wx.showToast({
         title: "卡路里目标应在800-5000之间",
         icon: "none",
@@ -185,19 +180,21 @@ Page({
 
     const userId = wx.getStorageSync(EnumStorageKey.USER_INFO).id;
 
-    updateUserInfo({
+    usersApi.updateUserInfo({
       userId: userId,
-      nickname: this.data.userInfo.nickname,
-      birthday: this.data.userInfo.birthday,
+      nickname: this.data.userInfo.nickname || "",
+      birthday: this.data.userInfo.birthday || "",
       gender: this.data.userInfo.gender,
-      avatar: this.data.userInfo.avatar,
-    }).then(() => {
+      avatar: this.data.userInfo.avatar || "",
+      calorieTarget: this.data.userInfo.calorieTarget || 2000,
+    }).then((res) => {
       // 保存成功后的处理
       wx.showToast({
         title: "保存成功",
         icon: "success",
         duration: 1500,
         success: () => {
+          wx.setStorageSync(EnumStorageKey.USER_INFO, res.data);
           // 延迟返回，让用户看到提示
           setTimeout(() => {
             // 可以通过事件总线或全局状态管理通知其他页面更新用户信息

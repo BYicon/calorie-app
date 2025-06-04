@@ -232,9 +232,10 @@ Page({
     console.log("onLoad type 🚀🚀🚀", type);
     console.log("onLoad date 🚀🚀🚀", date);
     console.log("onLoad id 🚀🚀🚀", id);
+    const currentDate = dayjs(date).format("YYYY-MM-DD");
     this.setData({
       mealId: id,
-      currentDate: dayjs(date).format("YYYY-MM-DD"),
+      currentDate: currentDate,
       mealType: type as EnumMealType,
       mealTypeText: EnumMealTypeLabel[type as EnumMealType],
     });
@@ -247,9 +248,9 @@ Page({
         });
       });
     }
-
+    const currentDateText = dayjs(currentDate).format("YYYY年MM月DD日");
     wx.setNavigationBarTitle({
-      title: ` ${this.data.currentDate} - ${this.data.mealTypeText}`,
+      title: ` ${currentDateText}【${this.data.mealTypeText}】`,
     });
   },
 });
