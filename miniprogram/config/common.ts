@@ -12,15 +12,13 @@ export const MEAL_TYPE_ICON = {
   [EnumMealType.BREAKFAST]: "/static/images/breakfast.png",
   [EnumMealType.LUNCH]: "/static/images/lunch.png",
   [EnumMealType.DINNER]: "/static/images/dinner.png",
-  [EnumMealType.MORNING_SNACK]: "/static/images/snack.png",
-  [EnumMealType.AFTERNOON_SNACK]: "/static/images/snack.png",
-  [EnumMealType.EVENING_SNACK]: "/static/images/snack.png",
+  [EnumMealType.SNACK]: "/static/images/snack.png",
 };
 
 
 // 底部导航栏页面key列表
 export const tabbarPageKeyList = [
-  'record',
+  'index',
   'analyze',
   'profile'
 ]

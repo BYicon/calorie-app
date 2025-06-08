@@ -17,7 +17,7 @@
   </view>
   
   <!-- 今日饮食卡片 -->
-  <view class="card">
+  <view class="card" bindtap="toRecord">
     <view class="card-title">
       <text class="icon">🍽️</text>
       <text>今日饮食</text>

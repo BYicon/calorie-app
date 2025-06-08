@@ -8,8 +8,8 @@
       {
         "iconPath": "./static/images/ca.png",
         "selectedIconPath": "./static/images/ca-a.png",
-        "pagePath": "pages/record/record",
-        "text": "记录"
+        "pagePath": "pages/index/index",
+        "text": "首页"
       },
       {
         "iconPath": "./static/images/stat.png",
@@ -26,6 +26,7 @@
     ]
   },
   "pages": [
+    "pages/index/index",
     "pages/record/record",
     "pages/analyze/analyze",
     "pages/profile/profile",

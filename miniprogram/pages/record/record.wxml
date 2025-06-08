@@ -1,4 +1,4 @@
-<van-nav-bar placeholder fixed border="{{false}}">
+<van-nav-bar placeholder  left-arrow fixed border="{{false}}" bind:click-left="onBack">
   <view class="nav-title" slot="title" bindtap="openCalendar">
     <text class="text-sm font-bold">{{currentDateText}}</text>
     <van-icon name="arrow-down" />
@@ -44,7 +44,7 @@
   show="{{showCalendar}}"
   show-subtitle="{{ false }}"
   show-confirm="{{ false }}"
-  position="bottom"
+  position="top"
   default-date="{{ selectedDate }}"
   min-date="{{ minDate }}"
   max-date="{{ maxDate }}"

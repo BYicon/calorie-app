@@ -1,13 +1,13 @@
 // pages/record/record.ts
 import dayjs from "dayjs";
-import { login } from "../../api/auth";
 import * as CaloriesApi from "../../api/calories";
 import { EnumMealType, EnumMealTypeLabel } from "../../enum/meal-type";
 import { getMonthFirstAndLastDay, queryParams, formatLocaleDate } from "../../utils/util";
 import { DEFAULT_TARGET_CALORIE } from "../../config/index";
-import { hasLogin, redirectPage } from "../../utils/helper";
+import { hasLogin } from "../../utils/helper";
 import { CalendarData, FoodItem, Meal } from "../../../typings/models/calories";
 import { MEAL_TYPE_ICON } from "../../config/common";
+import { EnumStorageKey } from "../../enum/index";
 
 const app = getApp<IAppOption>();
 
@@ -278,6 +278,10 @@ Page({
     });
   },
 
+  onBack() {
+    wx.navigateBack();
+  },
+
   onShow() {
     if (hasLogin()) {
       monthDataCache.clear();
@@ -285,19 +289,12 @@ Page({
     }
   },
 
-  onLoad(e) {
-    login().then((userInfo) => {
-      console.log('onLoad userInfo 🚀🚀🚀', userInfo);
-      this.setData({
-        calorieTarget: userInfo.calorieTarget,
-      });
-      this.getDailyCalories();
-      console.log('onLoad e 🚀🚀🚀', e);
-      const pageKey = e.t;
-      if (pageKey) {
-        redirectPage(pageKey);
-      }
+  onLoad() {
+    const userInfo = wx.getStorageSync(EnumStorageKey.USER_INFO);
+    this.setData({
+      calorieTarget: userInfo.calorieTarget,
     });
+    this.getDailyCalories();
   },
 
   /**
