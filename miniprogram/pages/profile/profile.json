@@ -6,7 +6,7 @@
     "van-button": "@vant/weapp/button/index"
   },
   "navigationBarTitleText": "我的",
-  "navigationBarBackgroundColor": "#FFCDD2",
+  "navigationBarBackgroundColor": "#fcdce1",
   "navigationBarTextStyle": "black",
   "navigationStyle": "default"
 } 

@@ -25,7 +25,7 @@
     </view>
   </view>
   
-  <view class="section-title"><text class="icon">🏆</text>我的成就</view>
+  <view class="section-title"><text class="iconfont icon-chengjiu"></text>我的成就</view>
   <scroll-view class="achievement-list" scroll-x>
     <view class="achievement-item">
       <view class="achievement-icon">🔥</view>

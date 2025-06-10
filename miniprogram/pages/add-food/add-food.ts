@@ -2,6 +2,7 @@
 import { Meal, FoodItem } from "../../../typings/models/calories";
 import { aiChat } from "../../api/ai";
 import * as caloriesApi from "../../api/calories";
+import { MESSAGE_TEMPLATE_ID } from "../../config/env";
 import { EnumMealType, EnumMealTypeLabel } from "../../enum/meal-type";
 import dayjs from "dayjs";
 
@@ -189,13 +190,13 @@ Page({
       })),
     };
 
-    if (this.data.foodList.length === 0) {
-      wx.showToast({
-        title: "没有食物可保存",
-        icon: "none",
-      });
-      return;
-    }
+    // if (this.data.foodList.length === 0) {
+    //   wx.showToast({
+    //     title: "没有食物可保存",
+    //     icon: "none",
+    //   });
+    //   return;
+    // }
 
     let action = caloriesApi.createMeal;
     if (this.data.mealId) {
@@ -209,9 +210,23 @@ Page({
           title: "保存成功",
           icon: "success",
         });
-        setTimeout(() => {
-          wx.navigateBack();
-        }, 1500);
+        wx.requestSubscribeMessage({
+          tmplIds: [MESSAGE_TEMPLATE_ID],
+          success (res) {
+            console.log("消息订阅 🟢🟢🟢", res);
+            if(res.errMsg === 'requestSubscribeMessage:ok') {
+            }
+          },
+          fail (err) {
+            console.log("消息订阅失败 🔴🔴🔴", err);
+          },
+          complete (res) {
+            console.log("消息订阅完成 🟢🟢🟢", res);
+            setTimeout(() => {
+              wx.navigateBack();
+            }, 1500);
+          }
+        })
       })
       .catch(() => {
         wx.showToast({
@@ -248,9 +263,9 @@ Page({
         });
       });
     }
-    const currentDateText = dayjs(currentDate).format("YYYY年MM月DD日");
+    const currentDateText = dayjs(currentDate).format("MM月DD日");
     wx.setNavigationBarTitle({
-      title: ` ${currentDateText}【${this.data.mealTypeText}】`,
+      title: ` ${currentDateText} ${this.data.mealTypeText}`,
     });
   },
 });

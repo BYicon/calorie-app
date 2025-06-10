@@ -1,107 +1,28 @@
 /**index.less**/
 page {
   font-family: 'Arial', sans-serif;
-  background-color: #FFF5F7;
+  background-color: #fcdce1;
   color: #5D4037;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  // background-image: url('{{welcomeImage}}');
   // padding-bottom: env(safe-area-inset-bottom);
 }
 
-.header {
-  background-color: #FFCDD2;
-  padding: 30rpx;
-  text-align: center;
-  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.1);
-}
-
-.title {
-  margin: 0;
-  font-size: 36rpx;
-  color: #E91E63;
-  font-weight: bold;
-}
-
-.main-content {
-  flex: 1;
-  padding: 40rpx;
-  max-width: 600rpx;
-  margin: 0 auto;
+.welcome-image {
   width: 100%;
 }
 
-.today-summary {
-  display: flex;
-  justify-content: space-between;
-  background-color: #F8BBD0;
-  padding: 30rpx;
-  border-radius: 30rpx;
-  color: white;
-  margin-bottom: 40rpx;
-}
-
-.summary-item {
-  text-align: center;
-}
-
-.summary-item .value {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #880E4F;
-}
-
-.summary-item .label {
-  font-size: 24rpx;
-  color: #5D4037;
-}
-
-.card {
-  background-color: white;
-  border-radius: 40rpx;
-  padding: 40rpx;
-  margin-bottom: 30rpx;
-  box-shadow: 0 8rpx 16rpx rgba(0,0,0,0.05);
-  border: 4rpx solid #FFE0E5;
-}
-
-.card-title {
-  margin-top: 0;
-  color: #D81B60;
-  font-size: 30rpx;
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-}
-
-.icon {
-  margin-right: 20rpx;
-  font-size: 36rpx;
-}
-
-.card-content {
-  color: #795548;
-  margin-top: 20rpx;
-  display: flex;
-  flex-direction: column;
-}
-
-.card-content text {
-  margin-bottom: 10rpx;
-}
-
-.add-btn {
-  position: fixed;
-  bottom: 40rpx;
-  right: 40rpx;
-  width: 120rpx;
-  height: 120rpx;
+.go-record-btn {
+  height: 100rpx;
   background-color: #FF4081;
-  color: white;
-  border-radius: 50%;
-  font-size: 60rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8rpx 20rpx rgba(0,0,0,0.2);
-} 
+  color: #fff;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: bold;
+  line-height: 100rpx;
+  border-radius: 10rpx;
+  margin: 20rpx;
+  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.1);
+}

@@ -1,45 +1,8 @@
 <!-- 主要内容 -->
 <view class="main-content">
-  <!-- 今日摄入总结 -->
-  <view class="today-summary">
-    <view class="summary-item">
-      <view class="value">1200</view>
-      <view class="label">目标 (千卡)</view>
-    </view>
-    <view class="summary-item">
-      <view class="value">750</view>
-      <view class="label">已摄入 (千卡)</view>
-    </view>
-    <view class="summary-item">
-      <view class="value">450</view>
-      <view class="label">剩余 (千卡)</view>
-    </view>
-  </view>
-  
-  <!-- 今日饮食卡片 -->
-  <view class="card" bindtap="toRecord">
-    <view class="card-title">
-      <text class="icon">🍽️</text>
-      <text>今日饮食</text>
-    </view>
-    <view class="card-content">
-      <text>早餐: 全麦面包 + 牛奶 (320千卡)</text>
-      <text>午餐: 鸡胸肉沙拉 (430千卡)</text>
-      <text>点击查看详细记录...</text>
-    </view>
-  </view>
-  
-  <!-- 数据趋势卡片 -->
-  <view class="card">
-    <view class="card-title">
-      <text class="icon">📊</text>
-      <text>数据趋势</text>
-    </view>
-    <view class="card-content">
-      <text>查看过去7天的摄入热量趋势</text>
-    </view>
-  </view>
-</view>
+  <image src="{{welcomeImage}}" class="welcome-image" mode="widthFix" bind:tap="toRecord"></image>
+  <!-- <daily-summary wx:if="{{hasLogin}}" timestamp="{{todayTimestamp}}"></daily-summary> -->
+  <!-- 去记录 -->
+  <!-- <view class="go-record-btn" bind:tap="toRecord">去记录</view> -->
 
-<!-- 添加按钮 -->
-<view class="add-btn">+</view>
+</view>

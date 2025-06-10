@@ -1,0 +1,55 @@
+<!-- 添加运动页面 -->
+<view class="add-exercise-container">
+  <!-- AI 智能添加部分 -->
+  <view class="ai-input-section">
+    <view class="section-title"><text class="iconfont icon-jiqiren mr-4"></text> AI 智能添加</view>
+    <textarea class="ai-textarea" placeholder="请描述您想添加的运动，例如：跑步30分钟，跳绳1000个，举铁10次等" bindinput="onAiInputChange" value="{{aiInputText}}"></textarea>
+    <button class="ai-submit-btn" bindtap="onAiSubmit" loading="{{isAiLoading}}">AI 识别</button>
+  </view>
+  
+  <!-- 食物列表部分 -->
+  <view class="exercise-list">
+    <view class="section-title"><text class="iconfont icon-mianxingdingdan"></text> 运动消耗</view>
+    
+    <!-- 食物列表项 -->
+    <block wx:for="{{exerciseList}}" wx:key="id">
+      <view class="exercise-item">
+        <view class="exercise-header">
+          <text class="exercise-detail-label">名称：</text>
+          <input class="exercise-name" value="{{item.name}}" placeholder="输入运动名称" data-index="{{index}}" data-field="name" bind:blur="onFieldChange" />
+          <view class="exercise-actions">
+            <icon class="icon-small" type="cancel" size="23" data-index="{{index}}"  bindtap="deleteExerciseItem"></icon>
+          </view>
+        </view>
+          <view class="exercise-detail-item">
+            <text class="exercise-detail-label">热量：</text>
+            <input class="exercise-detail-input" type="digit" value="{{item.calories}}" data-index="{{index}}" data-field="calories" bind:blur="onFieldChange" /> 
+            <text class="exercise-detail-unit">千卡</text>
+          </view>
+           <view class="exercise-detail-item">
+            <text class="exercise-detail-label">备注：</text>
+            <input class="exercise-detail-input" value="{{item.notes}}" placeholder="如：30分钟,1000个,10次等" data-index="{{index}}" data-field="notes" bind:input="onFieldChange" />
+          </view>  
+        </view>
+    </block>
+    
+    <!-- 手动添加按钮 -->
+    <button class="add-manual-btn" bindtap="addManualExercise">
+      <text class="add-icon">+</text> 手动添加运动
+    </button>
+  </view>
+  
+  <!-- 底部按钮 -->
+  <view class="bottom-buttons">
+    <button class="bottom-btn back-btn" bindtap="onBack">返回</button>
+    <button class="bottom-btn save-btn" bindtap="onSave">保存</button>
+  </view>
+</view>
+
+<!-- 加载提示 -->
+<view class="loading-container" wx:if="{{isAiLoading}}">
+  <view class="loading">
+    <text class="loading-icon">🔄</text>
+    <text class="loading-text">AI正在识别中...</text>
+  </view>
+</view> 

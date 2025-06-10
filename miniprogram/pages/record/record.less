@@ -24,7 +24,7 @@ page {
 }
 
 .header {
-  background-color: #FFCDD2;
+  background-color: #fcdce1;
   padding: 30rpx;
   text-align: center;
   box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.1);
@@ -168,16 +168,6 @@ page {
   font-size: 32rpx;
 }
 
-.daily-total {
-  background-color: #F8BBD0;
-  padding: 30rpx;
-  border-radius: 30rpx;
-  margin-bottom: 40rpx;
-  text-align: center;
-  color: #880E4F;
-  font-weight: bold;
-  font-size: 32rpx;
-} 
 
 .calendar {
   .van-popup--bottom {
@@ -229,4 +219,105 @@ page {
   to {
     opacity: 1;
   }
+}
+
+// 运动消耗部分样式
+.exercise-section {
+  background-color: white;
+  border-radius: 40rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 8rpx 16rpx rgba(0,0,0,0.05);
+  border: 4rpx solid #E8F5E8;
+}
+
+.exercise-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  color: #c71979;
+}
+
+.exercise-title {
+  margin: 0;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.exercise-title .exercise-icon {
+  margin-right: 10rpx;
+  width: 36rpx;
+  height: 36rpx;
+}
+
+.exercise-calories {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: #c71979;
+  font-size: 28rpx;
+  .iconfont {
+    font-size: 24rpx;
+    line-height: 28rpx;
+    color: #c71979;
+    margin-left: 10rpx;
+  }
+}
+
+.exercise-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx;
+  border-bottom: 1px dashed #E8F5E8;
+  align-items: center;
+}
+
+.exercise-item:last-child {
+  border-bottom: none;
+}
+
+.exercise-name {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.exercise-note-text {
+  max-width: 280rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.exercise-calories-text {
+  font-weight: bold;
+  font-size: 28rpx;
+}
+
+.add-exercise-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5rpx;
+  background-color: #c71979;
+  color: white;
+  border: none;
+  border-radius: 20rpx;
+  margin-top: 24rpx;
+  width: 100%;
+  font-weight: bold;
+  font-size: 28rpx;
+}
+
+.add-exercise-btn .btn-icon {
+  margin-right: 10rpx;
+  font-size: 32rpx;
 }

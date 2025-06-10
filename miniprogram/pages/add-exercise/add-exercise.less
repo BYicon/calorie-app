@@ -1,0 +1,278 @@
+@bottom-btns-height: 100rpx;
+
+.add-exercise-container {
+  padding: 20rpx;
+  background-color: #FFF5F7;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding-bottom: calc(env(safe-area-inset-bottom) + @bottom-btns-height);
+}
+
+/* AI 智能添加部分 */
+.ai-input-section {
+  background-color: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.05);
+  border: 2rpx solid #FFE0E5;
+}
+
+.section-title {
+  color: #D81B60;
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+  display: flex;
+  align-items: center;
+  .iconfont {
+    color: #ea4a1d;
+    font-size: 36rpx;
+    margin-right: 10rpx;
+  }
+}
+
+.emoji {
+  margin-right: 10rpx;
+  font-size: 36rpx;
+}
+
+.ai-textarea {
+  width: 100%;
+  height: 200rpx;
+  padding: 20rpx;
+  border: 2rpx solid #FFE0E5;
+  border-radius: 15rpx;
+  font-size: 28rpx;
+  color: #5D4037;
+  margin-bottom: 20rpx;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+.ai-submit-btn {
+  background-color: #FF4081;
+  color: white;
+  border: none;
+  border-radius: 40rpx;
+  padding: 8rpx 0;
+  font-weight: bold;
+  width: 100%;
+  font-size: 30rpx;
+}
+
+/* 运动列表部分 */
+.exercise-list {
+  background-color: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.05);
+  border: 2rpx solid #FFE0E5;
+}
+
+.exercise-item {
+  padding: 20rpx;
+  border-radius: 15rpx;
+  background-color: #FFF5F7;
+  margin-bottom: 20rpx;
+}
+
+.exercise-detail-desc {
+  font-size: 20rpx;
+  color: #FF4081;
+  font-weight: bold;
+  margin: 0 40rpx;
+  background-color: #FFE0E5;
+  padding: 10rpx 15rpx;
+  border-radius: 10rpx;
+}
+
+.exercise-header {
+  display: flex;
+  // justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 15rpx;
+  border-bottom: 1rpx dashed #FFE0E5;
+}
+
+.exercise-name {
+  font-weight: bold;
+  color: #D81B60;
+  width: 320rpx;
+  margin-right: 10rpx;
+  padding: 10rpx 15rpx;
+  border: 1rpx solid #FFE0E5;
+  border-radius: 10rpx;
+  font-size: 28rpx;
+  background-color: white;
+}
+
+.exercise-actions {
+  color: #f00;
+  font-weight: 900;
+}
+
+.exercise-action-btn {
+  background: none;
+  border: none;
+  font-size: 34rpx;
+  margin: 0;
+  padding: 10rpx;
+  line-height: normal;
+}
+
+.exercise-action-btn::after {
+  border: none;
+}
+
+.exercise-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15rpx;
+}
+
+.exercise-detail-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.exercise-detail-unit {
+  margin-left: 10rpx;
+  color: #FF4081;
+  font-size: 20rpx;
+  white-space: nowrap;
+}
+
+.exercise-detail-label {
+  color: #795548;
+  font-size: 26rpx;
+  width: 140rpx;
+  text-align: right;
+  margin-right: 20rpx;
+}
+
+.exercise-detail-input {
+  width: 320rpx;
+  padding: 10rpx 15rpx;
+  border: 1rpx solid #FFE0E5;
+  border-radius: 10rpx;
+  text-align: left;
+  background-color: white;
+  font-size: 26rpx;
+}
+
+.exercise-detail-tip {
+  font-size: 22rpx;
+  color: #BDBDBD;
+  margin-top: 5rpx;
+  margin-left: 100rpx;
+}
+
+.add-manual-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5rpx;
+  background-color: #F8BBD0;
+  color: #D81B60;
+  border: none;
+  border-radius: 15rpx;
+  margin-top: 20rpx;
+  width: 100%;
+  font-weight: bold;
+  font-size: 28rpx;
+}
+
+.add-manual-btn::after {
+  border: none;
+}
+
+.add-icon {
+  margin-right: 10rpx;
+  font-size: 32rpx;
+}
+
+/* 底部按钮 */
+.bottom-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  padding: 20rpx;
+  padding-bottom: 40rpx;
+  border-top: 1rpx solid #FFE0E5;
+  display: flex;
+  gap: 20rpx;
+  z-index: 999;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-btn {
+  flex: 1;
+  padding: 10rpx;
+  border-radius: 40rpx;
+  font-weight: bold;
+  font-size: 28rpx;
+}
+
+.back-btn {
+  background-color: white;
+  color: #D81B60;
+  border: 2rpx solid #FFE0E5;
+}
+
+.back-btn::after {
+  border: none;
+}
+
+.save-btn {
+  background-color: #FF4081;
+  color: white;
+  border: none;
+}
+
+.save-btn::after {
+  border: none;
+}
+
+/* 加载提示 */
+.loading-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.loading {
+  background-color: white;
+  padding: 40rpx;
+  border-radius: 20rpx;
+  text-align: center;
+}
+
+.loading-icon {
+  font-size: 60rpx;
+  display: block;
+  margin-bottom: 15rpx;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #5D4037;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+} 

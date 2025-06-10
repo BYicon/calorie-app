@@ -54,9 +54,13 @@ Page({
     currentMonthText: dayjs(today).format("YYYY年MM月"), // 当前月份文本
     calorieTarget: DEFAULT_TARGET_CALORIE,
     totalCalories: 0,
+    totalExerciseCalories: 0,
     showCalendar: false,
     // 添加加载状态
     isLoadingCalendar: false,
+    // 添加 Math 对象供模板使用
+    Math: Math,
+    exerciseList: [] as any[],
     mealList: [
       {
         type: EnumMealType.BREAKFAST,
@@ -215,29 +219,31 @@ Page({
       showCalendar: false,
       currentDateText: formatLocaleDate(new Date(e.detail.getTime())),
     }, () => {
-      this.getDailyCalories();
+      this.getDailySummary();
     });
   },
 
   /**
    * 获取每日饮食数据
    */
-  getDailyCalories() {
-    CaloriesApi.getDailyCalories(
+  getDailySummary() {
+    CaloriesApi.getDailySummary(
       dayjs(this.data.selectedDate).format("YYYY-MM-DD")
     ).then((res) => {
       const resData = res.data;
+      console.log("getDailySummary resData 🟣🟣🟣", resData);
       const mealList: Partial<Meal>[] = [];
+      const mealsData = resData.meals;
       Object.values(EnumMealType).forEach((mealType: string) => {
-        if(resData[mealType]) {
-          const foods = resData[mealType].foods.map((food: FoodItem) => {
+        if(mealsData[mealType]) {
+          const foods = mealsData[mealType].foods.map((food: FoodItem) => {
             return {
               ...food,
               servingText: food.grams + "g" || food.serving,
             };
           });
           mealList.push({
-            ...resData[mealType],
+            ...mealsData[mealType],
             type: mealType,
             label: EnumMealTypeLabel[mealType as EnumMealType],
             foods,
@@ -254,11 +260,23 @@ Page({
         }
       });
       const totalCalories = mealList.reduce((sum, meal) => sum + (meal.totalCalories as number), 0);
-      console.log("getDailyCalories totalCalories 🚀🚀🚀", totalCalories);
-      console.log("getDailyCalories mealList 🚀🚀🚀", mealList);
+      console.log("getDailySummary totalCalories 🚀🚀🚀", totalCalories);
+      console.log("getDailySummary mealList 🚀🚀🚀", mealList);
+
+      const exerciseData = resData.exercises;
+      const totalExerciseCalories = exerciseData.totalBurnedCalories;
+      const exerciseList = exerciseData.exercises.map((exercise: any) => {
+        return {
+          ...exercise,
+          note: exercise.notes,
+        };
+      });
+
       this.setData({
         totalCalories,
         mealList,
+        exerciseList,
+        totalExerciseCalories,
       });
     });
   },
@@ -278,6 +296,18 @@ Page({
     });
   },
 
+  /**
+   * 添加运动
+   */
+  addExercise() {
+    const urlParams = {
+      date: dayjs(this.data.selectedDate).format("YYYY-MM-DD"),
+    };
+    wx.navigateTo({
+      url: "/pages/add-exercise/add-exercise?" + queryParams(urlParams),
+    });
+  },
+
   onBack() {
     wx.navigateBack();
   },
@@ -285,7 +315,10 @@ Page({
   onShow() {
     if (hasLogin()) {
       monthDataCache.clear();
-      this.getDailyCalories();
+      this.getDailySummary();
+    } else {
+      // 即使未登录也刷新运动数据（本地存储）
+      this.getDailyExercise();
     }
   },
 
@@ -294,7 +327,7 @@ Page({
     this.setData({
       calorieTarget: userInfo.calorieTarget,
     });
-    this.getDailyCalories();
+    this.getDailySummary();
   },
 
   /**

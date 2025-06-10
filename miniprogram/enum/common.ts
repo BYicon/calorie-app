@@ -14,3 +14,9 @@ export enum EnumGenderLabel {
   FEMALE = "女",
   SECRET = "保密",
 }
+
+// AI 聊天类型
+export enum EnumAiChatType {
+  FOOD = "food",
+  EXERCISE = "exercise",
+}

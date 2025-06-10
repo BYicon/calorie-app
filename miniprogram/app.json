@@ -31,6 +31,7 @@
     "pages/analyze/analyze",
     "pages/profile/profile",
     "pages/add-food/add-food",
+    "pages/add-exercise/add-exercise",
     "pages/profile-edit/profile-edit"
   ],
   "usingComponents": {
@@ -38,7 +39,8 @@
     "van-button": "@vant/weapp/button/index",
     "van-icon": "@vant/weapp/icon/index",
     "van-tab": "@vant/weapp/tab/index",
-    "van-tabs": "@vant/weapp/tabs/index"
+    "van-tabs": "@vant/weapp/tabs/index",
+    "van-calendar": "@vant/weapp/calendar/index"
   },
   "window": {
     "navigationBarTextStyle": "black",

@@ -1,7 +1,9 @@
 {
-  "navigationBarTitleText": "首页",
-  "navigationBarBackgroundColor": "#FFCDD2",
+  "navigationBarTitleText": "轻盈记",
+  "navigationBarBackgroundColor": "#fcdce1",
   "navigationBarTextStyle": "black",
   "navigationStyle": "default",
-  "usingComponents": {}
+  "usingComponents": {
+    "daily-summary": "/components/daily-summary/daily-summary"
+  }
 }

@@ -1,16 +1,15 @@
-import { Meal } from "../../typings/models/calories";
+import { ExerciseItem, Meal } from "../../typings/models/calories";
 import { post, get } from "../utils/request";
 
 
 /**
- * 获取每日卡路里
+ * 获取每日总结（包含摄入和消耗）
  * @param date 日期
  * @returns 
  */
-export const getDailyCalories = (date: string) => {
-  return get(`/calories/meals/daily?date=${date}`);
+export const getDailySummary = (date: string) => {
+  return get(`/calories/summary/daily?date=${date}`);
 };
-
 
 /**
  * 添加餐食
@@ -60,4 +59,52 @@ export const findFoodsByMealType = (date: string, mealType: string) => {
  */
 export const getCalendarData = (startDate: string, endDate: string) => {
   return get(`/calories/calendar?startDate=${startDate}&endDate=${endDate}`);
+};
+
+
+/**
+ * 创建运动
+ * @param date 日期
+ * @param data 运动数据
+ * @returns 
+ */
+export const createExerciseByDate = (date: string, data: ExerciseItem[]) => {
+  return post("/calories/exercises/byDate", {
+    date,
+    data,
+  });
+};
+
+
+/**
+ * 更新运动
+ * @param date 日期
+ * @param data 
+ * @returns 
+ */
+export const updateExerciseByDate = (date: string, data: ExerciseItem[]) => {
+  return post(`/calories/exercises/updateByDate`, {
+    date,
+    data,
+  });
+};
+
+
+/**
+ * 获取运动列表
+ * @param date 日期
+ * @returns 
+ */
+export const getExerciseByDate = (date: string) => {
+  return get(`/calories/exercises/byDate?date=${date}`);
+};  
+
+
+/**
+ * 获取每日统计
+ * @param date 日期
+ * @returns 
+ */
+export const getDailyStats = (date: string) => {
+  return get(`/calories/statistics/dailyStats?date=${date}`);
 };

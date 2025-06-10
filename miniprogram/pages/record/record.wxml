@@ -1,64 +1,74 @@
-<van-nav-bar placeholder  left-arrow fixed border="{{false}}" bind:click-left="onBack">
+<van-nav-bar placeholder left-arrow fixed border="{{false}}" bind:click-left="onBack">
   <view class="nav-title" slot="title" bindtap="openCalendar">
-    <text class="text-sm font-bold">{{currentDateText}}</text>
+    <text class="text-md font-bold">{{currentDateText}}</text>
     <van-icon name="arrow-down" />
   </view>
 </van-nav-bar>
 <!-- 主要内容 -->
 <view class="main-content">
-  <!-- 日期选择器 -->
-  <view class="current-date">{{currentDate}}</view>
-
   <!-- 每日总计 -->
-  <view class="daily-total">
-    今日总计: <text class="calories-color">{{totalCalories}}</text> / <text class="calorie-target">{{calorieTarget}}</text> 千卡
-  </view>
-  
+  <daily-summary timestamp="{{selectedDate}}"></daily-summary>
   <view class="meal-section" wx:for="{{mealList}}" wx:key="index">
     <view class="meal-header">
       <view class="meal-title">
-         <image class="meal-icon" src="{{item.icon}}"></image>
+        <image class="meal-icon" src="{{item.icon}}"></image>
         <text>{{item.label}}</text>
       </view>
-      <view class="calories">{{item.totalCalories}}
+      <view class="calories">
+        {{item.totalCalories}}
         <text class="iconfont icon-reliang"></text>
       </view>
     </view>
-    
     <view class="food-item" wx:for="{{item.foods}}" wx:key="index">
       <view class="food-name">
         <text>{{item.name}}</text>
         <text class="serving-text">（{{ item.servingText }}）</text>
       </view>
-      <view class="food-calories"><text class="text-md calories-color mr-1 font-thin">{{item.calories}}</text><text class="text-md">千卡</text></view>
+      <view class="food-calories">
+        <text class="text-md calories-color mr-1 font-thin">{{item.calories}}</text>
+        <text class="text-sm">千卡</text>
+      </view>
     </view>
-    
     <button class="add-food-btn" bindtap="addFood" data-type="{{item.type}}" data-id="{{item.id}}">
-      <text class="btn-icon">+</text> 添加食物
+      <text class="btn-icon">+</text>
+      添加食物
     </button>
   </view>
-
-</view> 
-<!-- 日历 -->
-<van-calendar
-  show="{{showCalendar}}"
-  show-subtitle="{{ false }}"
-  show-confirm="{{ false }}"
-  position="top"
-  default-date="{{ selectedDate }}"
-  min-date="{{ minDate }}"
-  max-date="{{ maxDate }}"
-  class="calendar"
-  first-day-of-week="{{ 1 }}"
-  formatter="{{ formatter }}"
-  bind:select="onSelectDate"
-  bind:close="onCloseCalendar"
->
-<view slot="title">
-  <view class="calendar-title flex items-center justify-center">
-    <van-icon name="arrow-left" class="font-black" bindtap="prevDayMonth" />
-    <text class="text-lg font-bold mx-2">{{ currentMonthText }}</text>
-    <van-icon name="arrow" class="font-black" bindtap="nextDayMonth" />
+  <!-- 运动消耗部分 -->
+  <view class="exercise-section">
+    <view class="exercise-header">
+      <view class="exercise-title">
+        <image class="exercise-icon" src="/static/images/exercise.png"></image>
+        <text>运动消耗</text>
+      </view>
+      <view class="exercise-calories">
+        {{totalExerciseCalories}}
+        <text class="iconfont icon-reliang"></text>
+      </view>
+    </view>
+    <view class="exercise-item" wx:for="{{exerciseList}}" wx:key="index">
+      <view class="exercise-name">
+        <text>{{item.name}}</text>
+        <text class="exercise-note-text">（{{ item.note }}）</text>
+      </view>
+      <view class="exercise-calories-text whitespace-nowrap">
+        <text class="text-md burned-calories-color mr-1 font-thin">{{item.calories}}</text>
+        <text class="text-sm">千卡</text>
+      </view>
+    </view>
+    <button class="add-exercise-btn" bindtap="addExercise">
+      <text class="btn-icon">+</text>
+      添加运动
+    </button>
   </view>
 </view>
+<!-- 日历 -->
+<van-calendar show="{{showCalendar}}" show-subtitle="{{ false }}" show-confirm="{{ false }}" position="bottom" default-date="{{ selectedDate }}" min-date="{{ minDate }}" max-date="{{ maxDate }}" class="calendar" first-day-of-week="{{ 1 }}" formatter="{{ formatter }}" bind:select="onSelectDate" bind:close="onCloseCalendar">
+  <view slot="title">
+    <view class="calendar-title flex items-center justify-center">
+      <van-icon name="arrow-left" class="font-black" bindtap="prevDayMonth" />
+      <text class="text-lg font-bold mx-2">{{ currentMonthText }}</text>
+      <van-icon name="arrow" class="font-black" bindtap="nextDayMonth" />
+    </view>
+  </view>
 </van-calendar>

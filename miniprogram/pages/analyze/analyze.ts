@@ -47,6 +47,11 @@ Page({
 
   onLoad() {
     this.loadDayData(7);
+    wx.showToast({
+      title: '开发中，敬请期待',
+      icon: 'none',
+      duration: 10000000
+    });
   },
 
   // 切换周期

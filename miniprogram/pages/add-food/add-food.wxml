@@ -2,14 +2,15 @@
 <view class="add-food-container">
   <!-- AI 智能添加部分 -->
   <view class="ai-input-section">
-    <view class="section-title"><text class="iconfont icon-jiqiren mr-4"></text> AI 智能添加</view>
+    <view class="section-title">AI 智能添加 </view>
     <textarea class="ai-textarea" placeholder="请描述您想添加的食物，例如：吃了一碗牛肉面，一根香蕉加一个苹果" bindinput="onAiInputChange" value="{{aiInputText}}"></textarea>
-    <button class="ai-submit-btn" bindtap="onAiSubmit" loading="{{isAiLoading}}">AI 识别</button>
+    <button class="ai-submit-btn" bindtap="onAiSubmit" loading="{{isAiLoading}}">
+       AI 识别 <text class="iconfont icon-runse"></text></button>
   </view>
   
   <!-- 食物列表部分 -->
   <view class="food-list">
-    <view class="section-title"><text class="iconfont icon-mianxingdingdan"></text> 食物列表</view>
+    <view class="section-title"> 食物列表</view>
     
     <!-- 食物列表项 -->
     <block wx:for="{{foodList}}" wx:key="id">
@@ -17,8 +18,8 @@
         <view class="food-header">
           <text class="food-detail-label">名称：</text>
           <input class="food-name" value="{{item.name}}" placeholder="输入食物名称" data-index="{{index}}" data-field="name" bind:blur="onFieldChange" />
-          <view class="food-actions">
-            <icon class="icon-small" type="cancel" size="23" data-index="{{index}}"  bindtap="deleteFoodItem"></icon>
+          <view class="food-actions flex items-center">
+            <icon class="icon-small ml-4 font-bold text-danger" type="cancel" size="23" data-index="{{index}}"  bindtap="deleteFoodItem"></icon>
           </view>
         </view>
         <view class="food-details">
@@ -51,7 +52,7 @@
     
     <!-- 手动添加按钮 -->
     <button class="add-manual-btn" bindtap="addManualFood">
-      <text class="add-icon">+</text> 手动添加食物
+      手动添加食物
     </button>
   </view>
   

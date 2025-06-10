@@ -1,0 +1,184 @@
+.daily-total {
+  background: linear-gradient(135deg, #fff0f3 0%, #ffe5ea 100%);
+  padding: 40rpx;
+  border-radius: 40rpx;
+  margin-bottom: 40rpx;
+  box-shadow: 0 12rpx 24rpx rgba(233, 30, 99, 0.12);
+  border: 2rpx solid rgba(255, 182, 193, 0.3);
+  
+  .daily-total-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32rpx;
+    
+    .daily-title {
+      font-size: 36rpx;
+      font-weight: bold;
+      color: #880E4F;
+      display: flex;
+      align-items: center;
+    }
+    
+    .progress-ring {
+      position: relative;
+      width: 80rpx;
+      height: 80rpx;
+      
+      .progress-circle {
+        width: 80rpx;
+        height: 80rpx;
+        border-radius: 50%;
+        background: conic-gradient(#ff4081 0deg, #ff4081 calc(var(--progress) * 3.6deg), #fcdce1 calc(var(--progress) * 3.6deg));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          width: 60rpx;
+          height: 60rpx;
+          background: white;
+          border-radius: 50%;
+        }
+        
+        .progress-text {
+          position: relative;
+          z-index: 2;
+          font-size: 20rpx;
+          font-weight: bold;
+          color: #880E4F;
+        }
+      }
+    }
+  }
+  
+  .calorie-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24rpx;
+    
+    .stat-item {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 24rpx;
+      padding: 24rpx;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease;
+      
+      &:hover {
+        transform: translateY(-2rpx);
+      }
+      
+      .stat-icon {
+        font-size: 40rpx;
+        margin-right: 16rpx;
+        width: 60rpx;
+        text-align: center;
+      }
+      
+      .stat-info {
+        flex: 1;
+        
+        .stat-label {
+          display: block;
+          font-size: 24rpx;
+          color: #999;
+          margin-bottom: 4rpx;
+        }
+        
+        .stat-value {
+          font-size: 32rpx;
+          font-weight: bold;
+          color: #333;
+          margin-right: 8rpx;
+          
+          &.positive {
+            color: #4CAF50;
+          }
+          
+          &.negative {
+            color: #FF5722;
+          }
+        }
+        
+        .stat-unit {
+          font-size: 20rpx;
+          color: #666;
+        }
+      }
+      
+      &.intake {
+        border-left: 6rpx solid #FF4081;
+      }
+      
+      &.exercise {
+        border-left: 6rpx solid #FF9800;
+      }
+      
+      &.remaining {
+        border-left: 6rpx solid #4CAF50;
+      }
+      
+      &.target {
+        border-left: 6rpx solid #9C27B0;
+      }
+    }
+  }
+  
+  .progress-bar-container {
+    margin-bottom: 28rpx;
+    
+    .progress-bar {
+      height: 16rpx;
+      background-color: #FFE0E5;
+      border-radius: 8rpx;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 12rpx;
+      
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #FF4081 0%, #E91E63 100%);
+        border-radius: 8rpx;
+        transition: width 0.6s ease;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      
+      .progress-exercise {
+        height: 100%;
+        background: linear-gradient(90deg, #FF9800 0%, #F57C00 100%);
+        border-radius: 8rpx;
+        transition: all 0.6s ease;
+        position: absolute;
+        top: 0;
+        opacity: 0.8;
+      }
+    }
+    
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 22rpx;
+      color: #999;
+    }
+  }
+  
+  .status-hint {
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 20rpx;
+    padding: 20rpx 24rpx;
+    text-align: center;
+    
+    .hint-text {
+      font-size: 28rpx;
+      color: #666;
+      line-height: 1.4;
+    }
+  }
+} 

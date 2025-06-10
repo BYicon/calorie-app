@@ -1,13 +1,20 @@
 import { EnumMealType } from "../../miniprogram/enum/meal-type";
 
-interface FoodItem {
-  id?: string;
-  name: string;
-  serving: string;
-  grams: number;
-  calories: number;
-  caloriesPer100g: number;
-}
+  interface FoodItem {
+    id?: string;
+    name: string;
+    serving: string;
+    grams: number;
+    calories: number;
+    caloriesPer100g: number;
+  }
+
+  interface ExerciseItem {
+    id?: string;
+    name: string;
+    calories: number;
+    notes: string;
+  }
 
 export interface Meal {
   id?: string;
@@ -19,6 +26,13 @@ export interface Meal {
   foods?: FoodItem[];
   totalCalories?: number;
   icon?: string;
+}
+
+export interface ExerciseItem {
+  id?: string;
+  name: string;
+  calories: number;
+  notes: string;
 }
 
 
