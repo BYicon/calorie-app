@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="dartboardGradient" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" style="stop-color:#FFF8E1;stop-opacity:1" />
+      <stop offset="40%" style="stop-color:#FFD54F;stop-opacity:1" />
+      <stop offset="80%" style="stop-color:#FF8F00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E65100;stop-opacity:1" />
+    </radialGradient>
+    
+    <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF4081;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E91E63;stop-opacity:1" />
+    </linearGradient>
+    
+    <radialGradient id="glowEffect" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#FFD700;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- 光晕效果 -->
+  <circle cx="12" cy="12" r="11" fill="url(#glowEffect)">
+    <animate attributeName="r" values="10;12;10" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.4;0.1;0.4" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 飞镖盘主体 -->
+  <circle cx="12" cy="12" r="9" fill="url(#dartboardGradient)" stroke="#E65100" stroke-width="0.5">
+    <animate attributeName="r" values="9;9.2;9" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 外圈分割线 -->
+  <circle cx="12" cy="12" r="7.5" fill="none" stroke="#D84315" stroke-width="1" opacity="0.7">
+    <animate attributeName="opacity" values="0.7;0.9;0.7" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 内圈 -->
+  <circle cx="12" cy="12" r="6" fill="none" stroke="#FF6F00" stroke-width="1.5">
+    <animate attributeName="r" values="6;6.3;6" dur="2s" begin="0.3s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 中圈 -->
+  <circle cx="12" cy="12" r="4" fill="none" stroke="#FF8F00" stroke-width="1.5">
+    <animate attributeName="r" values="4;4.3;4" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 中心得分区 -->
+  <circle cx="12" cy="12" r="2.5" fill="#FFD54F" stroke="#FF6F00" stroke-width="1">
+    <animate attributeName="r" values="2.5;2.8;2.5" dur="2s" begin="0.9s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 靶心 -->
+  <circle cx="12" cy="12" r="1" fill="#D84315">
+    <animate attributeName="r" values="1;1.3;1" dur="1.5s" repeatCount="indefinite"/>
+    <animate attributeName="fill" values="#D84315;#FF5722;#D84315" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 飞镖 -->
+  <g transform="rotate(-30 12 12)">
+    <!-- 飞镖主体 -->
+    <path d="M 12 3 L 10.5 6 L 12 7 L 13.5 6 L 12 3 Z" 
+          fill="url(#arrowGradient)" 
+          stroke="#AD1457" 
+          stroke-width="0.3">
+      <animateTransform attributeName="transform" 
+                        type="rotate" 
+                        values="0 12 5;5 12 5;0 12 5" 
+                        dur="2s" 
+                        repeatCount="indefinite"/>
+    </path>
+    
+    <!-- 飞镖尾翼 -->
+    <path d="M 10.5 6 L 9 8 L 12 7 L 15 8 L 13.5 6" 
+          fill="#FF80AB" 
+          stroke="#E91E63" 
+          stroke-width="0.2"/>
+    
+    <!-- 飞镖杆 -->
+    <rect x="11.7" y="6" width="0.6" height="3" fill="#8D6E63"/>
+  </g>
+  
+  <!-- 得分数字 -->
+  <g opacity="0.8">
+    <text x="12" y="20" text-anchor="middle" font-size="6" fill="#E65100" font-weight="bold">100</text>
+    <animate attributeName="opacity" values="0.8;0.4;0.8" dur="2s" repeatCount="indefinite"/>
+  </g>
+  
+  <!-- 成功闪烁效果 -->
+  <g opacity="0.7">
+    <path d="M 18 6 L 19 8 L 21 7 L 19 9 L 18 11 L 17 9 L 15 7 L 17 8 Z" fill="#4CAF50">
+      <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" 
+                        type="rotate" 
+                        values="0 18 8;360 18 8" 
+                        dur="3s" 
+                        repeatCount="indefinite"/>
+    </path>
+    
+    <path d="M 6 6 L 7 8 L 9 7 L 7 9 L 6 11 L 5 9 L 3 7 L 5 8 Z" fill="#FFD700">
+      <animate attributeName="opacity" values="0;1;0" dur="2.5s" begin="0.5s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" 
+                        type="rotate" 
+                        values="0 6 8;-360 6 8" 
+                        dur="4s" 
+                        repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg> 

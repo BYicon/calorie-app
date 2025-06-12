@@ -1,5 +1,8 @@
 // pages/analyze/analyze.ts
 
+import { getRecentDays } from "../../utils/index";
+import * as CaloriesApi from "../../api/calories";
+import { getCalorieTargetFromStorage } from "../../utils/helper";
 import dayjs from "dayjs";
 
 interface ChartItem {
@@ -10,10 +13,10 @@ interface ChartItem {
 }
 
 interface Stats {
-  avgCalories: number;
-  overLimitDays: number;
-  maxCalories: number;
-  minCalories: number;
+  averageDailyIntake: number;
+  overStandardDays: number;
+  highestIntake: number;
+  lowestIntake: number;
 }
 
 interface Analysis {
@@ -24,9 +27,11 @@ interface Analysis {
 Page({
   data: {
     period: 'day7',
-    calorieGoal: 1200,
+    calorieTarget: getCalorieTargetFromStorage(),
     currentDateRange: '',
     chartData: [] as ChartItem[],
+    limitLineTop: 0,
+    limitLabelTop: 0,
     selectedIndex: -1,
     selectedBar: {
       label: '',
@@ -34,10 +39,10 @@ Page({
     },
     tooltipLeft: 0,
     stats: {
-      avgCalories: 0,
-      overLimitDays: 0,
-      maxCalories: 0,
-      minCalories: 0
+      averageDailyIntake: 0,
+      overStandardDays: 0,
+      highestIntake: 0,
+      lowestIntake: 0
     } as Stats,
     analysis: {
       insight: '',
@@ -47,10 +52,8 @@ Page({
 
   onLoad() {
     this.loadDayData(7);
-    wx.showToast({
-      title: '开发中，敬请期待',
-      icon: 'none',
-      duration: 10000000
+    this.setData({
+      calorieTarget: getCalorieTargetFromStorage(),
     });
   },
 
@@ -84,42 +87,32 @@ Page({
 
   // 加载日视图数据
   loadDayData(days: number) {
-    const currentDate = dayjs();
-    const startDate = currentDate.subtract(days - 1, 'day');
+    const { startDate, endDate } = getRecentDays(days);
     
     // 生成日期范围字符串
-    const dateRange = `${startDate.format('MM/DD')} - ${currentDate.format('MM/DD')}`;
+    const dateRange = `${startDate} - ${endDate}`;
 
-    const chartData: ChartItem[] = [];
-    
-    // 生成模拟数据
-    for (let i = days - 1; i >= 0; i--) {
-      const date = currentDate.subtract(i, 'day');
-      let label: string;
-      
-      // 根据天数决定标签格式
-      if (days <= 7) {
-        label = date.format('MM/DD');
-      } else if (days <= 30) {
-        label = date.format('MM/DD');
-      } else {
-        label = date.format('MM/DD');
-      }
+    CaloriesApi.getDateRangeStats(startDate, endDate).then((res) => {
+      console.log("getDateRangeStats 🚀🚀🚀", res);
+      const data = res.data;
 
-      const value = this.generateMockCalorieData();
-      
-      chartData.push({
-        value,
-        label,
-        height: '0%', // 初始高度，后面会计算
-        showLabel: this.shouldShowLabel(days - 1 - i, days) // 计算是否显示标签
-      });
-    }
-
-    // 使用定时器模拟数据加载动画
-    setTimeout(() => {
+      // this.setData({
+      //   stats: {
+      //     averageDailyIntake: data.averageDailyIntake,
+      //     overStandardDays: data.overStandardDays,
+      //     highestIntake: data.highestIntake,
+      //     lowestIntake: data.lowestIntake
+      //   }
+      // });
+      const chartData = (data.dailyStats || []).map((item: any) => ({
+        value: item.intakeCalories,
+        label: dayjs(item.date).format('MM-DD'),
+        height: '0%',
+        showLabel: true
+      }));
       this.processChartData(chartData, dateRange);
-    }, 300);
+    });
+
   },
 
   // 判断是否应该显示标签
@@ -156,7 +149,7 @@ Page({
         this.setData({
           selectedIndex: index,
           selectedBar: {
-            label: selectedBar.label,
+            label: dayjs(selectedBar.label).format('MM-DD'),
             value: selectedBar.value
           },
           tooltipLeft: tooltipLeft - rect.left
@@ -177,16 +170,20 @@ Page({
 
   // 处理图表数据
   processChartData(chartData: ChartItem[], dateRange: string) {
+    const calorieTarget = getCalorieTargetFromStorage();
     // 计算最大值，用于计算柱子高度
     const maxValue = Math.max(...chartData.map(item => item.value));
     const minValue = Math.min(...chartData.map(item => item.value));
+    const limitLineTop =  (1 - calorieTarget / maxValue) * 100;
     
     // 计算每个柱子的高度（相对于最大值的百分比）
     const processedData = chartData.map(item => ({
       value: item.value,
       label: item.label,
       height: `${Math.max(10, (item.value / maxValue) * 80)}%`, // 最小10%，最大80%
-      showLabel: item.showLabel
+      showLabel: item.showLabel,
+      limitLineTop: `${limitLineTop}%`,
+      limitLabelTop: `calc(${limitLineTop}% - 10rpx)`
     }));
     
     this.setData({
@@ -200,20 +197,21 @@ Page({
 
   // 更新统计和分析数据
   updateStatsAndAnalysis(chartData: ChartItem[]) {
+    const calorieTarget = getCalorieTargetFromStorage();
     // 计算统计数据
     const totalCalories = chartData.reduce((sum, item) => sum + item.value, 0);
     const avgCalories = Math.round(totalCalories / chartData.length);
-    const overLimitDays = chartData.filter(item => item.value > this.data.calorieGoal).length;
+    const overLimitDays = chartData.filter(item => item.value > calorieTarget).length;
     const maxCalories = Math.max(...chartData.map(item => item.value));
     const minCalories = Math.min(...chartData.map(item => item.value));
 
     // 更新统计数据
     this.setData({
       stats: {
-        avgCalories,
-        overLimitDays,
-        maxCalories,
-        minCalories
+        averageDailyIntake: avgCalories,
+        overStandardDays: overLimitDays,
+        highestIntake: maxCalories,
+        lowestIntake: minCalories
       }
     });
 
@@ -223,8 +221,8 @@ Page({
 
   // 生成智能分析
   generateAnalysis(data: ChartItem[]) {
-    const { calorieGoal } = this.data;
-    const overLimitDays = data.filter(item => item.value > calorieGoal);
+    const calorieTarget = getCalorieTargetFromStorage();
+    const overLimitDays = data.filter(item => item.value > calorieTarget);
     const totalDays = data.length;
     const avgCalories = Math.round(data.reduce((sum, item) => sum + item.value, 0) / data.length);
     

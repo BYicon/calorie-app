@@ -1,15 +1,18 @@
 import * as usersApi from "../../api/users";
 import { FILE_URL, DEFAULT_AVATAR } from "../../config/index";
 import { EnumStorageKey } from "../../enum/index";
-
+import * as CaloriesApi from "../../api/calories";
 Page({
   data: {
     avatarUrl: DEFAULT_AVATAR,
     userInfo: {},
     stats: {
-      daysLogged: 28,
-      targetDays: 5,
-      avgCalories: 2.8,
+      achievementRate: 23,
+      averageBurnedCalories: 100,
+      averageIntakeCalories: 761,
+      averageNetCalories: 661,
+      targetAchievedDays: 3,
+      totalDays: 13,
     },
     achievements: [
       {
@@ -48,6 +51,7 @@ Page({
 
   onShow() {
     this.loadUserData();
+    this.getUserStats();
   },
 
   onLoad() {
@@ -68,6 +72,17 @@ Page({
       avatarUrl: userInfo.avatar ? FILE_URL + userInfo.avatar : DEFAULT_AVATAR,
     });
   },
+
+  getUserStats() {
+    CaloriesApi.getUserStats().then((res) => {
+      console.log("getUserStats 🚀🚀🚀", res);
+      const data = res.data;
+      this.setData({
+        stats: data,
+      });
+    });
+  },
+  
 
   // 编辑个人资料
   editProfile() {

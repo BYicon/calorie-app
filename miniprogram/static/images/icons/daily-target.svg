@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="targetGradient" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" style="stop-color:#E1F5FE;stop-opacity:1" />
+      <stop offset="40%" style="stop-color:#81D4FA;stop-opacity:1" />
+      <stop offset="80%" style="stop-color:#29B6F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0288D1;stop-opacity:1" />
+    </radialGradient>
+    
+    <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF4081;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E91E63;stop-opacity:1" />
+    </linearGradient>
+    
+    <radialGradient id="centerGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FFD54F;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF8F00;stop-opacity:1" />
+    </radialGradient>
+    
+    <radialGradient id="glowEffect" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" style="stop-color:#81D4FA;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#81D4FA;stop-opacity:0" />
+    </radialGradient>
+    
+    <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4FC3F7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0288D1;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 光环效果 -->
+  <circle cx="12" cy="12" r="11" fill="url(#glowEffect)">
+    <animate attributeName="r" values="9;13;9" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.4;0.1;0.4" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 外圈 -->
+  <circle cx="12" cy="12" r="9" fill="none" stroke="url(#ringGradient)" stroke-width="1.5">
+    <animate attributeName="r" values="9;9.5;9" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="stroke-width" values="1.5;2;1.5" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 第二圈 -->
+  <circle cx="12" cy="12" r="7" fill="none" stroke="#29B6F6" stroke-width="1.2">
+    <animate attributeName="r" values="7;7.3;7" dur="2s" begin="0.3s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 第三圈 -->
+  <circle cx="12" cy="12" r="5" fill="none" stroke="#42A5F5" stroke-width="1">
+    <animate attributeName="r" values="5;5.3;5" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 靶心背景 -->
+  <circle cx="12" cy="12" r="3.5" fill="url(#targetGradient)" stroke="#0288D1" stroke-width="0.8">
+    <animate attributeName="r" values="3.5;3.8;3.5" dur="2s" begin="0.9s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 中心圆 -->
+  <circle cx="12" cy="12" r="2" fill="url(#centerGradient)" stroke="#FF8F00" stroke-width="0.5">
+    <animate attributeName="r" values="2;2.3;2" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 靶心点 -->
+  <circle cx="12" cy="12" r="0.8" fill="#D84315">
+    <animate attributeName="r" values="0.8;1.2;0.8" dur="1s" repeatCount="indefinite"/>
+    <animate attributeName="fill" values="#D84315;#FF5722;#D84315" dur="1s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 箭头 -->
+  <g transform="rotate(-30 12 12)">
+    <!-- 箭头主体 -->
+    <path d="M 12 3 L 10.5 6 L 12 7 L 13.5 6 L 12 3 Z" 
+          fill="url(#arrowGradient)" 
+          stroke="#AD1457" 
+          stroke-width="0.3">
+      <animateTransform attributeName="transform" 
+                        type="rotate" 
+                        values="0 12 5;8 12 5;0 12 5" 
+                        dur="2s" 
+                        repeatCount="indefinite"/>
+    </path>
+    
+    <!-- 箭头尾翼 -->
+    <path d="M 10.5 6 L 9 8.5 L 12 7.5 L 15 8.5 L 13.5 6" 
+          fill="#FF80AB" 
+          stroke="#E91E63" 
+          stroke-width="0.2"/>
+    
+    <!-- 箭头杆 -->
+    <rect x="11.7" y="6.5" width="0.6" height="4" fill="#8D6E63"/>
+  </g>
+  
+  <!-- 分数显示 -->
+  <g opacity="0.8">
+    <text x="12" y="20" text-anchor="middle" font-size="5" fill="#0288D1" font-weight="bold">TARGET</text>
+    <animate attributeName="opacity" values="0.8;0.5;0.8" dur="2s" repeatCount="indefinite"/>
+  </g>
+  
+  <!-- 成功指示器 -->
+  <g opacity="0.7">
+    <path d="M 20 8 L 21 10 L 23 9 L 21 11 L 20 13 L 19 11 L 17 9 L 19 10 Z" fill="#4CAF50">
+      <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" 
+                        type="rotate" 
+                        values="0 20 10;360 20 10" 
+                        dur="4s" 
+                        repeatCount="indefinite"/>
+    </path>
+    
+    <path d="M 4 8 L 5 10 L 7 9 L 5 11 L 4 13 L 3 11 L 1 9 L 3 10 Z" fill="#FFD700">
+      <animate attributeName="opacity" values="0;1;0" dur="2.3s" begin="0.5s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" 
+                        type="rotate" 
+                        values="0 4 10;-360 4 10" 
+                        dur="5s" 
+                        repeatCount="indefinite"/>
+    </path>
+  </g>
+  
+  <!-- 瞄准线 -->
+  <g opacity="0.6">
+    <line x1="12" y1="0" x2="12" y2="4" stroke="#42A5F5" stroke-width="0.5">
+      <animate attributeName="opacity" values="0.6;0.3;0.6" dur="2s" repeatCount="indefinite"/>
+    </line>
+    
+    <line x1="12" y1="20" x2="12" y2="24" stroke="#42A5F5" stroke-width="0.5">
+      <animate attributeName="opacity" values="0.6;0.3;0.6" dur="2s" begin="0.3s" repeatCount="indefinite"/>
+    </line>
+    
+    <line x1="0" y1="12" x2="4" y2="12" stroke="#42A5F5" stroke-width="0.5">
+      <animate attributeName="opacity" values="0.6;0.3;0.6" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+    </line>
+    
+    <line x1="20" y1="12" x2="24" y2="12" stroke="#42A5F5" stroke-width="0.5">
+      <animate attributeName="opacity" values="0.6;0.3;0.6" dur="2s" begin="0.9s" repeatCount="indefinite"/>
+    </line>
+  </g>
+  
+  <!-- 精准度指示 -->
+  <g opacity="0.8">
+    <circle cx="8" cy="8" r="0.5" fill="#FFD54F">
+      <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="0.3;0.8;0.3" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+    
+    <circle cx="16" cy="8" r="0.4" fill="#4CAF50">
+      <animate attributeName="opacity" values="0;1;0" dur="1.8s" begin="0.3s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="0.2;0.7;0.2" dur="1.8s" begin="0.3s" repeatCount="indefinite"/>
+    </circle>
+    
+    <circle cx="8" cy="16" r="0.6" fill="#FF4081">
+      <animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="0.3;0.9;0.3" dur="2s" begin="0.6s" repeatCount="indefinite"/>
+    </circle>
+    
+    <circle cx="16" cy="16" r="0.3" fill="#29B6F6">
+      <animate attributeName="opacity" values="0;1;0" dur="1.7s" begin="0.9s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="0.1;0.6;0.1" dur="1.7s" begin="0.9s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- 波纹效果 -->
+  <g opacity="0.3">
+    <circle cx="12" cy="12" r="6" fill="none" stroke="#81D4FA" stroke-width="0.5">
+      <animate attributeName="r" values="6;12;6" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.3;0;0.3" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    
+    <circle cx="12" cy="12" r="4" fill="none" stroke="#42A5F5" stroke-width="0.3">
+      <animate attributeName="r" values="4;10;4" dur="3.5s" begin="0.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.3;0;0.3" dur="3.5s" begin="0.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg> 

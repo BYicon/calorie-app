@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="fireGradient" cx="50%" cy="70%" r="60%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="40%" style="stop-color:#FF6B35;stop-opacity:1" />
+      <stop offset="80%" style="stop-color:#FF1744;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D50000;stop-opacity:0.8" />
+    </radialGradient>
+    
+    <radialGradient id="innerFire" cx="50%" cy="60%" r="40%">
+      <stop offset="0%" style="stop-color:#FFF59D;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#FFAB40;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#FF7043;stop-opacity:0.7" />
+    </radialGradient>
+  </defs>
+  
+  <!-- 火焰主体 -->
+  <path d="M 16 28 
+           C 10 28, 6 24, 6 18
+           C 6 15, 8 12, 12 10
+           C 12 8, 14 6, 16 8
+           C 18 4, 22 6, 24 10
+           C 26 8, 28 12, 26 16
+           C 28 20, 24 28, 16 28 Z" 
+        fill="url(#fireGradient)" 
+        stroke="#FF5722" 
+        stroke-width="0.5">
+    <animate attributeName="d" 
+             values="M 16 28 C 10 28, 6 24, 6 18 C 6 15, 8 12, 12 10 C 12 8, 14 6, 16 8 C 18 4, 22 6, 24 10 C 26 8, 28 12, 26 16 C 28 20, 24 28, 16 28 Z;
+                     M 16 28 C 10 28, 6 24, 6 18 C 6 15, 8 12, 12 10 C 12 8, 14 5, 16 7 C 18 3, 22 5, 24 9 C 26 7, 28 11, 26 15 C 28 19, 24 28, 16 28 Z;
+                     M 16 28 C 10 28, 6 24, 6 18 C 6 15, 8 12, 12 10 C 12 8, 14 6, 16 8 C 18 4, 22 6, 24 10 C 26 8, 28 12, 26 16 C 28 20, 24 28, 16 28 Z" 
+             dur="2s" 
+             repeatCount="indefinite"/>
+  </path>
+  
+  <!-- 内部火焰 -->
+  <path d="M 16 24
+           C 12 24, 10 21, 10 18
+           C 10 16, 11 14, 13 13
+           C 13 12, 14 11, 15 12
+           C 16 10, 18 11, 19 13
+           C 20 12, 22 14, 21 16
+           C 22 18, 20 24, 16 24 Z" 
+        fill="url(#innerFire)">
+    <animate attributeName="opacity" 
+             values="0.8;1;0.8" 
+             dur="1.5s" 
+             repeatCount="indefinite"/>
+  </path>
+  
+  <!-- 火花效果 -->
+  <circle cx="12" cy="12" r="1" fill="#FFD700">
+    <animate attributeName="opacity" values="0;1;0" dur="1s" repeatCount="indefinite"/>
+    <animate attributeName="cy" values="12;8;12" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <circle cx="20" cy="14" r="0.8" fill="#FFAB40">
+    <animate attributeName="opacity" values="0;1;0" dur="1.2s" begin="0.3s" repeatCount="indefinite"/>
+    <animate attributeName="cy" values="14;10;14" dur="2.2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <circle cx="16" cy="10" r="0.6" fill="#FF7043">
+    <animate attributeName="opacity" values="0;1;0" dur="0.8s" begin="0.6s" repeatCount="indefinite"/>
+    <animate attributeName="cy" values="10;7;10" dur="1.8s" repeatCount="indefinite"/>
+  </circle>
+</svg> 

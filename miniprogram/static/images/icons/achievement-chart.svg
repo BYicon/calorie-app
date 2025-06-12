@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="chartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E1BEE7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#BA68C8;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="barGradient1" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF4081;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF80AB;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="barGradient2" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#42A5F5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#81D4FA;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="barGradient3" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#66BB6A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#A5D6A7;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 图表背景 -->
+  <rect x="3" y="6" width="26" height="20" rx="2" fill="white" stroke="url(#chartGradient)" stroke-width="1"/>
+  
+  <!-- 网格线 -->
+  <g opacity="0.3">
+    <line x1="6" y1="12" x2="26" y2="12" stroke="#E0E0E0" stroke-width="0.5"/>
+    <line x1="6" y1="16" x2="26" y2="16" stroke="#E0E0E0" stroke-width="0.5"/>
+    <line x1="6" y1="20" x2="26" y2="20" stroke="#E0E0E0" stroke-width="0.5"/>
+  </g>
+  
+  <!-- 坐标轴 -->
+  <line x1="6" y1="8" x2="6" y2="24" stroke="#666" stroke-width="1"/>
+  <line x1="6" y1="24" x2="26" y2="24" stroke="#666" stroke-width="1"/>
+  
+  <!-- 柱状图 -->
+  <rect x="8" y="18" width="3" height="6" fill="url(#barGradient1)" rx="1">
+    <animate attributeName="height" 
+             values="3;6;3" 
+             dur="2s" 
+             repeatCount="indefinite"/>
+    <animate attributeName="y" 
+             values="21;18;21" 
+             dur="2s" 
+             repeatCount="indefinite"/>
+  </rect>
+  
+  <rect x="13" y="14" width="3" height="10" fill="url(#barGradient2)" rx="1">
+    <animate attributeName="height" 
+             values="7;10;7" 
+             dur="2.2s" 
+             begin="0.3s"
+             repeatCount="indefinite"/>
+    <animate attributeName="y" 
+             values="17;14;17" 
+             dur="2.2s" 
+             begin="0.3s"
+             repeatCount="indefinite"/>
+  </rect>
+  
+  <rect x="18" y="16" width="3" height="8" fill="url(#barGradient3)" rx="1">
+    <animate attributeName="height" 
+             values="5;8;5" 
+             dur="1.8s" 
+             begin="0.6s"
+             repeatCount="indefinite"/>
+    <animate attributeName="y" 
+             values="19;16;19" 
+             dur="1.8s" 
+             begin="0.6s"
+             repeatCount="indefinite"/>
+  </rect>
+  
+  <rect x="23" y="12" width="3" height="12" fill="url(#barGradient1)" rx="1">
+    <animate attributeName="height" 
+             values="9;12;9" 
+             dur="2.5s" 
+             begin="0.9s"
+             repeatCount="indefinite"/>
+    <animate attributeName="y" 
+             values="15;12;15" 
+             dur="2.5s" 
+             begin="0.9s"
+             repeatCount="indefinite"/>
+  </rect>
+  
+  <!-- 趋势线 -->
+  <path d="M 9.5 20 Q 14.5 16 19.5 18 Q 24.5 14 24.5 16" 
+        stroke="#FF4081" 
+        stroke-width="2" 
+        fill="none" 
+        stroke-linecap="round">
+    <animate attributeName="stroke-dasharray" 
+             values="0,50;25,25;50,0;25,25;0,50" 
+             dur="3s" 
+             repeatCount="indefinite"/>
+  </path>
+  
+  <!-- 数据点 -->
+  <circle cx="9.5" cy="20" r="1.5" fill="#FF4081">
+    <animate attributeName="r" values="1.5;2;1.5" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="14.5" cy="16" r="1.5" fill="#42A5F5">
+    <animate attributeName="r" values="1.5;2;1.5" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="19.5" cy="18" r="1.5" fill="#66BB6A">
+    <animate attributeName="r" values="1.5;2;1.5" dur="2s" begin="1s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="24.5" cy="16" r="1.5" fill="#FF4081">
+    <animate attributeName="r" values="1.5;2;1.5" dur="2s" begin="1.5s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 放大镜 -->
+  <circle cx="26" cy="10" r="3" fill="none" stroke="#9C27B0" stroke-width="1.5"/>
+  <circle cx="26" cy="10" r="2" fill="rgba(186, 104, 200, 0.2)"/>
+  <line x1="28.5" y1="12.5" x2="30" y2="14" stroke="#9C27B0" stroke-width="1.5" stroke-linecap="round"/>
+  
+  <!-- 标题 -->
+  <text x="16" y="4" text-anchor="middle" font-size="8" fill="#9C27B0" font-weight="bold">Analytics</text>
+  
+  <!-- 闪烁效果 -->
+  <g opacity="0.7">
+    <circle cx="22" cy="8" r="0.8" fill="#FFD700">
+      <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="12" cy="28" r="0.6" fill="#FF4081">
+      <animate attributeName="opacity" values="0;1;0" dur="1.8s" begin="0.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- 进度指示器 -->
+  <rect x="4" y="28" width="24" height="2" rx="1" fill="#F5F5F5"/>
+  <rect x="4" y="28" width="16" height="2" rx="1" fill="url(#barGradient1)">
+    <animate attributeName="width" 
+             values="8;20;8" 
+             dur="3s" 
+             repeatCount="indefinite"/>
+  </rect>
+</svg> 

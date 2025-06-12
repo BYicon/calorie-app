@@ -108,3 +108,23 @@ export const getExerciseByDate = (date: string) => {
 export const getDailyStats = (date: string) => {
   return get(`/calories/statistics/dailyStats?date=${date}`);
 };
+
+
+/**
+ * 获取用户统计
+ * @returns 
+ */
+export const getUserStats = () => {
+  return get(`/calories/statistics/userStats`);
+};
+
+
+/**
+ * 获取日视图数据
+ * @param startDate 开始日期
+ * @param endDate 结束日期
+ * @returns 
+ */
+export const getDateRangeStats = (startDate: string, endDate: string) => {
+  return get(`/calories/statistics/dateRangeStats?startDate=${startDate}&endDate=${endDate}`);
+};

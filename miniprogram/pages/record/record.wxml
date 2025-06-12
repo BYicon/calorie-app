@@ -1,6 +1,6 @@
-<van-nav-bar placeholder left-arrow fixed border="{{false}}" bind:click-left="onBack">
+<van-nav-bar placeholder fixed border="{{false}}" bind:click-left="onBack">
   <view class="nav-title" slot="title" bindtap="openCalendar">
-    <text class="text-md font-bold">{{currentDateText}}</text>
+    <text class="text-sm font-bold">{{currentDateText}}</text>
     <van-icon name="arrow-down" />
   </view>
 </van-nav-bar>

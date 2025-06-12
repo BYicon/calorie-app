@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bowlGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFCDD2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F8BBD0;stop-opacity:1" />
+    </linearGradient>
+    
+    <radialGradient id="leafGreen" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#C8E6C9;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#4CAF50;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2E7D32;stop-opacity:1" />
+    </radialGradient>
+    
+    <radialGradient id="tomatoRed" cx="30%" cy="30%" r="60%">
+      <stop offset="0%" style="stop-color:#FFCDD2;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#F44336;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#C62828;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- 碗底 -->
+  <ellipse cx="16" cy="24" rx="12" ry="6" fill="url(#bowlGradient)" stroke="#E91E63" stroke-width="0.5"/>
+  
+  <!-- 碗壁 -->
+  <path d="M 4 24 Q 4 18, 16 18 Q 28 18, 28 24" 
+        fill="none" 
+        stroke="url(#bowlGradient)" 
+        stroke-width="2"/>
+  
+  <!-- 生菜叶1 -->
+  <ellipse cx="12" cy="16" rx="4" ry="6" fill="url(#leafGreen)" 
+           transform="rotate(-20 12 16)">
+    <animate attributeName="transform" 
+             values="rotate(-20 12 16);rotate(-15 12 16);rotate(-20 12 16)" 
+             dur="3s" 
+             repeatCount="indefinite"/>
+  </ellipse>
+  
+  <!-- 生菜叶2 -->
+  <ellipse cx="20" cy="15" rx="3.5" ry="5" fill="url(#leafGreen)" 
+           transform="rotate(25 20 15)">
+    <animate attributeName="transform" 
+             values="rotate(25 20 15);rotate(30 20 15);rotate(25 20 15)" 
+             dur="2.5s" 
+             repeatCount="indefinite"/>
+  </ellipse>
+  
+  <!-- 生菜叶3 -->
+  <ellipse cx="16" cy="14" rx="3" ry="4.5" fill="url(#leafGreen)" 
+           transform="rotate(5 16 14)">
+    <animate attributeName="transform" 
+             values="rotate(5 16 14);rotate(10 16 14);rotate(5 16 14)" 
+             dur="2.8s" 
+             repeatCount="indefinite"/>
+  </ellipse>
+  
+  <!-- 小番茄1 -->
+  <circle cx="14" cy="18" r="2.5" fill="url(#tomatoRed)">
+    <animate attributeName="cy" 
+             values="18;17.5;18" 
+             dur="2s" 
+             repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 小番茄2 -->
+  <circle cx="18" cy="19" r="2" fill="url(#tomatoRed)">
+    <animate attributeName="cy" 
+             values="19;18.5;19" 
+             dur="2.2s" 
+             begin="0.5s"
+             repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 胡萝卜片 -->
+  <ellipse cx="10" cy="19" rx="1.5" ry="2" fill="#FF9800" 
+           transform="rotate(45 10 19)">
+    <animate attributeName="transform" 
+             values="rotate(45 10 19);rotate(50 10 19);rotate(45 10 19)" 
+             dur="3.5s" 
+             repeatCount="indefinite"/>
+  </ellipse>
+  
+  <!-- 玉米粒 -->
+  <ellipse cx="22" cy="18" rx="1" ry="1.5" fill="#FFC107"/>
+  <ellipse cx="23" cy="19.5" rx="0.8" ry="1.2" fill="#FFC107"/>
+  
+  <!-- 叉子 -->
+  <g transform="translate(26, 8) rotate(45)">
+    <rect x="0" y="0" width="1" height="8" fill="#9E9E9E"/>
+    <rect x="-2" y="0" width="1" height="3" fill="#9E9E9E"/>
+    <rect x="-1" y="0" width="1" height="3" fill="#9E9E9E"/>
+    <rect x="1" y="0" width="1" height="3" fill="#9E9E9E"/>
+    <rect x="2" y="0" width="1" height="3" fill="#9E9E9E"/>
+  </g>
+  
+  <!-- 可爱的小星星 -->
+  <g opacity="0.7">
+    <path d="M 6 8 L 7 10 L 9 9 L 7 11 L 6 13 L 5 11 L 3 9 L 5 10 Z" fill="#FFD700">
+      <animate attributeName="opacity" 
+               values="0.5;1;0.5" 
+               dur="2s" 
+               repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg> 

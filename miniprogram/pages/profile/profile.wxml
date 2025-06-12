@@ -12,77 +12,112 @@
   
   <view class="stats-summary">
     <view class="stat-item">
-      <view class="stat-value">28</view>
+      <view class="stat-value">{{ stats.totalDays }}</view>
       <view class="stat-label">打卡天数</view>
     </view>
     <view class="stat-item">
-      <view class="stat-value">5</view>
+      <view class="stat-value">{{ stats.targetAchievedDays }}</view>
       <view class="stat-label">达标天数</view>
     </view>
     <view class="stat-item">
-      <view class="stat-value">2.8</view>
+      <view class="stat-value">{{ stats.averageNetCalories }}</view>
       <view class="stat-label">平均千卡</view>
     </view>
   </view>
   
-  <view class="section-title"><text class="iconfont icon-chengjiu"></text>我的成就</view>
-  <scroll-view class="achievement-list" scroll-x>
-    <view class="achievement-item">
-      <view class="achievement-icon">🔥</view>
-      <view class="achievement-name">连续记录7天</view>
-      <view class="achievement-date">2023-05-20</view>
+  <view class="section-title">
+    <view class="section-title-icon">
+      <image src="/static/images/icons/section-achievement.svg" mode="aspectFit"></image>
     </view>
-    <view class="achievement-item">
-      <view class="achievement-icon">🥗</view>
-      <view class="achievement-name">健康饮食达人</view>
-      <view class="achievement-date">2023-05-28</view>
+    我的成就
+  </view>
+  <scroll-view class="achievement-list" scroll-x>
+    <view class="achievement-item locked">
+      <view class="achievement-icon">
+        <image src="/static/images/icons/achievement-fire.svg" mode="aspectFit"></image>
+      </view>
+      <view class="achievement-name">连续记录7天</view>
+      <view class="achievement-date">未解锁</view>
     </view>
     <view class="achievement-item locked">
-      <view class="achievement-icon">🏃</view>
+      <view class="achievement-icon">
+        <image src="/static/images/icons/achievement-salad.svg" mode="aspectFit"></image>
+      </view>
+      <view class="achievement-name">健康饮食达人</view>
+      <view class="achievement-date">未解锁</view>
+    </view>
+    <view class="achievement-item locked">
+      <view class="achievement-icon">
+        <image src="/static/images/icons/achievement-runner.svg" mode="aspectFit"></image>
+      </view>
       <view class="achievement-name">运动达人</view>
       <view class="achievement-date">未解锁</view>
     </view>
     <view class="achievement-item locked">
-      <view class="achievement-icon">📊</view>
+      <view class="achievement-icon">
+        <image src="/static/images/icons/achievement-chart.svg" mode="aspectFit"></image>
+      </view>
       <view class="achievement-name">数据分析师</view>
       <view class="achievement-date">未解锁</view>
     </view>
   </scroll-view>
   
-  <view class="section-title"><text class="icon">⚙️</text>设置</view>
+  <view class="section-title">
+    <view class="section-title-icon">
+      <image src="/static/images/icons/section-settings.svg" mode="aspectFit"></image>
+    </view>
+    设置
+  </view>
   <view class="menu-list">
     <view class="menu-item" bindtap="goToGoalSetting">
-      <view class="menu-item-icon">🎯</view>
+      <view class="menu-item-icon">
+        <image src="/static/images/icons/menu-target.svg" mode="aspectFit"></image>
+      </view>
       <view class="menu-item-text">目标设置</view>
       <view wx:if="{{currentGoal > 0}}" class="menu-item-value">{{currentGoal}}千卡</view>
       <view class="menu-item-arrow">›</view>
     </view>
     <view class="menu-item" bindtap="goToReminderSetting">
-      <view class="menu-item-icon">🔔</view>
+      <view class="menu-item-icon">
+        <image src="/static/images/icons/menu-bell.svg" mode="aspectFit"></image>
+      </view>
       <view class="menu-item-text">提醒设置</view>
       <view class="menu-item-arrow">›</view>
     </view>
     <view class="menu-item" bindtap="goToPrivacySetting">
-      <view class="menu-item-icon">🔒</view>
+      <view class="menu-item-icon">
+        <image src="/static/images/icons/menu-privacy.svg" mode="aspectFit"></image>
+      </view>
       <view class="menu-item-text">隐私设置</view>
       <view class="menu-item-arrow">›</view>
     </view>
   </view>
   
-  <view class="section-title"><text class="icon">ℹ️</text>关于</view>
+  <view class="section-title">
+    <view class="section-title-icon">
+      <image src="/static/images/icons/section-about.svg" mode="aspectFit"></image>
+    </view>
+    关于
+  </view>
   <view class="menu-list">
     <view class="menu-item" bindtap="goToHelp">
-      <view class="menu-item-icon">❓</view>
+      <view class="menu-item-icon">
+        <image src="/static/images/icons/menu-help.svg" mode="aspectFit"></image>
+      </view>
       <view class="menu-item-text">使用帮助</view>
       <view class="menu-item-arrow">›</view>
     </view>
     <view class="menu-item" bindtap="goToAbout">
-      <view class="menu-item-icon">📱</view>
+      <view class="menu-item-icon">
+        <image src="/static/images/icons/menu-phone.svg" mode="aspectFit"></image>
+      </view>
       <view class="menu-item-text">关于我们</view>
       <view class="menu-item-arrow">›</view>
     </view>
     <view class="menu-item" bindtap="goToRate">
-      <view class="menu-item-icon">⭐</view>
+      <view class="menu-item-icon">
+        <image src="/static/images/icons/menu-star.svg" mode="aspectFit"></image>
+      </view>
       <view class="menu-item-text">去评分</view>
       <view class="menu-item-arrow">›</view>
     </view>

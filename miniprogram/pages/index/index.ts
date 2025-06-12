@@ -10,7 +10,7 @@ Page({
     hasLogin: false,
   },
   toRecord() {
-    wx.navigateTo ({
+    wx.switchTab ({
       url: '/pages/record/record',
     });
   },

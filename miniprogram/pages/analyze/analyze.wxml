@@ -20,8 +20,8 @@
     </view>
     
     <view class="chart {{period}}">
-      <view class="limit-line"></view>
-      <view class="limit-label">目标 {{calorieGoal}}千卡</view>
+      <view class="limit-line" style="top: {{limitLineTop}};"></view>
+      <view class="limit-label" style="top: {{limitLabelTop}}">目标 {{calorieTarget}}千卡</view>
       
       <!-- 悬浮提示框 -->
       <view class="chart-tooltip {{selectedIndex !== -1 ? 'show' : ''}}" style="left: {{tooltipLeft}}px;">
@@ -45,25 +45,25 @@
   <!-- 统计数据 -->
   <view class="stats-grid">
     <view class="stat-card">
-      <view class="value">{{stats.avgCalories}}</view>
+      <view class="value">{{stats.averageDailyIntake}}</view>
       <view class="label">平均每日摄入 (千卡)</view>
     </view>
     <view class="stat-card">
-      <view class="value">{{stats.overLimitDays}}</view>
+      <view class="value">{{stats.overStandardDays}}</view>
       <view class="label">超标天数</view>
     </view>
     <view class="stat-card">
-      <view class="value">{{stats.maxCalories}}</view>
+      <view class="value">{{stats.highestIntake}}</view>
       <view class="label">最高摄入 (千卡)</view>
     </view>
     <view class="stat-card">
-      <view class="value">{{stats.minCalories}}</view>
+      <view class="value">{{stats.lowestIntake}}</view>
       <view class="label">最低摄入 (千卡)</view>
     </view>
   </view>
   
   <!-- 智能分析 -->
-  <view class="analysis-card">
+  <!-- <view class="analysis-card">
     <view class="card-title">
       <text class="icon">💡</text>
       <text>智能分析</text>
@@ -71,10 +71,10 @@
     <view class="card-content">
       <text>{{analysis.insight}}</text>
     </view>
-  </view>
+  </view> -->
   
   <!-- 建议 -->
-  <view class="analysis-card">
+  <!-- <view class="analysis-card">
     <view class="card-title">
       <text class="icon">🥗</text>
       <text>建议</text>
@@ -82,5 +82,5 @@
     <view class="card-content">
       <text>{{analysis.suggestion}}</text>
     </view>
-  </view>
-</view> 
+  </view>-->
+</view>  

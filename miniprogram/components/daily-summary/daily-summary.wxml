@@ -1,12 +1,19 @@
   <view class="daily-total">
     <view class="daily-total-header">
-      <text class="daily-title">📊 今日数据总览</text>
+      <view class="daily-title">
+        <view class="daily-title-icon">
+          <image src="/static/images/icons/daily-chart.svg" mode="aspectFit"></image>
+        </view>
+        今日数据总览
+      </view>
     </view>
     
     <view class="calorie-stats">
       <!-- 今日摄入 -->
       <view class="stat-item intake">
-        <view class="stat-icon">🍽️</view>
+        <view class="stat-icon">
+          <image src="/static/images/icons/daily-food.svg" mode="aspectFit"></image>
+        </view>
         <view class="stat-info">
           <text class="stat-label">今日摄入</text>
           <text class="stat-value">{{dailyStats.intakeCalories}}</text>
@@ -16,7 +23,9 @@
       
       <!-- 运动消耗 -->
       <view class="stat-item exercise">
-        <view class="stat-icon">🔥</view>
+        <view class="stat-icon">
+          <image src="/static/images/icons/daily-burn.svg" mode="aspectFit"></image>
+        </view>
         <view class="stat-info">
           <text class="stat-label">运动消耗</text>
           <text class="stat-value">{{dailyStats.burnedCalories}}</text>
@@ -26,7 +35,9 @@
       
       <!-- 剩余可吃 -->
       <view class="stat-item remaining">
-        <view class="stat-icon">{{(dailyStats.remainingCalories) > 0 ? '✨' : '⚠️'}}</view>
+        <view class="stat-icon">
+          <image src="/static/images/icons/daily-remaining.svg" mode="aspectFit"></image>
+        </view>
         <view class="stat-info">
           <text class="stat-label">剩余可吃</text>
           <text class="stat-value {{(dailyStats.remainingCalories) > 0 ? 'positive' : 'negative'}}">
@@ -38,7 +49,9 @@
       
       <!-- 每日目标 -->
       <view class="stat-item target">
-        <view class="stat-icon">🎯</view>
+        <view class="stat-icon">
+          <image src="/static/images/icons/daily-target.svg" mode="aspectFit"></image>
+        </view>
         <view class="stat-info">
           <text class="stat-label">每日目标</text>
           <text class="stat-value">{{dailyStats.targetCalories}}</text>

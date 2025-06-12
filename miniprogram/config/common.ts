@@ -18,7 +18,7 @@ export const MEAL_TYPE_ICON = {
 
 // 底部导航栏页面key列表
 export const tabbarPageKeyList = [
-  'index',
+  'record',
   'analyze',
   'profile'
 ]

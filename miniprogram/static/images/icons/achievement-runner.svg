@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFE0B2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFCC02;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="clothesGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E1BEE7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#BA68C8;stop-opacity:1" />
+    </linearGradient>
+    
+    <radialGradient id="speedLines" cx="0%" cy="50%" r="100%">
+      <stop offset="0%" style="stop-color:#FF4081;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#FF4081;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- 速度线 -->
+  <g opacity="0.6">
+    <path d="M 2 10 L 8 10" stroke="url(#speedLines)" stroke-width="2" stroke-linecap="round">
+      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="0.8s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 1 14 L 9 14" stroke="url(#speedLines)" stroke-width="2" stroke-linecap="round">
+      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="0.8s" begin="0.2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 3 18 L 10 18" stroke="url(#speedLines)" stroke-width="2" stroke-linecap="round">
+      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="0.8s" begin="0.4s" repeatCount="indefinite"/>
+    </path>
+  </g>
+  
+  <!-- 头部 -->
+  <circle cx="20" cy="8" r="3.5" fill="url(#bodyGradient)" stroke="#FFB74D" stroke-width="0.5">
+    <animate attributeName="cy" values="8;7.5;8" dur="1s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 眼睛 -->
+  <circle cx="19" cy="7.5" r="0.5" fill="#333"/>
+  <circle cx="21" cy="7.5" r="0.5" fill="#333"/>
+  
+  <!-- 嘴巴 -->
+  <path d="M 18.5 9 Q 20 10 21.5 9" stroke="#FF4081" stroke-width="0.5" fill="none"/>
+  
+  <!-- 身体 -->
+  <ellipse cx="20" cy="16" rx="3" ry="5" fill="url(#clothesGradient)" stroke="#9C27B0" stroke-width="0.5">
+    <animate attributeName="cy" values="16;15.5;16" dur="1s" repeatCount="indefinite"/>
+  </ellipse>
+  
+  <!-- 左手臂 -->
+  <ellipse cx="16" cy="14" rx="1.5" ry="4" fill="url(#bodyGradient)" 
+           transform="rotate(-30 16 14)">
+    <animate attributeName="transform" 
+             values="rotate(-30 16 14);rotate(-45 16 14);rotate(-30 16 14)" 
+             dur="1s" 
+             repeatCount="indefinite"/>
+  </ellipse>
+  
+  <!-- 右手臂 -->
+  <ellipse cx="24" cy="15" rx="1.5" ry="4" fill="url(#bodyGradient)" 
+           transform="rotate(45 24 15)">
+    <animate attributeName="transform" 
+             values="rotate(45 24 15);rotate(60 24 15);rotate(45 24 15)" 
+             dur="1s" 
+             repeatCount="indefinite"/>
+  </ellipse>
+  
+  <!-- 左腿 -->
+  <ellipse cx="18" cy="23" rx="1.5" ry="5" fill="url(#bodyGradient)" 
+           transform="rotate(-20 18 23)">
+    <animate attributeName="transform" 
+             values="rotate(-20 18 23);rotate(-35 18 23);rotate(-20 18 23)" 
+             dur="1s" 
+             repeatCount="indefinite"/>
+  </ellipse>
+  
+  <!-- 右腿 -->
+  <ellipse cx="22" cy="24" rx="1.5" ry="5" fill="url(#bodyGradient)" 
+           transform="rotate(25 22 24)">
+    <animate attributeName="transform" 
+             values="rotate(25 22 24);rotate(40 22 24);rotate(25 22 24)" 
+             dur="1s" 
+             repeatCount="indefinite"/>
+  </ellipse>
+  
+  <!-- 左脚 -->
+  <ellipse cx="16" cy="28" rx="2" ry="1" fill="#424242" 
+           transform="rotate(-10 16 28)">
+    <animate attributeName="transform" 
+             values="rotate(-10 16 28);rotate(-20 16 28);rotate(-10 16 28)" 
+             dur="1s" 
+             repeatCount="indefinite"/>
+  </ellipse>
+  
+  <!-- 右脚 -->
+  <ellipse cx="24" cy="29" rx="2" ry="1" fill="#424242" 
+           transform="rotate(15 24 29)">
+    <animate attributeName="transform" 
+             values="rotate(15 24 29);rotate(25 24 29);rotate(15 24 29)" 
+             dur="1s" 
+             repeatCount="indefinite"/>
+  </ellipse>
+  
+  <!-- 头发 -->
+  <path d="M 17 6 Q 20 4 23 6" fill="#8D6E63" stroke="#5D4037" stroke-width="0.5"/>
+  
+  <!-- 汗珠 -->
+  <circle cx="17" cy="9" r="0.8" fill="#E3F2FD" opacity="0.8">
+    <animate attributeName="cy" values="9;11;9" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 跑步轨迹 -->
+  <path d="M 12 30 Q 16 28 20 30 Q 24 32 28 30" 
+        stroke="#FFE0E5" 
+        stroke-width="2" 
+        stroke-dasharray="2,2" 
+        fill="none" 
+        opacity="0.6">
+    <animate attributeName="stroke-dashoffset" 
+             values="0;-8" 
+             dur="2s" 
+             repeatCount="indefinite"/>
+  </path>
+</svg> 

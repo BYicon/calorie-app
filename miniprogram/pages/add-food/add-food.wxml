@@ -66,7 +66,7 @@
 <!-- 加载提示 -->
 <view class="loading-container" wx:if="{{isAiLoading}}">
   <view class="loading">
-    <text class="loading-icon">🔄</text>
+    <image class="loading-icon" src="/static/images/loading-bulb.svg" mode="aspectFit"></image>
     <text class="loading-text">AI正在识别中...</text>
   </view>
 </view> 

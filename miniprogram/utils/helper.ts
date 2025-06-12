@@ -1,4 +1,4 @@
-import { EnumPage, tabbarPageKeyList } from "../config/index";
+import { DEFAULT_TARGET_CALORIE, EnumPage, tabbarPageKeyList } from "../config/index";
 import { EnumStorageKey } from "../enum/index";
 
 
@@ -41,4 +41,16 @@ export const getToken = () => {
 export const removeCache = () => {
   wx.removeStorageSync(EnumStorageKey.TOKEN);
   wx.removeStorageSync(EnumStorageKey.USER_INFO);
+};
+
+/**
+ * 获取用户目标卡路里
+ * @returns 
+ */
+export const getCalorieTargetFromStorage = () => {
+  if (hasLogin()) {
+    const userInfo = wx.getStorageSync(EnumStorageKey.USER_INFO);
+    return userInfo.calorieTarget;
+  }
+  return DEFAULT_TARGET_CALORIE;
 };

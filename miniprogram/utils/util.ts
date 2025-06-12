@@ -1,3 +1,5 @@
+import dayjs from "dayjs"
+
 export const formatTime = (date: Date) => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
@@ -67,4 +69,15 @@ const WEEK_DAY_MAP = {
 export const formatLocaleDate = (date: Date) => {
   const weekDay = date.getDay()
   return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日 ${WEEK_DAY_MAP[weekDay as keyof typeof WEEK_DAY_MAP]}`
+}
+
+/**
+ * 获取最近days天日期，返回startDate和endDate
+ * @param days 天数
+ * @returns 
+ */
+export const getRecentDays = (days: number) => {
+  const startDate = new Date(Date.now() - (days - 1) * 24 * 60 * 60 * 1000);
+  const endDate = new Date(Date.now());
+  return { startDate: dayjs(startDate).format('YYYY-MM-DD'), endDate: dayjs(endDate).format('YYYY-MM-DD') };
 }
