@@ -4,5 +4,5 @@
   <!-- <daily-summary wx:if="{{hasLogin}}" timestamp="{{todayTimestamp}}"></daily-summary> -->
   <!-- 去记录 -->
   <!-- <view class="go-record-btn" bind:tap="toRecord">去记录</view> -->
-
+  <!-- <privacy-popup bind:agree="agree" bind:disagree="disagree"></privacy-popup> -->
 </view>

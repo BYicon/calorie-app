@@ -1,5 +1,6 @@
 import { DEFAULT_TARGET_CALORIE, EnumPage, tabbarPageKeyList } from "../config/index";
 import { EnumStorageKey } from "../enum/index";
+import { BASE_URL_CONFIGS } from "../config/env";
 
 
 /**
@@ -53,4 +54,25 @@ export const getCalorieTargetFromStorage = () => {
     return userInfo.calorieTarget;
   }
   return DEFAULT_TARGET_CALORIE;
+};
+
+/**
+ * 根据当前环境获取BaseUrl
+ * @returns
+ */
+export const getBaseUrlByEnv = function () {
+  const accountInfo = wx.getAccountInfoSync();
+  switch (accountInfo.miniProgram.envVersion) {
+    case "develop":
+      return BASE_URL_CONFIGS.dev;
+      break;
+    case "trial":
+      return BASE_URL_CONFIGS.prod;
+      break;
+    case "release":
+      return BASE_URL_CONFIGS.prod;
+    default:
+      return BASE_URL_CONFIGS.prod;
+      break;
+  }
 };

@@ -1,6 +1,6 @@
-import { post } from "../utils/request";
+import { post } from "../shared/request";
 import { EnumStorageKey } from "../enum/index";
-import { removeCache } from "../utils/helper";
+import { removeCache } from "../shared/helper";
 import { User } from "../../typings/models/response";
 
 /**

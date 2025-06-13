@@ -1,4 +1,4 @@
-import { BASE_URL } from "../config/index";
+import { getBaseUrlByEnv } from "./helper";
 import { EnumStorageKey } from "../enum/index";
 
 // 定义请求选项接口
@@ -14,6 +14,8 @@ interface ResponseData<T = any> {
   msg: string;
   data: T;
 }
+
+export const BASE_URL = getBaseUrlByEnv();
 
 /**
  * 统一请求处理

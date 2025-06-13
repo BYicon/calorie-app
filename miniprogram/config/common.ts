@@ -9,10 +9,10 @@ export const DEFAULT_AVATAR = STATIC_FILE_URL + "static/images/cute.png";
  * 餐食类型图标
  */
 export const MEAL_TYPE_ICON = {
-  [EnumMealType.BREAKFAST]: "/static/images/breakfast.png",
-  [EnumMealType.LUNCH]: "/static/images/lunch.png",
-  [EnumMealType.DINNER]: "/static/images/dinner.png",
-  [EnumMealType.SNACK]: "/static/images/snack.png",
+  [EnumMealType.BREAKFAST]: "/static/images/icons/meal-breakfast.svg",
+  [EnumMealType.LUNCH]: "/static/images/icons/meal-lunch.svg",
+  [EnumMealType.DINNER]: "/static/images/icons/meal-dinner.svg",
+  [EnumMealType.SNACK]: "/static/images/icons/meal-snack.svg",
 };
 
 

@@ -1,5 +1,6 @@
 import * as CaloriesApi from "../../api/calories";
 import dayjs from "dayjs";
+import { throttle } from "../../shared/util";
 
 Component({
   /**
@@ -24,6 +25,12 @@ Component({
       goalProgress: 0,
     },
   },
+  observers: {
+    'timestamp': function(timestamp) {
+      // 在 numberA 或者 numberB 被设置时，执行这个函数
+      this.getDailyStatsThrottled();
+    }
+  },
   pageLifetimes: {
     show: function () {
       if (this.data.timestamp) {
@@ -41,7 +48,7 @@ Component({
   lifetimes: {
     attached() {
       if (this.data.timestamp) {
-        this.getDailyStats();
+        this.getDailyStatsThrottled();
       }
     },
   },
@@ -61,5 +68,8 @@ Component({
         });
       });
     },
+    getDailyStatsThrottled() {
+      throttle(this.getDailyStats, 1000);
+    }
   },
 });

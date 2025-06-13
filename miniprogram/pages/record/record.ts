@@ -2,9 +2,9 @@
 import dayjs from "dayjs";
 import * as CaloriesApi from "../../api/calories";
 import { EnumMealType, EnumMealTypeLabel } from "../../enum/meal-type";
-import { getMonthFirstAndLastDay, queryParams, formatLocaleDate } from "../../utils/util";
+import { getMonthFirstAndLastDay, queryParams, formatLocaleDate } from "../../shared/util";
 import { DEFAULT_TARGET_CALORIE } from "../../config/index";
-import { hasLogin } from "../../utils/helper";
+import { hasLogin } from "../../shared/helper";
 import { CalendarData, FoodItem, Meal } from "../../../typings/models/calories";
 import { MEAL_TYPE_ICON } from "../../config/common";
 import { EnumStorageKey } from "../../enum/index";
@@ -81,20 +81,8 @@ Page({
         foods: [],
       },
       {
-        type: EnumMealType.MORNING_SNACK,
-        label: EnumMealTypeLabel[EnumMealType.MORNING_SNACK],
-        totalCalories: 0,
-        foods: [],
-      },
-      {
-        type: EnumMealType.AFTERNOON_SNACK,
-        label: EnumMealTypeLabel[EnumMealType.AFTERNOON_SNACK],
-        totalCalories: 0,
-        foods: [],
-      },
-      {
-        type: EnumMealType.EVENING_SNACK,
-        label: EnumMealTypeLabel[EnumMealType.EVENING_SNACK],
+        type: EnumMealType.SNACK,
+        label: EnumMealTypeLabel[EnumMealType.SNACK],
         totalCalories: 0,
         foods: [],
       },
@@ -318,7 +306,7 @@ Page({
       this.getDailySummary();
     } else {
       // 即使未登录也刷新运动数据（本地存储）
-      this.getDailyExercise();
+      this.getDailySummary();
     }
   },
 

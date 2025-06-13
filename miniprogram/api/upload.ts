@@ -1,6 +1,6 @@
 import { Response } from "../../typings/models/response";
 import { UPLOAD_URL } from "../config/index";
-import { getToken } from "../utils/index";
+import { getToken } from "../shared/index";
 
 /**
  * 上传文件

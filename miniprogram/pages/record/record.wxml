@@ -1,6 +1,6 @@
 <van-nav-bar placeholder fixed border="{{false}}" bind:click-left="onBack">
   <view class="nav-title" slot="title" bindtap="openCalendar">
-    <text class="text-sm font-bold">{{currentDateText}}</text>
+    <text class="text-base font-bold">{{currentDateText}}</text>
     <van-icon name="arrow-down" />
   </view>
 </van-nav-bar>
@@ -38,7 +38,7 @@
   <view class="exercise-section">
     <view class="exercise-header">
       <view class="exercise-title">
-        <image class="exercise-icon" src="/static/images/exercise.png"></image>
+        <image class="exercise-icon" src="/static/images/icons/exercise-burn.svg"></image>
         <text>运动消耗</text>
       </view>
       <view class="exercise-calories">

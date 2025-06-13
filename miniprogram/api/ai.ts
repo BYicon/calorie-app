@@ -1,5 +1,5 @@
 import { EnumAiChatType } from "../enum/index";
-import { post } from "../utils/request";
+import { post } from "../shared/request";
 
 export const aiChat = (data: {
     userId?: string;

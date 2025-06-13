@@ -4,6 +4,7 @@
   "navigationBarTextStyle": "black",
   "navigationStyle": "default",
   "usingComponents": {
-    "daily-summary": "/components/daily-summary/daily-summary"
+    "daily-summary": "/components/daily-summary/daily-summary",
+    "privacy-popup": "/components/privacyPopup/privacyPopup"
   }
 }

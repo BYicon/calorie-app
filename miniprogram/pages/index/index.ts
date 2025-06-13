@@ -1,5 +1,5 @@
 import { login } from "../../api/auth";
-import { redirectPage } from "../../utils/helper";
+import { redirectPage } from "../../shared/helper";
 import { STATIC_FILE_URL } from "../../config/env";
 
 
@@ -13,6 +13,12 @@ Page({
     wx.switchTab ({
       url: '/pages/record/record',
     });
+  },
+  agree() {
+    console.log('agree 🚀🚀🚀');
+  },
+  disagree() {
+    console.log('disagree 🚀🚀🚀');
   },
   onLoad(e) {
     login().then((userInfo) => {

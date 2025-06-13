@@ -1,8 +1,8 @@
 // pages/analyze/analyze.ts
 
-import { getRecentDays } from "../../utils/index";
+import { getRecentDays } from "../../shared/index";
 import * as CaloriesApi from "../../api/calories";
-import { getCalorieTargetFromStorage } from "../../utils/helper";
+import { getCalorieTargetFromStorage } from "../../shared/helper";
 import dayjs from "dayjs";
 
 interface ChartItem {
@@ -30,8 +30,8 @@ Page({
     calorieTarget: getCalorieTargetFromStorage(),
     currentDateRange: '',
     chartData: [] as ChartItem[],
-    limitLineTop: 0,
-    limitLabelTop: 0,
+    limitLineTop: '0%',
+    limitLabelTop: '0%',
     selectedIndex: -1,
     selectedBar: {
       label: '',
@@ -174,21 +174,22 @@ Page({
     // 计算最大值，用于计算柱子高度
     const maxValue = Math.max(...chartData.map(item => item.value));
     const minValue = Math.min(...chartData.map(item => item.value));
-    const limitLineTop =  (1 - calorieTarget / maxValue) * 100;
+    const limitLineTop =  Math.max(0, Math.round((1 - calorieTarget / maxValue) * 100));
+    console.log("limitLineTop 🚀🚀🚀", limitLineTop);
     
     // 计算每个柱子的高度（相对于最大值的百分比）
     const processedData = chartData.map(item => ({
       value: item.value,
       label: item.label,
-      height: `${Math.max(10, (item.value / maxValue) * 80)}%`, // 最小10%，最大80%
+      height: `${Math.max(10, (item.value / maxValue) * 98)}%`, // 最小10%，最大80%
       showLabel: item.showLabel,
-      limitLineTop: `${limitLineTop}%`,
-      limitLabelTop: `calc(${limitLineTop}% - 10rpx)`
     }));
     
     this.setData({
       chartData: processedData,
-      currentDateRange: dateRange
+      currentDateRange: dateRange,
+      limitLineTop: `${limitLineTop}%`,
+      limitLabelTop: `calc(${limitLineTop}% - 10rpx)`
     });
     
     // 更新统计和分析

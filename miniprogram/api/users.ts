@@ -1,4 +1,4 @@
-import { get, post } from "../utils/request";
+import { get, post } from "../shared/request";
 
 export const updateCalorieTarget = (data: {
   calorieTarget: number;

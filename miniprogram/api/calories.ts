@@ -1,5 +1,5 @@
 import { ExerciseItem, Meal } from "../../typings/models/calories";
-import { post, get } from "../utils/request";
+import { post, get } from "../shared/request";
 
 
 /**

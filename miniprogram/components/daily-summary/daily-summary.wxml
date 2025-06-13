@@ -36,13 +36,12 @@
       <!-- 剩余可吃 -->
       <view class="stat-item remaining">
         <view class="stat-icon">
-          <image src="/static/images/icons/daily-remaining.svg" mode="aspectFit"></image>
+          <image wx:if="{{dailyStats.remainingCalories > 0 }}"  src="/static/images/icons/daily-remaining.svg" mode="aspectFit"></image>
+          <image wx:else src="/static/images/icons/daily-remaining-negative.svg" mode="aspectFit"></image>
         </view>
         <view class="stat-info">
           <text class="stat-label">剩余可吃</text>
-          <text class="stat-value {{(dailyStats.remainingCalories) > 0 ? 'positive' : 'negative'}}">
-            {{dailyStats.remainingCalories}}
-          </text>
+          <text class="stat-value {{(dailyStats.remainingCalories) > 0 ? 'positive' : 'negative'}}">{{dailyStats.remainingCalories}}</text>
           <text class="stat-unit">千卡</text>
         </view>
       </view>

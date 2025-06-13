@@ -114,13 +114,13 @@
       <view class="menu-item-text">关于我们</view>
       <view class="menu-item-arrow">›</view>
     </view>
-    <view class="menu-item" bindtap="goToRate">
+    <!-- <view class="menu-item" bindtap="goToRate">
       <view class="menu-item-icon">
         <image src="/static/images/icons/menu-star.svg" mode="aspectFit"></image>
       </view>
       <view class="menu-item-text">去评分</view>
       <view class="menu-item-arrow">›</view>
-    </view>
+    </view> -->
   </view>
   
   <!-- <button class="logout-btn" bindtap="logout">退出登录</button> -->
