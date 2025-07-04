@@ -224,4 +224,11 @@ Page({
       title: ` ${currentDateText}`,
     });
   },
+  onShareAppMessage() {
+    return {
+      path: 'pages/index/index',
+      title: '快来记录每日热量吧～',
+      imagePath: 'https://wx.qlogo.cn/mmhead/Xmnun9Io49RB3BicJVsFAch4V5aqRkuZbDfffIR6EBia1X5ptBt9AS5P4bYpn5WFrVqkHhzd41M9E/0',
+    }
+  }
 });

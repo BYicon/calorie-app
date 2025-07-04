@@ -26,8 +26,22 @@ interface Analysis {
 
 Page({
   data: {
-    period: 'day7',
     calorieTarget: getCalorieTargetFromStorage(),
+    periodList: [
+      {
+        days: 7,
+        label: '7天'
+      },
+      {
+        days: 30,
+        label: '30天'
+      },
+      // {
+        //   days: 90,
+        //   label: '90天'
+        // }
+      ],
+    period: 7,
     currentDateRange: '',
     chartData: [] as ChartItem[],
     limitLineTop: '0%',
@@ -50,19 +64,21 @@ Page({
     } as Analysis
   },
 
-  onLoad() {
-    this.loadDayData(7);
+  onShow() {
+    this.loadDayData(this.data.period);
     this.setData({
       calorieTarget: getCalorieTargetFromStorage(),
     });
   },
 
+  onLoad() {
+  },
+
   // 切换周期
   changePeriod(e: any) {
-    const period = e.currentTarget.dataset.period;
     const days = parseInt(e.currentTarget.dataset.days);
     this.setData({ 
-      period,
+      period: days,
       selectedIndex: -1 // 重置选中状态
     });
 
@@ -254,5 +270,12 @@ Page({
       'analysis.insight': insight,
       'analysis.suggestion': suggestion
     });
+  },
+  onShareAppMessage() {
+    return {
+      path: 'pages/index/index',
+      title: '快来记录每日热量吧～',
+      imagePath: 'https://wx.qlogo.cn/mmhead/Xmnun9Io49RB3BicJVsFAch4V5aqRkuZbDfffIR6EBia1X5ptBt9AS5P4bYpn5WFrVqkHhzd41M9E/0',
+    }
   }
 }); 

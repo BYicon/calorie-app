@@ -104,6 +104,7 @@ Page({
     this.setData({
       genderIndex: index,
       "userInfo.gender": index + 1,
+      genderText: this.data.genderOptions[index],
     });
   },
 
@@ -211,4 +212,12 @@ Page({
   onUnload: function () {
     // 页面卸载时可以进行一些清理工作
   },
+
+  onShareAppMessage() {
+    return {
+      path: 'pages/index/index',
+      title: '记录卡路里，开始健康生活',
+      imagePath: 'https://wx.qlogo.cn/mmhead/Xmnun9Io49RB3BicJVsFAch4V5aqRkuZbDfffIR6EBia1X5ptBt9AS5P4bYpn5WFrVqkHhzd41M9E/0',
+    }
+  }
 });

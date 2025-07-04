@@ -2,10 +2,7 @@
 <view class="main-content">
   <!-- 周期选择器 -->
   <view class="period-selector">
-    <button class="{{period === 'day7' ? 'active' : ''}}" bindtap="changePeriod" data-period="day7" data-days="7">7天</button>
-    <button class="{{period === 'day30' ? 'active' : ''}}" bindtap="changePeriod" data-period="day30" data-days="30">30天</button>
-    <!-- <button class="{{period === 'day90' ? 'active' : ''}}" bindtap="changePeriod" data-period="day90" data-days="90">90天</button> -->
-    <!-- <button class="{{period === 'day365' ? 'active' : ''}}" bindtap="changePeriod" data-period="day365">365天</button>  -->
+    <button wx:for="{{periodList}}" wx:key="days" class="{{period ===  item.days ? 'active' : ''}}" bindtap="changePeriod" data-period="{{item.days}}" data-days="{{item.days}}">{{item.label}}</button>
   </view>
   
   <!-- 热量摄入趋势图表 -->
