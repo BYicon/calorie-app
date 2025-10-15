@@ -3,6 +3,7 @@ import { EnumStorageKey, EnumGenderLabel } from "../../enum/index";
 import * as uploadApi from "../../api/upload";
 import { User } from "../../../typings/models/response";
 import { DEFAULT_AVATAR, FILE_URL } from "../../config/index";
+import { formatBirthday, parseBirthday } from "../../shared/util";
 
 Page({
   /**
@@ -18,7 +19,16 @@ Page({
       calorieTarget: 2000,
     } as User,
     genderText: EnumGenderLabel.SECRET,
-    genderOptions: [EnumGenderLabel.MALE, EnumGenderLabel.FEMALE, EnumGenderLabel.SECRET],
+    genderOptions: [{
+      label: EnumGenderLabel.MALE,
+      value: 1,
+    }, {
+      label: EnumGenderLabel.FEMALE,
+      value: 2,
+    }, {
+      label: EnumGenderLabel.SECRET,
+      value: 3,
+    }],
     genderIndex: -1,
     originalUserInfo: {}, // 保存原始数据，用于取消时恢复
   },
@@ -26,24 +36,28 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad () {
     this.loadUserInfo();
   },
 
   /**
    * 加载用户信息
    */
-  loadUserInfo: function () {
+  loadUserInfo () {
     usersApi.getUserInfo().then((res) => {
       console.log(' 获取用户信息 🟢🟢🟢', res);
       // 1 男 2 女 3 保密
-      const genderText = this.data.genderOptions[res.data.gender - 1];
+      const genderText = this.data.genderOptions.find(item => item.value === res.data.gender)?.label;
       console.log('genderText 🚀🚀🚀', genderText);
+      const formattedBirthday = parseBirthday(res.data.birthday);
       this.setData({
-        userInfo: res.data,
+        userInfo: {
+          ...res.data,
+          birthday: formattedBirthday
+        },
         avatarUrl: FILE_URL + res.data.avatar,
         genderIndex: res.data.gender - 1,
-        genderText,
+        genderText
       });
     });
   },
@@ -51,7 +65,7 @@ Page({
   /**
    * 选择头像
    */
-  onChooseAvatar: function () {
+  onChooseAvatar () {
     const that = this;
     wx.chooseMedia({
       count: 1,
@@ -90,7 +104,7 @@ Page({
   /**
    * 昵称输入变化
    */
-  onNicknameChange: function (e: any) {
+  onNicknameChange(e: any) {
     this.setData({
       "userInfo.nickname": e.detail.value,
     });
@@ -99,28 +113,30 @@ Page({
   /**
    * 性别选择变化
    */
-  onGenderChange: function (e: any) {
+  onGenderChange(e: any) {
     const index = e.detail.value;
     this.setData({
       genderIndex: index,
       "userInfo.gender": index + 1,
-      genderText: this.data.genderOptions[index],
+      genderText: this.data.genderOptions[index].label,
     });
   },
 
   /**
    * 生日选择变化
    */
-  onBirthdayChange: function (e: any) {
+  onBirthdayChange(e: any) {
+    // 确保生日格式为 YYYY-MM-DD
+    const formattedBirthday = formatBirthday(e.detail.value);
     this.setData({
-      "userInfo.birthday": e.detail.value,
+      "userInfo.birthday": formattedBirthday,
     });
   },
 
   /**
    * 卡路里目标输入变化
    */
-  onCalorieTargetChange: function (e: any) {
+  onCalorieTargetChange(e: any) {
     const value = parseInt(e.detail.value) || 0;
     this.setData({
       "userInfo.calorieTarget": value,
@@ -130,7 +146,7 @@ Page({
   /**
    * 验证表单数据
    */
-  validateForm: function () {
+  validateForm() {
     const { userInfo } = this.data;
 
     if (!userInfo.nickname) {
@@ -155,7 +171,7 @@ Page({
   /**
    * 取消编辑
    */
-  onCancel: function () {
+  onCancel() {
     wx.showModal({
       title: "确认取消",
       content: "确定要取消编辑吗？",
@@ -170,7 +186,7 @@ Page({
   /**
    * 保存用户信息
    */
-  onSave: function () {
+  onSave() {
     if (!this.validateForm()) {
       return;
     }
@@ -181,10 +197,13 @@ Page({
 
     const userId = wx.getStorageSync(EnumStorageKey.USER_INFO).id;
 
+    // 确保生日格式正确
+    const formattedBirthday = formatBirthday(this.data.userInfo.birthday);
+
     usersApi.updateUserInfo({
-      userId: userId,
+      id: userId,
       nickname: this.data.userInfo.nickname || "",
-      birthday: this.data.userInfo.birthday || "",
+      birthday: formattedBirthday,
       gender: this.data.userInfo.gender,
       avatar: this.data.userInfo.avatar || "",
       calorieTarget: this.data.userInfo.calorieTarget || 2000,
@@ -209,7 +228,7 @@ Page({
   /**
    * 页面卸载时的处理
    */
-  onUnload: function () {
+  onUnload() {
     // 页面卸载时可以进行一些清理工作
   },
 

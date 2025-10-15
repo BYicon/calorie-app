@@ -84,10 +84,56 @@ export const getRecentDays = (days: number) => {
 
 
 /**
+ * 格式化生日为 YYYY-MM-DD 格式
+ * @param birthday 生日（可能是字符串、Date对象或null/undefined）
+ * @returns YYYY-MM-DD 格式的字符串，如果无效则返回空字符串
+ */
+export const formatBirthday = (birthday: string | Date | null | undefined): string => {
+  if (!birthday) {
+    return '';
+  }
+
+  if (typeof birthday === 'string') {
+    // 如果是空字符串，返回空
+    if (birthday.trim() === '') {
+      return '';
+    }
+    // 如果已经是 YYYY-MM-DD 格式，直接返回
+    if (/^\d{4}-\d{2}-\d{2}$/.test(birthday)) {
+      return birthday;
+    }
+    // 尝试解析字符串日期
+    const date = dayjs(birthday);
+    return date.isValid() ? date.format('YYYY-MM-DD') : '';
+  }
+
+  if (birthday instanceof Date) {
+    return dayjs(birthday).format('YYYY-MM-DD');
+  }
+
+  return '';
+}
+
+/**
+ * 解析生日数据，处理后端返回的各种格式
+ * @param birthday 后端返回的生日数据
+ * @returns 标准化的 YYYY-MM-DD 格式字符串
+ */
+export const parseBirthday = (birthday: any): string => {
+  if (!birthday) {
+    return '';
+  }
+
+  // 如果是 Date 对象或有效的日期字符串，格式化为 YYYY-MM-DD
+  const date = dayjs(birthday);
+  return date.isValid() ? date.format('YYYY-MM-DD') : '';
+}
+
+/**
  * 节流函数
  * @param func 函数
  * @param delay 延迟时间
- * @returns 
+ * @returns
  */
 export const throttle = (func: Function, delay: number) => {
   let timer: any = null;

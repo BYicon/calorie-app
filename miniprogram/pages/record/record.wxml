@@ -63,7 +63,11 @@
   </view>
 </view>
 <!-- 日历 -->
-<van-calendar show="{{showCalendar}}" show-subtitle="{{ false }}" show-confirm="{{ false }}" position="bottom" default-date="{{ selectedDate }}" min-date="{{ minDate }}" max-date="{{ maxDate }}" class="calendar" first-day-of-week="{{ 1 }}" formatter="{{ formatter }}" bind:select="onSelectDate" bind:close="onCloseCalendar">
+<van-calendar show="{{showCalendar}}" show-subtitle="{{ false }}" 
+  show-confirm="{{ false }}" position="bottom" default-date="{{ selectedDate }}" 
+  min-date="{{ minDate }}" max-date="{{ maxDate }}" class="calendar" 
+  first-day-of-week="{{ 1 }}" formatter="{{ formatter }}" 
+  bind:select="onSelectDate" bind:close="onCloseCalendar">
   <view slot="title">
     <view class="calendar-title flex items-center justify-center">
       <van-icon name="arrow-left" class="font-black" bindtap="prevDayMonth" />

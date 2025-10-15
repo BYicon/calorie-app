@@ -1,6 +1,6 @@
 <!-- 主要内容 -->
 <view class="main-content">
-  <image src="{{welcomeImage}}" class="welcome-image" mode="widthFix" bind:tap="toRecord"></image>
+  <!-- <image src="{{welcomeImage}}" class="welcome-image" mode="widthFix" bind:tap="toRecord"></image> -->
   <!-- <daily-summary wx:if="{{hasLogin}}" timestamp="{{todayTimestamp}}"></daily-summary> -->
   <!-- 去记录 -->
   <!-- <view class="go-record-btn" bind:tap="toRecord">去记录</view> -->

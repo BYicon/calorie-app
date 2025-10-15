@@ -13,7 +13,7 @@ export const getUserInfo = () => {
 
 
 export const updateUserInfo = (data: {
-  userId: string;
+  id: string;
   nickname: string;
   birthday?: string;
   gender?: number;

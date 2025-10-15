@@ -6,7 +6,6 @@ import { STATIC_FILE_URL } from "../../config/env";
 Page({
   data: {
     todayTimestamp: 0,
-    welcomeImage: `${STATIC_FILE_URL}/welcome.png`,
     hasLogin: false,
   },
   toRecord() {
@@ -21,6 +20,9 @@ Page({
     console.log('disagree 🚀🚀🚀');
   },
   onLoad(e) {
+    wx.showLoading({
+      title: '载入中...',
+    })
     login().then((userInfo) => {
       console.log('onLoad userInfo 🚀🚀🚀', userInfo);
       this.setData({
@@ -32,7 +34,12 @@ Page({
       const pageKey = e.t;
       if (pageKey) {
         redirectPage(pageKey);
+      } else {
+        wx.switchTab ({
+          url: '/pages/record/record',
+        });
       }
+      wx.hideLoading();
     });
   },
   onShareAppMessage() {

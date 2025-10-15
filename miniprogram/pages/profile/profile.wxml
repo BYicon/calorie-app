@@ -5,7 +5,7 @@
     </view>
     <view class="user-info">
       <view class="user-name">{{ userInfo.nickname }}</view>
-      <view class="user-details">已坚持记录: 28天</view>
+      <view class="user-details">已坚持记录: {{ stats.totalDays }}天</view>
       <button class="edit-profile-btn" bindtap="editProfile">编辑资料</button>
     </view>
   </view>
@@ -24,14 +24,14 @@
       <view class="stat-label">平均千卡</view>
     </view>
   </view>
-  
+<!--   
   <view class="section-title">
     <view class="section-title-icon">
       <image src="/static/images/icons/section-achievement.svg" mode="aspectFit"></image>
     </view>
     我的成就
-  </view>
-  <scroll-view class="achievement-list" scroll-x>
+  </view> -->
+  <!-- <scroll-view class="achievement-list" scroll-x>
     <view class="achievement-item locked">
       <view class="achievement-icon">
         <image src="/static/images/icons/achievement-fire.svg" mode="aspectFit"></image>
@@ -60,12 +60,9 @@
       <view class="achievement-name">数据分析师</view>
       <view class="achievement-date">未解锁</view>
     </view>
-  </scroll-view>
+  </scroll-view> -->
   
   <view class="section-title">
-    <view class="section-title-icon">
-      <image src="/static/images/icons/section-settings.svg" mode="aspectFit"></image>
-    </view>
     设置
   </view>
   <view class="menu-list">
@@ -77,23 +74,23 @@
       <view wx:if="{{currentGoal > 0}}" class="menu-item-value">{{currentGoal}}千卡</view>
       <view class="menu-item-arrow">›</view>
     </view>
-    <view class="menu-item" bindtap="goToReminderSetting">
+    <!-- <view class="menu-item" bindtap="goToReminderSetting">
       <view class="menu-item-icon">
         <image src="/static/images/icons/menu-bell.svg" mode="aspectFit"></image>
       </view>
       <view class="menu-item-text">提醒设置</view>
       <view class="menu-item-arrow">›</view>
-    </view>
+    </view> -->
     <view class="menu-item" bindtap="goToPrivacySetting">
       <view class="menu-item-icon">
         <image src="/static/images/icons/menu-privacy.svg" mode="aspectFit"></image>
       </view>
-      <view class="menu-item-text">隐私设置</view>
+      <button class="menu-item-text button-text" open-type="contact">联系客服</button>
       <view class="menu-item-arrow">›</view>
     </view>
   </view>
   
-  <view class="section-title">
+  <!-- <view class="section-title">
     <view class="section-title-icon">
       <image src="/static/images/icons/section-about.svg" mode="aspectFit"></image>
     </view>
@@ -114,15 +111,15 @@
       <view class="menu-item-text">关于我们</view>
       <view class="menu-item-arrow">›</view>
     </view>
-    <!-- <view class="menu-item" bindtap="goToRate">
+    <view class="menu-item" bindtap="goToRate">
       <view class="menu-item-icon">
         <image src="/static/images/icons/menu-star.svg" mode="aspectFit"></image>
       </view>
       <view class="menu-item-text">去评分</view>
       <view class="menu-item-arrow">›</view>
-    </view> -->
+    </view>
   </view>
-  
+   -->
   <!-- <button class="logout-btn" bindtap="logout">退出登录</button> -->
   
   <!-- 目标设置对话框 -->
