@@ -1,11 +1,12 @@
 @bottom-btns-height: 100rpx;
+@bottom-footer-extra-height: 72rpx;
 
 .add-exercise-container {
   padding: 20rpx;
   background-color: #FFF5F7;
   min-height: 100vh;
   box-sizing: border-box;
-  padding-bottom: calc(env(safe-area-inset-bottom) + @bottom-btns-height);
+  padding-bottom: calc(env(safe-area-inset-bottom) + @bottom-btns-height + @bottom-footer-extra-height);
 }
 
 /* AI 智能添加部分 */
@@ -195,6 +196,13 @@
   font-size: 32rpx;
 }
 
+.ai-audit-tip {
+  color: #A8A8A8;
+  font-size: 22rpx;
+  line-height: 1.4;
+  text-align: center;
+}
+
 /* 底部按钮 */
 .bottom-buttons {
   position: fixed;
@@ -202,13 +210,17 @@
   left: 0;
   right: 0;
   background-color: #fff;
-  padding: 20rpx;
-  padding-bottom: 40rpx;
+  padding: 20rpx 20rpx calc(env(safe-area-inset-bottom) + 8rpx);
   border-top: 1rpx solid #FFE0E5;
   display: flex;
-  gap: 20rpx;
+  flex-direction: column;
+  gap: 12rpx;
   z-index: 999;
-  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-actions {
+  display: flex;
+  gap: 20rpx;
 }
 
 .bottom-btn {

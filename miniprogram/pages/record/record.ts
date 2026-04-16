@@ -9,8 +9,6 @@ import { CalendarData, FoodItem, Meal } from "../../../typings/models/calories";
 import { MEAL_TYPE_ICON } from "../../config/common";
 import { EnumStorageKey } from "../../enum/index";
 
-const app = getApp<IAppOption>();
-
 const today = new Date();
 const currentYear = today.getFullYear();
 const currentMonth = today.getMonth();

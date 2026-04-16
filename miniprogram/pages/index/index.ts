@@ -1,6 +1,5 @@
 import { login } from "../../api/auth";
 import { redirectPage } from "../../shared/helper";
-import { STATIC_FILE_URL } from "../../config/env";
 
 
 Page({

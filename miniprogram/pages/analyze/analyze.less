@@ -1,291 +1,225 @@
-/**analyze.less**/
 page {
-  font-family: 'Arial', sans-serif;
-  background-color: #FFF5F7;
-  color: #5D4037;
-  display: flex;
-  flex-direction: column;
+  --bg-top: #fff8f1;
+  --bg-bottom: #fff1f6;
+  --card-bg: rgba(255, 255, 255, 0.94);
+  --card-border: rgba(238, 183, 164, 0.28);
+  --text-main: #5d433d;
+  --text-muted: #9b7a72;
+  --accent: #ff7a59;
+  --accent-soft: #ffe5db;
+  --green: #2fbf8f;
+  --green-soft: #dff7ee;
+  --blue: #2f80ed;
+  --blue-soft: #e4efff;
+  background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+  color: var(--text-main);
+  font-family: 'Avenir Next', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
   min-height: 100vh;
-}
-
-.header {
-  background-color: #fcdce1;
-  padding: 30rpx;
-  text-align: center;
-  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.1);
-}
-
-.title {
-  margin: 0;
-  font-size: 36rpx;
-  color: #E91E63;
-  font-weight: bold;
 }
 
 .main-content {
   flex: 1;
-  padding: 40rpx;
-  max-width: 600rpx;
+  padding: 32rpx 28rpx 56rpx;
+  max-width: 720rpx;
   margin: 0 auto;
   width: 100%;
+  box-sizing: border-box;
+}
+
+.filter-card,
+.chart-container,
+.stat-card {
+  background: var(--card-bg);
+  border: 2rpx solid var(--card-border);
+  box-shadow: 0 18rpx 40rpx rgba(193, 138, 118, 0.08);
+}
+
+.filter-card {
+  border-radius: 34rpx;
+  padding: 28rpx;
+  margin-bottom: 28rpx;
+}
+
+.filter-head,
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20rpx;
+  align-items: flex-start;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #5d433d;
+}
+
+.section-subtitle {
+  margin-top: 10rpx;
+  color: var(--text-muted);
+  font-size: 24rpx;
+  line-height: 1.5;
 }
 
 .period-selector {
   display: flex;
-  background-color: white;
-  border-radius: 40rpx;
-  overflow: hidden;
-  margin-bottom: 40rpx;
-  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.05);
+  flex-wrap: wrap;
+  gap: 18rpx;
+  margin-top: 24rpx;
 }
 
-.period-selector button {
-  flex: 1;
-  padding: 24rpx;
-  border: none;
-  background: none;
-  font-weight: bold;
-  color: #BDBDBD;
-  border-radius: 0;
-  line-height: 1;
+.period-pill {
+  min-width: 112rpx;
+  padding: 18rpx 22rpx;
+  border-radius: 999rpx;
+  text-align: center;
+  background: #fff9f7;
+  color: var(--text-muted);
   font-size: 26rpx;
+  font-weight: 600;
+  border: 2rpx solid rgba(218, 180, 167, 0.18);
+  box-sizing: border-box;
 }
 
-.period-selector button.active {
-  background-color: #F8BBD0;
-  color: #D81B60;
+.period-pill.active {
+  background: linear-gradient(135deg, #ff8c68 0%, #ffb085 100%);
+  color: #fffaf7;
+  border-color: transparent;
+  box-shadow: 0 12rpx 24rpx rgba(255, 122, 89, 0.18);
+}
+
+.range-summary {
+  margin-top: 24rpx;
+  padding-top: 22rpx;
+  border-top: 2rpx solid rgba(234, 215, 209, 0.65);
+}
+
+.range-summary-text {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #604741;
+}
+
+.range-summary-meta {
+  margin-top: 8rpx;
+  color: var(--text-muted);
+  font-size: 24rpx;
 }
 
 .chart-container {
-  background-color: white;
-  border-radius: 40rpx;
-  padding: 40rpx;
-  margin-bottom: 40rpx;
-  box-shadow: 0 8rpx 16rpx rgba(0,0,0,0.05);
-  border: 4rpx solid #FFE0E5;
+  border-radius: 36rpx;
+  padding: 30rpx;
+  margin-bottom: 28rpx;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 248, 244, 0.95) 100%);
 }
 
-.chart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30rpx;
-}
-
-.chart-title {
-  margin: 0;
-  color: #D81B60;
-  font-size: 32rpx;
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-}
-
-.chart-title .icon {
-  margin-right: 20rpx;
-  font-size: 36rpx;
-}
-
-/* 添加日期显示样式 */
-.chart-date {
-  color: #795548;
+.target-badge {
+  flex-shrink: 0;
+  padding: 16rpx 20rpx;
+  border-radius: 24rpx;
   font-size: 24rpx;
-  font-weight: bold;
-  background-color: #FFF5F7;
-  padding: 10rpx 20rpx;
-  border-radius: 20rpx;
-}
-
-.chart {
-  height: 400rpx;
-  position: relative;
-  margin-bottom: 20rpx;
-}
-
-/* 悬浮提示框样式 */
-.chart-tooltip {
-  position: absolute;
-  top: 20rpx;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 20rpx;
-  border-radius: 20rpx;
-  font-size: 24rpx;
-  opacity: 0;
-  transform: translateX(-50%);
-  transition: opacity 0.2s ease;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.chart-tooltip.show {
-  opacity: 1;
-}
-
-.tooltip-content {
-  text-align: center;
+  font-weight: 700;
+  color: #d56b4d;
+  background: linear-gradient(135deg, #fff4ee 0%, #ffe3d8 100%);
+  border: 2rpx solid rgba(255, 122, 89, 0.14);
   white-space: nowrap;
 }
 
-.tooltip-date {
+.overview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18rpx;
+  margin: 26rpx 0 24rpx;
+}
+
+.overview-card {
+  padding: 24rpx;
+  border-radius: 28rpx;
+  background: linear-gradient(180deg, #fffdfc 0%, #fff5f0 100%);
+  border: 2rpx solid rgba(240, 224, 217, 0.7);
+}
+
+.overview-label {
+  color: var(--text-muted);
   font-size: 22rpx;
-  margin-bottom: 8rpx;
-  color: #F8BBD0;
 }
 
-.tooltip-value {
-  font-size: 26rpx;
-  font-weight: bold;
+.overview-value {
+  margin-top: 12rpx;
+  font-size: 40rpx;
+  line-height: 1.1;
+  font-weight: 700;
+  color: #5a413b;
 }
 
-.chart-bars {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  height: 100%;
-  padding-bottom: 60rpx;
-  gap: 4rpx; /* 添加柱子间隔 */
+.overview-value.intake {
+  color: var(--accent);
 }
 
-/* 基础柱子样式 */
-.chart-bar {
-  background-color: #F8BBD0;
-  border-radius: 20rpx 20rpx 0 0;
+.overview-value.burned {
+  color: var(--green);
+}
+
+.overview-value.net {
+  color: #d56b4d;
+}
+
+.overview-value.record {
+  color: var(--blue);
+}
+
+.chart-panel {
   position: relative;
-  transition: all 0.3s ease;
-  flex: 1;
-  max-width: 60rpx; /* 限制最大宽度 */
-  min-width: 8rpx; /* 最小宽度 */
+  height: 460rpx;
+  border-radius: 28rpx;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top left, rgba(255, 220, 206, 0.5) 0%, rgba(255, 250, 247, 0.92) 44%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 247, 244, 0.98) 100%);
+  border: 2rpx solid rgba(239, 224, 217, 0.85);
 }
 
-/* 高亮状态 */
-.chart-bar.highlight {
-  background-color: #E91E63;
-  transform: scale(1.1);
-  box-shadow: 0 4rpx 12rpx rgba(233, 30, 99, 0.3);
-}
-
-/* 7天视图 - 宽一些的柱子 */
-.chart.day7 .chart-bar {
-  max-width: 60rpx;
-  min-width: 40rpx;
-}
-
-/* 30天视图 - 中等宽度 */
-.chart.day30 .chart-bar {
-  max-width: 30rpx;
-  min-width: 15rpx;
-}
-
-/* 90天视图 - 较细的柱子 */
-.chart.day90 .chart-bar {
-  max-width: 20rpx;
-  min-width: 10rpx;
-}
-
-.chart-bar-label {
-  position: absolute;
-  bottom: -50rpx;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 22rpx;
-  color: #795548;
-  white-space: nowrap;
-}
-
-/* 7天视图 - 正常显示 */
-.chart.day7 .chart-bar-label {
-  font-size: 20rpx;
-}
-
-/* 30天视图 - 斜着显示，隔一个显示 */
-.chart.day30 .chart-bar-label {
-  font-size: 18rpx;
-  transform: translateX(-50%) rotate(-30deg);
-  transform-origin: center top;
-}
-
-/* 90天视图 - 更斜，隔两个显示 */
-.chart.day90 .chart-bar-label {
-  font-size: 16rpx;
-  transform: translateX(-50%) rotate(-45deg);
-  transform-origin: center top;
-}
-
-.limit-line {
-  position: absolute;
+.trend-chart {
   width: 100%;
-  border-top: 4rpx dashed #E91E63;
-  top: 35%;
-  z-index: 1;
+  height: 100%;
+  display: block;
 }
 
-.limit-label {
+.chart-overlay {
   position: absolute;
-  right: 0;
-  top: 35%;
-  transform: translateY(-100%);
-  font-size: 22rpx;
-  color: #E91E63;
-  background-color: rgba(255, 255, 255, 0.5);
-  padding: 4rpx 10rpx;
-  z-index: 2;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 26rpx;
+  background: rgba(255, 249, 246, 0.72);
+  backdrop-filter: blur(12rpx);
 }
 
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 30rpx;
-  margin-bottom: 40rpx;
+  gap: 18rpx;
 }
 
 .stat-card {
-  background-color: white;
-  border-radius: 30rpx;
-  padding: 30rpx;
+  border-radius: 28rpx;
+  padding: 28rpx 24rpx;
   text-align: center;
-  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.05);
-  border: 4rpx solid #FFE0E5;
+  box-sizing: border-box;
 }
 
 .stat-card .value {
   font-size: 40rpx;
-  font-weight: bold;
-  color: #D81B60;
+  font-weight: 700;
+  color: #d45f4d;
   margin-bottom: 10rpx;
 }
 
 .stat-card .label {
   font-size: 24rpx;
-  color: #795548;
-}
-
-.analysis-card {
-  background-color: white;
-  border-radius: 40rpx;
-  padding: 40rpx;
-  margin-bottom: 30rpx;
-  box-shadow: 0 8rpx 16rpx rgba(0,0,0,0.05);
-  border: 4rpx solid #FFE0E5;
-}
-
-.card-title {
-  margin-top: 0;
-  margin-bottom: 20rpx;
-  color: #D81B60;
-  font-size: 32rpx;
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-}
-
-.card-title .icon {
-  margin-right: 20rpx;
-  font-size: 36rpx;
-}
-
-.card-content {
-  color: #795548;
+  color: var(--text-muted);
   line-height: 1.5;
-  font-size: 28rpx;
-} 
+}

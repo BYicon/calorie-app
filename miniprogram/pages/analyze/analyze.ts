@@ -1,15 +1,15 @@
-// pages/analyze/analyze.ts
+import { getRecentDays } from '../../shared/index';
+import * as CaloriesApi from '../../api/calories';
+import { getCalorieTargetFromStorage } from '../../shared/helper';
+import dayjs from 'dayjs';
+import * as echarts from 'echarts';
 
-import { getRecentDays } from "../../shared/index";
-import * as CaloriesApi from "../../api/calories";
-import { getCalorieTargetFromStorage } from "../../shared/helper";
-import dayjs from "dayjs";
+const DEFAULT_PRESET_KEY = '7d';
 
-interface ChartItem {
-  value: number;
+interface PresetPeriod {
+  key: string;
+  days: number;
   label: string;
-  height: string;
-  showLabel: boolean;
 }
 
 interface Stats {
@@ -19,263 +19,409 @@ interface Stats {
   lowestIntake: number;
 }
 
-interface Analysis {
-  insight: string;
-  suggestion: string;
+interface TrendSummary {
+  totalIntake: number;
+  totalBurned: number;
+  averageNetCalories: number;
+  recordRate: number;
+  totalDays: number;
+  recordedDays: number;
 }
+
+interface DailyStatsData {
+  date: string;
+  intakeCalories: number;
+  burnedCalories: number;
+  netCalories: number;
+}
+
+interface DateRangeStatsResponse extends Stats {
+  startDate: string;
+  endDate: string;
+  dailyStats: DailyStatsData[];
+  totalDays: number;
+  recordedDays: number;
+}
+
+interface DailyTrendPoint {
+  date: string;
+  label: string;
+  intakeCalories: number | null;
+  burnedCalories: number | null;
+  netCalories: number | null;
+  hasRecord: boolean;
+}
+
+let trendChart: any = null;
+let pendingTrendOption: any = null;
+
+const applyTrendOption = (option: any) => {
+  pendingTrendOption = option;
+  if (trendChart) {
+    trendChart.setOption(option, true);
+  }
+};
+
+function initTrendChart(canvas: any, width: number, height: number, dpr: number) {
+  trendChart = echarts.init(canvas, null, {
+    width,
+    height,
+    devicePixelRatio: dpr,
+  });
+  canvas.setChart(trendChart);
+
+  if (pendingTrendOption) {
+    trendChart.setOption(pendingTrendOption, true);
+  }
+
+  return trendChart;
+}
+
+const formatRangeLabel = (startDate: string, endDate: string) => {
+  const start = dayjs(startDate);
+  const end = dayjs(endDate);
+
+  if (start.isSame(end, 'day')) {
+    return start.format('YYYY.MM.DD');
+  }
+
+  if (start.year() === end.year()) {
+    return `${start.format('MM.DD')} - ${end.format('MM.DD')}`;
+  }
+
+  return `${start.format('YYYY.MM.DD')} - ${end.format('YYYY.MM.DD')}`;
+};
+
+const buildTrendPoints = (dailyStats: DailyStatsData[]) => {
+  return [...dailyStats]
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .map((item): DailyTrendPoint => ({
+      date: item.date,
+      label: dayjs(item.date).format('MM/DD'),
+      intakeCalories: item.intakeCalories,
+      burnedCalories: item.burnedCalories,
+      netCalories: item.netCalories,
+      hasRecord: true,
+    }));
+};
+
+const buildTrendSummary = (data: DateRangeStatsResponse): TrendSummary => {
+  const totals = data.dailyStats.reduce((result, item) => {
+    result.totalIntake += item.intakeCalories;
+    result.totalBurned += item.burnedCalories;
+    result.totalNet += item.netCalories;
+    return result;
+  }, {
+    totalIntake: 0,
+    totalBurned: 0,
+    totalNet: 0,
+  });
+
+  const totalDays = data.totalDays || 0;
+  const recordedDays = data.recordedDays || 0;
+
+  return {
+    totalIntake: totals.totalIntake,
+    totalBurned: totals.totalBurned,
+    averageNetCalories: recordedDays > 0 ? Math.round(totals.totalNet / recordedDays) : 0,
+    recordRate: totalDays > 0 ? Math.round((recordedDays / totalDays) * 100) : 0,
+    totalDays,
+    recordedDays,
+  };
+};
+
+const formatTooltipValue = (value: number | null) => {
+  return value === null ? '未记录' : `${value} 千卡`;
+};
+
+const buildTrendOption = (points: DailyTrendPoint[], calorieTarget: number) => {
+  const pointMap = new Map(points.map((item) => [item.date, item]));
+  const intakeValues = points.map((item) => [item.date, item.intakeCalories]);
+  const burnedValues = points.map((item) => [item.date, item.burnedCalories]);
+  const hasData = points.some((item) => item.hasRecord);
+  const isCrossYear = points.length > 1 && dayjs(points[0].date).year() !== dayjs(points[points.length - 1].date).year();
+  const axisDateFormat = isCrossYear ? 'YY/MM/DD' : 'MM/DD';
+  const showSymbols = points.length > 0 && points.length <= 60;
+
+  return {
+    animation: true,
+    color: ['#FF7A59', '#2FBF8F'],
+    grid: {
+      left: 24,
+      right: 20,
+      top: 48,
+      bottom: 24,
+      containLabel: true,
+    },
+    legend: {
+      top: 0,
+      left: 'center',
+      itemWidth: 14,
+      itemHeight: 8,
+      itemGap: 20,
+      textStyle: {
+        color: '#7E6259',
+        fontSize: 11,
+      },
+    },
+    tooltip: {
+      trigger: 'axis',
+      confine: true,
+      renderMode: 'richText',
+      backgroundColor: 'rgba(46, 33, 29, 0.92)',
+      borderWidth: 0,
+      padding: [10, 12],
+      textStyle: {
+        color: '#FFF7F3',
+        fontSize: 12,
+        lineHeight: 18,
+      },
+      formatter: (params: any) => {
+        const items = Array.isArray(params) ? params : [params];
+        const axisValue = items.length > 0 ? (Array.isArray(items[0].value) ? items[0].value[0] : items[0].axisValue) : '';
+        const point = pointMap.get(dayjs(axisValue).format('YYYY-MM-DD'));
+
+        if (!point) {
+          return '';
+        }
+
+        return [
+          dayjs(point.date).format('YYYY年MM月DD日'),
+          `摄入：${formatTooltipValue(point.intakeCalories)}`,
+          `消耗：${formatTooltipValue(point.burnedCalories)}`,
+          `净摄入：${formatTooltipValue(point.netCalories)}`,
+        ].join('\n');
+      },
+    },
+    xAxis: {
+      type: 'time',
+      boundaryGap: false,
+      minInterval: 24 * 60 * 60 * 1000,
+      splitNumber: 5,
+      axisTick: {
+        show: false,
+      },
+      axisLine: {
+        lineStyle: {
+          color: '#E5CEC6',
+        },
+      },
+      axisLabel: {
+        color: '#9C7D74',
+        fontSize: 10,
+        hideOverlap: true,
+        formatter: (value: number) => dayjs(value).format(axisDateFormat),
+      },
+    },
+    yAxis: {
+      type: 'value',
+      min: 0,
+      splitNumber: 4,
+      axisLine: {
+        show: false,
+      },
+      axisTick: {
+        show: false,
+      },
+      axisLabel: {
+        color: '#9C7D74',
+        fontSize: 10,
+      },
+      splitLine: {
+        lineStyle: {
+          color: '#F4E1DB',
+          type: 'dashed',
+        },
+      },
+    },
+    series: [
+      {
+        name: '摄入',
+        type: 'line',
+        smooth: 0.35,
+        smoothMonotone: 'x',
+        connectNulls: false,
+        data: intakeValues,
+        showSymbol: showSymbols,
+        showAllSymbol: showSymbols,
+        symbol: 'circle',
+        symbolSize: 6,
+        lineStyle: {
+          width: 3,
+          color: '#FF7A59',
+        },
+        itemStyle: {
+          color: '#FF7A59',
+        },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: 'rgba(255, 122, 89, 0.28)' },
+            { offset: 1, color: 'rgba(255, 122, 89, 0.03)' },
+          ]),
+        },
+        markLine: {
+          symbol: 'none',
+          label: {
+            formatter: `目标${calorieTarget}千卡`,
+            color: '#D66A4B',
+            backgroundColor: 'rgba(255, 247, 243, 0.96)',
+            padding: [4, 8],
+            borderRadius: 12,
+            position: 'insideEndTop',
+            distance: 8,
+          },
+          lineStyle: {
+            color: '#FFB49B',
+            type: 'dashed',
+            width: 1.5,
+          },
+          data: [{ yAxis: calorieTarget }],
+        },
+      },
+      {
+        name: '消耗',
+        type: 'line',
+        smooth: 0.35,
+        smoothMonotone: 'x',
+        connectNulls: false,
+        data: burnedValues,
+        showSymbol: showSymbols,
+        showAllSymbol: showSymbols,
+        symbol: 'circle',
+        symbolSize: 6,
+        lineStyle: {
+          width: 2.5,
+          color: '#2FBF8F',
+        },
+        itemStyle: {
+          color: '#2FBF8F',
+        },
+      },
+    ],
+    graphic: hasData ? [] : [{
+      type: 'text',
+      left: 'center',
+      top: 'middle',
+      silent: true,
+      style: {
+        text: '所选区间暂无记录',
+        fill: '#A7857A',
+        fontSize: 14,
+        fontWeight: 500,
+      },
+    }],
+  };
+};
 
 Page({
   data: {
+    echarts,
+    ec: {
+      onInit: initTrendChart,
+    },
     calorieTarget: getCalorieTargetFromStorage(),
     periodList: [
-      {
-        days: 7,
-        label: '7天'
-      },
-      {
-        days: 30,
-        label: '30天'
-      },
-      // {
-        //   days: 90,
-        //   label: '90天'
-        // }
-      ],
-    period: 7,
+      { key: '7d', days: 7, label: '7天' },
+      { key: '30d', days: 30, label: '30天' },
+      { key: '90d', days: 90, label: '90天' },
+      { key: '365d', days: 365, label: '365天' },
+    ] as PresetPeriod[],
+    selectedRangeKey: DEFAULT_PRESET_KEY,
     currentDateRange: '',
-    chartData: [] as ChartItem[],
-    limitLineTop: '0%',
-    limitLabelTop: '0%',
-    selectedIndex: -1,
-    selectedBar: {
-      label: '',
-      value: 0
-    },
-    tooltipLeft: 0,
+    isLoadingTrend: false,
+    trendSummary: {
+      totalIntake: 0,
+      totalBurned: 0,
+      averageNetCalories: 0,
+      recordRate: 0,
+      totalDays: 0,
+      recordedDays: 0,
+    } as TrendSummary,
     stats: {
       averageDailyIntake: 0,
       overStandardDays: 0,
       highestIntake: 0,
-      lowestIntake: 0
+      lowestIntake: 0,
     } as Stats,
-    analysis: {
-      insight: '',
-      suggestion: ''
-    } as Analysis
   },
+
+  onLoad() {},
 
   onShow() {
-    this.loadDayData(this.data.period);
     this.setData({
       calorieTarget: getCalorieTargetFromStorage(),
+    }, () => {
+      this.refreshCurrentRange();
     });
   },
 
-  onLoad() {
-  },
-
-  // 切换周期
-  changePeriod(e: any) {
-    const days = parseInt(e.currentTarget.dataset.days);
-    this.setData({ 
-      period: days,
-      selectedIndex: -1 // 重置选中状态
-    });
-
-    this.loadDayData(days);
-  },
-
-  // 生成模拟热量数据
-  generateMockCalorieData(): number {
-    // 生成800-1600之间的随机热量值，大部分在目标范围内
-    const random = Math.random();
-    if (random < 0.7) {
-      // 70%的数据在目标范围内 (800-1200)
-      return Math.floor(Math.random() * 400) + 800;
-    } else if (random < 0.9) {
-      // 20%的数据稍微超标 (1200-1400)
-      return Math.floor(Math.random() * 200) + 1200;
-    } else {
-      // 10%的数据明显超标 (1400-1600)
-      return Math.floor(Math.random() * 200) + 1400;
+  onUnload() {
+    if (trendChart) {
+      trendChart.dispose();
+      trendChart = null;
     }
+    pendingTrendOption = null;
   },
 
-  // 加载日视图数据
-  loadDayData(days: number) {
+  refreshCurrentRange() {
+    const currentPreset = (this.data.periodList as PresetPeriod[]).find((item) => item.key === this.data.selectedRangeKey)
+      || (this.data.periodList as PresetPeriod[])[0];
+
+    this.loadPresetRange(currentPreset.days, currentPreset.key);
+  },
+
+  changePeriod(e: any) {
+    const days = Number(e.currentTarget.dataset.days);
+    const key = e.currentTarget.dataset.key as string;
+
+    if (!days || !key) {
+      return;
+    }
+
+    this.loadPresetRange(days, key);
+  },
+
+  loadPresetRange(days: number, key: string) {
     const { startDate, endDate } = getRecentDays(days);
-    
-    // 生成日期范围字符串
-    const dateRange = `${startDate} - ${endDate}`;
+    this.loadRangeData(startDate, endDate, key);
+  },
+
+  loadRangeData(startDate: string, endDate: string, rangeKey: string) {
+    this.setData({
+      isLoadingTrend: true,
+      selectedRangeKey: rangeKey,
+      currentDateRange: formatRangeLabel(startDate, endDate),
+    });
 
     CaloriesApi.getDateRangeStats(startDate, endDate).then((res) => {
-      console.log("getDateRangeStats 🚀🚀🚀", res);
-      const data = res.data;
+      const data = res.data as DateRangeStatsResponse;
+      const trendPoints = buildTrendPoints(data.dailyStats || []);
+      const trendSummary = buildTrendSummary(data);
 
-      // this.setData({
-      //   stats: {
-      //     averageDailyIntake: data.averageDailyIntake,
-      //     overStandardDays: data.overStandardDays,
-      //     highestIntake: data.highestIntake,
-      //     lowestIntake: data.lowestIntake
-      //   }
-      // });
-      const chartData = (data.dailyStats || []).map((item: any) => ({
-        value: item.intakeCalories,
-        label: dayjs(item.date).format('MM-DD'),
-        height: '0%',
-        showLabel: true
-      }));
-      this.processChartData(chartData, dateRange);
-    });
-
-  },
-
-  // 判断是否应该显示标签
-  shouldShowLabel(index: number, totalDays: number): boolean {
-    if (totalDays <= 7) {
-      // 7天及以下，显示所有标签
-      return true;
-    } else if (totalDays <= 30) {
-      // 30天，每2个显示一个
-      return index % 2 === 0;
-    } else {
-      // 90天，只显示几个关键时间点：开始、1/4、1/2、3/4、结束
-      const keyPoints = [0, Math.floor(totalDays / 4), Math.floor(totalDays / 2), Math.floor(totalDays * 3 / 4), totalDays - 1];
-      return keyPoints.includes(index);
-    }
-  },
-
-  // 图表触摸移动事件
-  onChartTouchMove(e: any) {
-    const touch = e.touches[0];
-    const query = this.createSelectorQuery();
-    
-    query.select('.chart-bars').boundingClientRect((rect: any) => {
-      if (!rect) return;
-      
-      const relativeX = touch.clientX - rect.left;
-      const barWidth = rect.width / this.data.chartData.length;
-      const index = Math.floor(relativeX / barWidth);
-      
-      if (index >= 0 && index < this.data.chartData.length) {
-        const selectedBar = this.data.chartData[index];
-        const tooltipLeft = rect.left + (index + 0.5) * barWidth;
-        
-        this.setData({
-          selectedIndex: index,
-          selectedBar: {
-            label: dayjs(selectedBar.label).format('MM-DD'),
-            value: selectedBar.value
-          },
-          tooltipLeft: tooltipLeft - rect.left
-        });
-      }
-    }).exec();
-  },
-
-  // 图表触摸结束事件
-  onChartTouchEnd() {
-    setTimeout(() => {
       this.setData({
-        selectedIndex: -1,
-        tooltipLeft: 0
+        currentDateRange: formatRangeLabel(data.startDate || startDate, data.endDate || endDate),
+        trendSummary,
+        stats: {
+          averageDailyIntake: data.averageDailyIntake || 0,
+          overStandardDays: data.overStandardDays || 0,
+          highestIntake: data.highestIntake || 0,
+          lowestIntake: data.lowestIntake || 0,
+        },
       });
-    }, 1000); // 1秒后隐藏提示
-  },
 
-  // 处理图表数据
-  processChartData(chartData: ChartItem[], dateRange: string) {
-    const calorieTarget = getCalorieTargetFromStorage();
-    // 计算最大值，用于计算柱子高度
-    const maxValue = Math.max(...chartData.map(item => item.value));
-    const minValue = Math.min(...chartData.map(item => item.value));
-    const limitLineTop =  Math.max(0, Math.round((1 - calorieTarget / maxValue) * 100));
-    console.log("limitLineTop 🚀🚀🚀", limitLineTop);
-    
-    // 计算每个柱子的高度（相对于最大值的百分比）
-    const processedData = chartData.map(item => ({
-      value: item.value,
-      label: item.label,
-      height: `${Math.max(10, (item.value / maxValue) * 98)}%`, // 最小10%，最大80%
-      showLabel: item.showLabel,
-    }));
-    
-    this.setData({
-      chartData: processedData,
-      currentDateRange: dateRange,
-      limitLineTop: `${limitLineTop}%`,
-      limitLabelTop: `calc(${limitLineTop}% - 10rpx)`
-    });
-    
-    // 更新统计和分析
-    this.updateStatsAndAnalysis(processedData);
-  },
-
-  // 更新统计和分析数据
-  updateStatsAndAnalysis(chartData: ChartItem[]) {
-    const calorieTarget = getCalorieTargetFromStorage();
-    // 计算统计数据
-    const totalCalories = chartData.reduce((sum, item) => sum + item.value, 0);
-    const avgCalories = Math.round(totalCalories / chartData.length);
-    const overLimitDays = chartData.filter(item => item.value > calorieTarget).length;
-    const maxCalories = Math.max(...chartData.map(item => item.value));
-    const minCalories = Math.min(...chartData.map(item => item.value));
-
-    // 更新统计数据
-    this.setData({
-      stats: {
-        averageDailyIntake: avgCalories,
-        overStandardDays: overLimitDays,
-        highestIntake: maxCalories,
-        lowestIntake: minCalories
-      }
-    });
-
-    // 生成智能分析
-    this.generateAnalysis(chartData);
-  },
-
-  // 生成智能分析
-  generateAnalysis(data: ChartItem[]) {
-    const calorieTarget = getCalorieTargetFromStorage();
-    const overLimitDays = data.filter(item => item.value > calorieTarget);
-    const totalDays = data.length;
-    const avgCalories = Math.round(data.reduce((sum, item) => sum + item.value, 0) / data.length);
-    
-    // 查找摄入量最高和最低的日期
-    const maxDay = data.reduce((prev, current) => (prev.value > current.value) ? prev : current);
-    const minDay = data.reduce((prev, current) => (prev.value < current.value) ? prev : current);
-    
-    // 生成分析内容
-    let insight = '';
-    let suggestion = '';
-    
-    if (overLimitDays.length > 0) {
-      const overRate = Math.round((overLimitDays.length / totalDays) * 100);
-      insight = `在过去${totalDays}天中，您有${overLimitDays.length}天超过目标热量（${overRate}%）。平均每日摄入${avgCalories}千卡，${maxDay.label}摄入最高（${maxDay.value}千卡），${minDay.label}控制最好（${minDay.value}千卡）。`;
-      
-      if (overRate > 30) {
-        suggestion = `超标天数较多，建议：1) 减少高热量食物摄入；2) 增加蔬菜和蛋白质比例；3) 控制零食和饮料；4) 规律三餐时间。`;
-      } else {
-        suggestion = `整体控制良好，继续保持。建议参考${minDay.label}的饮食习惯，在超标日子适当调整食物选择。`;
-      }
-    } else {
-      insight = `恭喜！过去${totalDays}天的热量摄入都在目标范围内。平均每日摄入${avgCalories}千卡，${maxDay.label}摄入相对较高（${maxDay.value}千卡），${minDay.label}摄入最低（${minDay.value}千卡）。`;
-      
-      suggestion = `继续保持良好的饮食习惯！可以适当增加一些健康零食如坚果、水果，确保营养均衡。注意不要过度限制热量摄入。`;
-    }
-    
-    this.setData({
-      'analysis.insight': insight,
-      'analysis.suggestion': suggestion
+      applyTrendOption(buildTrendOption(trendPoints, this.data.calorieTarget));
+    }).finally(() => {
+      this.setData({
+        isLoadingTrend: false,
+      });
     });
   },
+
   onShareAppMessage() {
     return {
       path: 'pages/index/index',
       title: '快来记录每日热量吧～',
       imagePath: 'https://wx.qlogo.cn/mmhead/Xmnun9Io49RB3BicJVsFAch4V5aqRkuZbDfffIR6EBia1X5ptBt9AS5P4bYpn5WFrVqkHhzd41M9E/0',
-    }
-  }
-}); 
+    };
+  },
+});

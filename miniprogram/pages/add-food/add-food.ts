@@ -4,6 +4,7 @@ import { aiChat } from "../../api/ai";
 import * as caloriesApi from "../../api/calories";
 import { MESSAGE_TEMPLATE_ID } from "../../config/env";
 import { EnumMealType, EnumMealTypeLabel } from "../../enum/meal-type";
+import { showRequestErrorToast } from "../../shared/request";
 import dayjs from "dayjs";
 
 Page({
@@ -228,11 +229,8 @@ Page({
           }
         })
       })
-      .catch(() => {
-        wx.showToast({
-          title: "保存失败，请重试",
-          icon: "none",
-        });
+      .catch((error) => {
+        showRequestErrorToast(error, "保存失败，请重试");
       });
   },
 

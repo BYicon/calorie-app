@@ -3,6 +3,7 @@ import { EnumStorageKey, EnumGenderLabel } from "../../enum/index";
 import * as uploadApi from "../../api/upload";
 import { User } from "../../../typings/models/response";
 import { DEFAULT_AVATAR, FILE_URL } from "../../config/index";
+import { showRequestErrorToast } from "../../shared/request";
 import { formatBirthday, parseBirthday } from "../../shared/util";
 
 Page({
@@ -80,10 +81,11 @@ Page({
             avatarUrl: tempFilePath,
             "userInfo.avatar": res.data.filename,
           });
-        }).catch((err) => {
+        }).catch((error) => {
           that.setData({
             avatarUrl: DEFAULT_AVATAR,
           });
+          showRequestErrorToast(error, "上传头像失败");
         });
 
       },

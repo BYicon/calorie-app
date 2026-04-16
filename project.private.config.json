@@ -6,7 +6,7 @@
     "urlCheck": false,
     "autoAudits": true
   },
-  "libVersion": "3.8.7",
+  "libVersion": "3.15.1",
   "condition": {
     "miniprogram": {
       "list": [

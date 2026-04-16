@@ -8,21 +8,23 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
+    "moduleResolution": "node",
     "noImplicitThis": true,
     "noImplicitReturns": true,
     "alwaysStrict": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "skipLibCheck": true,
     "strict": true,
     "strictPropertyInitialization": true,
     "paths": {
       "@vant/weapp/*": ["./node_modules/@vant/weapp/dist/*"],
     },
     "lib": ["ES2020"],
+    "types": [],
     "typeRoots": [
-      "./typings",
-      "./typings/models/*.d.ts"
+      "./typings"
     ]
   },
   "include": [

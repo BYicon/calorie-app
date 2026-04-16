@@ -26,7 +26,7 @@ Component({
     },
   },
   observers: {
-    'timestamp': function(timestamp) {
+    'timestamp': function() {
       // 在 numberA 或者 numberB 被设置时，执行这个函数
       this.getDailyStatsThrottled();
     }
@@ -41,7 +41,7 @@ Component({
     hide: function () {
       // 页面被隐藏
     },
-    resize: function (size) {
+    resize: function () {
       // 页面尺寸变化
     },
   },

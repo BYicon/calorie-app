@@ -2,10 +2,10 @@
 <view class="add-food-container">
   <!-- AI 智能添加部分 -->
   <view class="ai-input-section">
-    <view class="section-title">AI 智能添加 </view>
+    <view class="section-title">智能添加 </view>
     <textarea class="ai-textarea" placeholder="请描述您想添加的食物，例如：吃了一碗牛肉面，一根香蕉加一个苹果" bindinput="onAiInputChange" value="{{aiInputText}}"></textarea>
     <button class="ai-submit-btn" bindtap="onAiSubmit" loading="{{isAiLoading}}">
-       AI 识别 <text class="iconfont icon-runse"></text></button>
+      智能识别 <text class="iconfont icon-runse"></text></button>
   </view>
   
   <!-- 食物列表部分 -->
@@ -58,8 +58,11 @@
   
   <!-- 底部按钮 -->
   <view class="bottom-buttons">
-    <button class="bottom-btn back-btn" bindtap="onBack">返回</button>
-    <button class="bottom-btn save-btn" bindtap="onSave">保存</button>
+    <view class="bottom-actions">
+      <button class="bottom-btn back-btn" bindtap="onBack">返回</button>
+      <button class="bottom-btn save-btn" bindtap="onSave">保存</button>
+    </view>
+    <!-- <text class="ai-audit-tip">内容由AI生成</text> -->
   </view>
 </view>
 
@@ -67,6 +70,6 @@
 <view class="loading-container" wx:if="{{isAiLoading}}">
   <view class="loading">
     <image class="loading-icon" src="/static/images/loading-bulb.svg" mode="aspectFit"></image>
-    <text class="loading-text">AI正在识别中...</text>
+    <text class="loading-text">智能分析中...</text>
   </view>
 </view> 

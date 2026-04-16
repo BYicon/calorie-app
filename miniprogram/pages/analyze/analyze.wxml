@@ -1,49 +1,77 @@
-<!-- 主要内容 -->
 <view class="main-content">
-  <!-- 周期选择器 -->
-  <view class="period-selector">
-    <button wx:for="{{periodList}}" wx:key="days" class="{{period ===  item.days ? 'active' : ''}}" bindtap="changePeriod" data-period="{{item.days}}" data-days="{{item.days}}">{{item.label}}</button>
+  <view class="filter-card">
+    <view class="filter-head">
+      <view>
+        <view class="section-title">统计区间</view>
+        <view class="section-subtitle">使用统一口径查看最近 7 / 30 / 90 / 365 天趋势</view>
+      </view>
+    </view>
+
+    <view class="period-selector">
+      <view
+        wx:for="{{periodList}}"
+        wx:key="key"
+        class="period-pill {{selectedRangeKey === item.key ? 'active' : ''}}"
+        bindtap="changePeriod"
+        data-key="{{item.key}}"
+        data-days="{{item.days}}"
+      >
+        {{item.label}}
+      </view>
+    </view>
+
+    <view class="range-summary">
+      <view class="range-summary-text">{{currentDateRange}}</view>
+      <view class="range-summary-meta">已记录 {{trendSummary.recordedDays}} / {{trendSummary.totalDays}} 天</view>
+    </view>
   </view>
-  
-  <!-- 热量摄入趋势图表 -->
+
   <view class="chart-container">
     <view class="chart-header">
-      <!-- <view class="chart-title">
-        <text class="icon">📈</text>
-        <text>热量摄入趋势</text>
-      </view> -->
-      <!-- 添加当前显示的时间范围 -->
-      <view class="chart-date">{{currentDateRange}}</view>
-    </view>
-    
-    <view class="chart {{period}}">
-      <view class="limit-line" style="top: {{limitLineTop}};"></view>
-      <view class="limit-label" style="top: {{limitLabelTop}}">目标 {{calorieTarget}}千卡</view>
-      
-      <!-- 悬浮提示框 -->
-      <view class="chart-tooltip {{selectedIndex !== -1 ? 'show' : ''}}" style="left: {{tooltipLeft}}px;">
-        <view class="tooltip-content">
-          <view class="tooltip-date">{{selectedBar.label}}</view>
-          <view class="tooltip-value">{{selectedBar.value}}千卡</view>
-        </view>
+      <view>
+        <view class="section-title">热量趋势</view>
+        <view class="section-subtitle">折线图展示摄入与消耗变化，目标线用于判断是否偏高</view>
       </view>
-      
-      <view class="chart-bars" bindtouchmove="onChartTouchMove" bindtouchend="onChartTouchEnd">
-        <view wx:for="{{chartData}}" wx:key="index" wx:for-item="barItem" 
-              class="chart-bar {{selectedIndex === index ? 'highlight' : ''}}" 
-              style="height: {{barItem.height}};" 
-              data-index="{{index}}">
-          <view class="chart-bar-label" wx:if="{{barItem.showLabel}}">{{barItem.label}}</view>
-        </view>
+      <view class="target-badge">目标 {{calorieTarget}} 千卡</view>
+    </view>
+
+    <view class="overview-grid">
+      <view class="overview-card">
+        <view class="overview-label">总摄入</view>
+        <view class="overview-value intake">{{trendSummary.totalIntake}}</view>
+      </view>
+      <view class="overview-card">
+        <view class="overview-label">总消耗</view>
+        <view class="overview-value burned">{{trendSummary.totalBurned}}</view>
+      </view>
+      <view class="overview-card">
+        <view class="overview-label">日均净摄入</view>
+        <view class="overview-value net">{{trendSummary.averageNetCalories}}</view>
+      </view>
+      <view class="overview-card">
+        <view class="overview-label">记录覆盖率</view>
+        <view class="overview-value record">{{trendSummary.recordRate}}%</view>
+      </view>
+    </view>
+
+    <view class="chart-panel">
+      <ec-canvas
+        id="calorie-trend-chart"
+        canvas-id="calorie-trend-chart"
+        class="trend-chart"
+        echarts="{{echarts}}"
+        ec="{{ec}}"
+      ></ec-canvas>
+      <view wx:if="{{isLoadingTrend}}" class="chart-overlay">
+        <text>正在加载趋势数据...</text>
       </view>
     </view>
   </view>
-  
-  <!-- 统计数据 -->
+
   <view class="stats-grid">
     <view class="stat-card">
       <view class="value">{{stats.averageDailyIntake}}</view>
-      <view class="label">平均每日摄入 (千卡)</view>
+      <view class="label">平均每日摄入</view>
     </view>
     <view class="stat-card">
       <view class="value">{{stats.overStandardDays}}</view>
@@ -58,26 +86,4 @@
       <view class="label">最低摄入 (千卡)</view>
     </view>
   </view>
-  
-  <!-- 智能分析 -->
-  <!-- <view class="analysis-card">
-    <view class="card-title">
-      <text class="icon">💡</text>
-      <text>智能分析</text>
-    </view>
-    <view class="card-content">
-      <text>{{analysis.insight}}</text>
-    </view>
-  </view> -->
-  
-  <!-- 建议 -->
-  <!-- <view class="analysis-card">
-    <view class="card-title">
-      <text class="icon">🥗</text>
-      <text>建议</text>
-    </view>
-    <view class="card-content">
-      <text>{{analysis.suggestion}}</text>
-    </view>
-  </view>-->
-</view>  
+</view>

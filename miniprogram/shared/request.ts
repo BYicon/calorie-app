@@ -12,10 +12,108 @@ interface RequestOptions extends WechatMiniprogram.RequestOption {
 interface ResponseData<T = any> {
   code: number;
   msg: string;
+  message?: string;
+  statusCode?: number;
   data: T;
 }
 
+interface RequestErrorData extends Partial<ResponseData> {
+  error?: string | string[];
+  toastShown?: boolean;
+}
+
 export const BASE_URL = getBaseUrlByEnv();
+
+const normalizeResponseData = (rawData: unknown) => {
+  if (rawData && typeof rawData === 'object') {
+    return rawData as Record<string, any>;
+  }
+
+  if (typeof rawData === 'string') {
+    const trimmed = rawData.trim();
+    if (!trimmed) {
+      return {};
+    }
+
+    try {
+      const parsed = JSON.parse(trimmed);
+      if (parsed && typeof parsed === 'object') {
+        return parsed as Record<string, any>;
+      }
+    } catch (_error) {
+      return {
+        message: trimmed,
+      };
+    }
+
+    return {
+      message: trimmed,
+    };
+  }
+
+  return {};
+};
+
+const getResponseMessage = (response?: Partial<ResponseData> | Record<string, any>) => {
+  if (!response || typeof response !== 'object') {
+    return '';
+  }
+
+  const { message, msg, error } = response as Record<string, any>;
+  if (Array.isArray(message) && message.length > 0) {
+    return message.join('；');
+  }
+  if (typeof message === 'string' && message.trim()) {
+    return message;
+  }
+  if (Array.isArray(msg) && msg.length > 0) {
+    return msg.join('；');
+  }
+  if (typeof msg === 'string' && msg.trim()) {
+    return msg;
+  }
+  if (Array.isArray(error) && error.length > 0) {
+    return error.join('；');
+  }
+  if (typeof error === 'string' && error.trim()) {
+    return error;
+  }
+
+  return '';
+};
+
+export const getRequestErrorMessage = (error: unknown, fallback = '请求失败') => {
+  if (typeof error === 'string' && error.trim()) {
+    return error;
+  }
+
+  if (error instanceof Error && error.message.trim()) {
+    return error.message;
+  }
+
+  if (error && typeof error === 'object') {
+    const response = error as Record<string, any>;
+    return (
+      getResponseMessage(response) ||
+      getResponseMessage(response.data) ||
+      fallback
+    );
+  }
+
+  return fallback;
+};
+
+export const showRequestErrorToast = (error: unknown, fallback = '请求失败') => {
+  if (error && typeof error === 'object' && (error as RequestErrorData).toastShown) {
+    return;
+  }
+
+  wx.showToast({
+    title: getRequestErrorMessage(error, fallback),
+    icon: 'none',
+    duration: 2000,
+  });
+};
 
 /**
  * 统一请求处理
@@ -37,14 +135,14 @@ const request = <T = any>(options: RequestOptions): Promise<ResponseData<T>> => 
       finalHeader['Authorization'] = `Bearer ${token}`; // 现在类型兼容了
     }
 
-    const requestTask = wx.request({
+    wx.request({
       url: `${options.baseUrl || BASE_URL}${url}`, // 拼接基础 URL
       method,
       data,
       header: finalHeader,
       success: (res) => {
         // --- 响应拦截器 ---
-        const response = res.data as ResponseData<T>;
+        const response = normalizeResponseData(res.data) as ResponseData<T>;
 
         // 简单示例：根据后端返回的 code 判断
         if (res.statusCode >= 200 && res.statusCode < 300) {
@@ -58,37 +156,53 @@ const request = <T = any>(options: RequestOptions): Promise<ResponseData<T>> => 
             reject(new Error('请重新登录'));
           } else {
             // 其他业务错误
+            const errorMessage = getResponseMessage(response) || '请求失败';
             if (!skipErrorHandler) {
               wx.showToast({
-                title: response.msg || '请求失败',
+                title: errorMessage,
                 icon: 'none',
                 duration: 2000,
               });
             }
-            reject(response); // 可以根据需要 reject 错误信息或整个响应
+            reject({
+              ...response,
+              message: errorMessage,
+              toastShown: !skipErrorHandler,
+            });
           }
         } else {
           // HTTP 状态码错误
+          const errorMessage = getResponseMessage(response) || `请求错误 ${res.statusCode}`;
           if (!skipErrorHandler) {
             wx.showToast({
-              title: `请求错误 ${res.statusCode}`,
+              title: errorMessage,
               icon: 'none',
               duration: 2000,
             });
           }
-          reject(new Error(`HTTP Error: ${res.statusCode}`));
+          reject({
+            ...response,
+            statusCode: res.statusCode,
+            message: errorMessage,
+            toastShown: !skipErrorHandler,
+          });
         }
       },
       fail: (err) => {
         // --- 错误处理 ---
+        const errorMessage = getRequestErrorMessage(err, '网络错误，请稍后重试');
         if (!skipErrorHandler) {
           wx.showToast({
-            title: '网络错误，请稍后重试',
+            title: errorMessage,
             icon: 'none',
             duration: 2000,
           });
         }
-        reject(err);
+        reject({
+          ...err,
+          message: errorMessage,
+          toastShown: !skipErrorHandler,
+        });
       },
       complete: () => {
         // 清理请求任务 (可选)

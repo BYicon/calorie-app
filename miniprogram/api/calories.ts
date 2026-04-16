@@ -71,7 +71,7 @@ export const getCalendarData = (startDate: string, endDate: string) => {
 export const createExerciseByDate = (date: string, data: ExerciseItem[]) => {
   return post("/calories/exercises/byDate", {
     date,
-    data,
+    exercises: data,
   });
 };
 
