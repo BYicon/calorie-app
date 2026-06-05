@@ -1,6 +1,5 @@
 import * as CaloriesApi from "../../api/calories";
 import dayjs from "dayjs";
-import { throttle } from "../../shared/util";
 
 Component({
   /**
@@ -16,6 +15,8 @@ Component({
    * 组件的初始数据
    */
   data: {
+    isLoading: true,
+    summarySkeletonList: [1, 2, 3, 4],
     dailyStats: {
       targetCalories: 0,
       intakeCalories: 0,
@@ -26,13 +27,24 @@ Component({
     },
   },
   observers: {
-    'timestamp': function() {
-      // 在 numberA 或者 numberB 被设置时，执行这个函数
-      this.getDailyStatsThrottled();
+    'timestamp': function(timestamp: number) {
+      if (timestamp) {
+        (this as any).skipNextShowRefresh = true;
+        this.getDailyStats();
+      }
     }
   },
   pageLifetimes: {
     show: function () {
+      if (!this.data.timestamp) {
+        return;
+      }
+
+      if ((this as any).skipNextShowRefresh) {
+        (this as any).skipNextShowRefresh = false;
+        return;
+      }
+
       if (this.data.timestamp) {
         this.getDailyStats();
       }
@@ -45,31 +57,40 @@ Component({
       // 页面尺寸变化
     },
   },
-  lifetimes: {
-    attached() {
-      if (this.data.timestamp) {
-        this.getDailyStatsThrottled();
-      }
-    },
-  },
   /**
    * 组件的方法列表
    */
   methods: {
     getDailyStats() {
+      const requestId = `${this.data.timestamp}-${Date.now()}`;
+      (this as any).latestRequestId = requestId;
+
+      this.setData({
+        isLoading: true,
+      });
+
       CaloriesApi.getDailyStats(
         dayjs(this.data.timestamp).format("YYYY-MM-DD")
       ).then((res) => {
-        console.log("组件内 getDailyStats 🚀🚀🚀", res);
+        if ((this as any).latestRequestId !== requestId) {
+          return;
+        }
+
         const data = res.data;
         data.remainingCalories = data.targetCalories - data.netCalories;
         this.setData({
           dailyStats: data,
+          isLoading: false,
+        });
+      }).catch(() => {
+        if ((this as any).latestRequestId !== requestId) {
+          return;
+        }
+
+        this.setData({
+          isLoading: false,
         });
       });
-    },
-    getDailyStatsThrottled() {
-      throttle(this.getDailyStats, 1000);
     }
   },
 });

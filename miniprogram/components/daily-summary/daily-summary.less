@@ -204,4 +204,55 @@
       line-height: 1.4;
     }
   }
-} 
+}
+
+.daily-total-skeleton {
+  .stat-skeleton-item {
+    border-left: none !important;
+  }
+}
+
+.summary-skeleton-line,
+.summary-skeleton-circle {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.56) 15%, rgba(255, 255, 255, 0.96) 50%, rgba(255, 255, 255, 0.56) 85%);
+  background-size: 220% 100%;
+  animation: summarySkeletonShimmer 1.4s ease-in-out infinite;
+}
+
+.summary-skeleton-line {
+  height: 24rpx;
+  border-radius: 16rpx;
+}
+
+.summary-skeleton-circle {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+}
+
+.summary-skeleton-title {
+  width: 220rpx;
+  height: 36rpx;
+}
+
+.summary-skeleton-label {
+  width: 120rpx;
+}
+
+.summary-skeleton-value {
+  width: 160rpx;
+  margin-top: 16rpx;
+  height: 32rpx;
+}
+
+@keyframes summarySkeletonShimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0 50%;
+  }
+}

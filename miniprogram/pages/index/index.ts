@@ -1,5 +1,6 @@
 import { login } from "../../api/auth";
 import { redirectPage } from "../../shared/helper";
+import { showRequestErrorToast } from "../../shared/request";
 
 
 Page({
@@ -38,6 +39,12 @@ Page({
           url: '/pages/record/record',
         });
       }
+    }).catch((error) => {
+      this.setData({
+        hasLogin: false,
+      });
+      showRequestErrorToast(error, '登录失败，请重试');
+    }).finally(() => {
       wx.hideLoading();
     });
   },

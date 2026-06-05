@@ -20,6 +20,73 @@ let calendarData = [] as CalendarData[];
 let monthDataCache = new Map<string, CalendarData[]>();
 // 防抖计时器
 let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+const DEFAULT_MEAL_ORDER = [
+  EnumMealType.BREAKFAST,
+  EnumMealType.LUNCH,
+  EnumMealType.DINNER,
+  EnumMealType.SNACK,
+];
+const LUNCH_PRIORITY_MEAL_ORDER = [
+  EnumMealType.LUNCH,
+  EnumMealType.DINNER,
+  EnumMealType.BREAKFAST,
+  EnumMealType.SNACK,
+];
+const DINNER_PRIORITY_MEAL_ORDER = [
+  EnumMealType.DINNER,
+  EnumMealType.BREAKFAST,
+  EnumMealType.LUNCH,
+  EnumMealType.SNACK,
+];
+
+const isTodaySelected = (timestamp: number) => dayjs(timestamp).isSame(dayjs(), "day");
+
+const getMealDisplayOrder = (timestamp: number): EnumMealType[] => {
+  if (!isTodaySelected(timestamp)) {
+    return DEFAULT_MEAL_ORDER;
+  }
+
+  const currentHour = new Date().getHours();
+  if (currentHour < 11) {
+    return DEFAULT_MEAL_ORDER;
+  }
+
+  if (currentHour < 16) {
+    return LUNCH_PRIORITY_MEAL_ORDER;
+  }
+
+  return DINNER_PRIORITY_MEAL_ORDER;
+};
+
+const createEmptyMealItem = (mealType: EnumMealType): Partial<Meal> => ({
+  type: mealType,
+  label: EnumMealTypeLabel[mealType],
+  totalCalories: 0,
+  foods: [],
+  icon: MEAL_TYPE_ICON[mealType],
+});
+
+const buildMealList = (timestamp: number, mealsData?: Record<string, any>): Partial<Meal>[] => {
+  return getMealDisplayOrder(timestamp).map((mealType) => {
+    const currentMeal = mealsData?.[mealType];
+    if (!currentMeal) {
+      return createEmptyMealItem(mealType);
+    }
+
+    const foods = (currentMeal.foods || []).map((food: FoodItem) => ({
+      ...food,
+      servingText: food.grams ? `${food.grams}g` : food.serving,
+    }));
+
+    return {
+      ...currentMeal,
+      type: mealType,
+      label: EnumMealTypeLabel[mealType],
+      foods,
+      icon: MEAL_TYPE_ICON[mealType],
+    };
+  });
+};
 
 /**
  * 创建日历格式化函数
@@ -56,35 +123,13 @@ Page({
     showCalendar: false,
     // 添加加载状态
     isLoadingCalendar: false,
+    isPageLoading: true,
     // 添加 Math 对象供模板使用
     Math: Math,
+    skeletonMealList: [1, 2, 3, 4],
+    skeletonFoodList: [1, 2],
     exerciseList: [] as any[],
-    mealList: [
-      {
-        type: EnumMealType.BREAKFAST,
-        label: EnumMealTypeLabel[EnumMealType.BREAKFAST],
-        totalCalories: 0,
-        foods: [],
-      },
-      {
-        type: EnumMealType.LUNCH,
-        label: EnumMealTypeLabel[EnumMealType.LUNCH],
-        totalCalories: 0,
-        foods: [],
-      },
-      {
-        type: EnumMealType.DINNER,
-        label: EnumMealTypeLabel[EnumMealType.DINNER],
-        totalCalories: 0,
-        foods: [],
-      },
-      {
-        type: EnumMealType.SNACK,
-        label: EnumMealTypeLabel[EnumMealType.SNACK],
-        totalCalories: 0,
-        foods: [],
-      },
-    ] as Partial<Meal>[],
+    mealList: buildMealList(today.getTime()),
     /** 日历 */
     minDate: firstDay, // timestamp
     maxDate: lastDay, // timestamp
@@ -213,41 +258,16 @@ Page({
    * 获取每日饮食数据
    */
   getDailySummary() {
+    this.setData({
+      isPageLoading: true,
+    });
+
     CaloriesApi.getDailySummary(
       dayjs(this.data.selectedDate).format("YYYY-MM-DD")
     ).then((res) => {
       const resData = res.data;
-      console.log("getDailySummary resData 🟣🟣🟣", resData);
-      const mealList: Partial<Meal>[] = [];
-      const mealsData = resData.meals;
-      Object.values(EnumMealType).forEach((mealType: string) => {
-        if(mealsData[mealType]) {
-          const foods = mealsData[mealType].foods.map((food: FoodItem) => {
-            return {
-              ...food,
-              servingText: food.grams + "g" || food.serving,
-            };
-          });
-          mealList.push({
-            ...mealsData[mealType],
-            type: mealType,
-            label: EnumMealTypeLabel[mealType as EnumMealType],
-            foods,
-            icon: MEAL_TYPE_ICON[mealType as EnumMealType],
-          });
-        } else {
-          mealList.push({
-            type: mealType as EnumMealType,
-            label: EnumMealTypeLabel[mealType as EnumMealType],
-            totalCalories: 0,
-            foods: [],
-            icon: MEAL_TYPE_ICON[mealType as EnumMealType],
-          });
-        }
-      });
+      const mealList = buildMealList(this.data.selectedDate, resData.meals);
       const totalCalories = mealList.reduce((sum, meal) => sum + (meal.totalCalories as number), 0);
-      console.log("getDailySummary totalCalories 🚀🚀🚀", totalCalories);
-      console.log("getDailySummary mealList 🚀🚀🚀", mealList);
 
       const exerciseData = resData.exercises;
       const totalExerciseCalories = exerciseData.totalBurnedCalories;
@@ -263,6 +283,17 @@ Page({
         mealList,
         exerciseList,
         totalExerciseCalories,
+      });
+    }).catch(() => {
+      this.setData({
+        totalCalories: 0,
+        totalExerciseCalories: 0,
+        mealList: buildMealList(this.data.selectedDate),
+        exerciseList: [],
+      });
+    }).finally(() => {
+      this.setData({
+        isPageLoading: false,
       });
     });
   },
@@ -299,6 +330,11 @@ Page({
   },
 
   onShow() {
+    const userInfo = wx.getStorageSync(EnumStorageKey.USER_INFO) || {};
+    this.setData({
+      calorieTarget: userInfo.calorieTarget || DEFAULT_TARGET_CALORIE,
+    });
+
     if (hasLogin()) {
       monthDataCache.clear();
       this.getDailySummary();
@@ -311,9 +347,8 @@ Page({
   onLoad() {
     const userInfo = wx.getStorageSync(EnumStorageKey.USER_INFO);
     this.setData({
-      calorieTarget: userInfo.calorieTarget,
+      calorieTarget: userInfo.calorieTarget || DEFAULT_TARGET_CALORIE,
     });
-    this.getDailySummary();
   },
 
   /**

@@ -1,11 +1,10 @@
 <!-- 添加食物页面 -->
 <view class="add-food-container">
-  <!-- AI 智能添加部分 -->
   <view class="ai-input-section">
-    <view class="section-title">智能添加 </view>
+    <view class="section-title">添加食物 </view>
     <textarea class="ai-textarea" placeholder="请描述您想添加的食物，例如：吃了一碗牛肉面，一根香蕉加一个苹果" bindinput="onAiInputChange" value="{{aiInputText}}"></textarea>
     <button class="ai-submit-btn" bindtap="onAiSubmit" loading="{{isAiLoading}}">
-      智能识别 <text class="iconfont icon-runse"></text></button>
+      自动识别 <text class="iconfont icon-runse"></text></button>
   </view>
   
   <!-- 食物列表部分 -->
@@ -70,6 +69,6 @@
 <view class="loading-container" wx:if="{{isAiLoading}}">
   <view class="loading">
     <image class="loading-icon" src="/static/images/loading-bulb.svg" mode="aspectFit"></image>
-    <text class="loading-text">智能分析中...</text>
+    <text class="loading-text">自动分析中...</text>
   </view>
 </view> 

@@ -2,6 +2,7 @@ import * as usersApi from "../../api/users";
 import { FILE_URL, DEFAULT_AVATAR } from "../../config/index";
 import { EnumStorageKey } from "../../enum/index";
 import * as CaloriesApi from "../../api/calories";
+import { showRequestErrorToast } from "../../shared/request";
 Page({
   data: {
     avatarUrl: DEFAULT_AVATAR,
@@ -128,10 +129,17 @@ Page({
       calorieTarget: calorieGoal,
     })
       .then((res) => {
-        console.log(res);
+        const cachedUserInfo = wx.getStorageSync(EnumStorageKey.USER_INFO) || {};
+        const latestUserInfo = {
+          ...cachedUserInfo,
+          ...res.data,
+          calorieTarget: res.data?.calorieTarget || calorieGoal,
+        };
+        wx.setStorageSync(EnumStorageKey.USER_INFO, latestUserInfo);
         this.setData({
-          currentGoal: calorieGoal,
+          currentGoal: latestUserInfo.calorieTarget,
           showGoalDialog: false,
+          userInfo: latestUserInfo,
         });
         wx.showToast({
           title: "目标设置成功",
@@ -139,7 +147,7 @@ Page({
         });
       })
       .catch((err) => {
-        console.log(err);
+        showRequestErrorToast(err, "目标设置失败，请稍后重试");
       });
   },
 

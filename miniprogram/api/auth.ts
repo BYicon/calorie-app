@@ -21,11 +21,14 @@ export const login = () => new Promise<User>((resolve, reject) => {
           wx.setStorageSync(EnumStorageKey.TOKEN, res.data.access_token);
           wx.setStorageSync(EnumStorageKey.USER_INFO, res.data.user);
           resolve(res.data.user);
-        });
+        }).catch(reject);
       } else {
         console.log("登录失败！" + res.errMsg);
-        reject();
+        reject(new Error(res.errMsg || "微信登录失败"));
       }
+    },
+    fail(error) {
+      reject(error);
     },
   });
 });

@@ -16450,7 +16450,7 @@ wx.startBeaconDiscovery({
 * [在微信开发者工具中查看示例](https://developers.weixin.qq.com/s/m7klFDmZ72i1)
 *
 * ```js
-// 以微信硬件平台的蓝牙智能灯为例，主服务的 UUID 是 FEE7。传入这个参数，只搜索主服务 UUID 为 FEE7 的设备
+// 以微信硬件平台的蓝牙灯为例，主服务的 UUID 是 FEE7。传入这个参数，只搜索主服务 UUID 为 FEE7 的设备
 wx.startBluetoothDevicesDiscovery({
   services: ['FEE7'],
   success (res) {

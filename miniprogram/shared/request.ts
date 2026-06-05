@@ -1,4 +1,4 @@
-import { getBaseUrlByEnv } from "./helper";
+import { getBaseUrlByEnv, removeCache } from "./helper";
 import { EnumStorageKey } from "../enum/index";
 
 // 定义请求选项接口
@@ -23,6 +23,50 @@ interface RequestErrorData extends Partial<ResponseData> {
 }
 
 export const BASE_URL = getBaseUrlByEnv();
+const UNAUTHORIZED_CODES = new Set(["401", "UNAUTHORIZED", "TOKEN_EXPIRED", "INVALID_TOKEN"]);
+let isReloginRedirecting = false;
+
+const isUnauthorizedResponse = (statusCode: number, response: Record<string, any>) => {
+  if (statusCode === 401) {
+    return true;
+  }
+
+  const code = response?.code;
+  return code === 401 || UNAUTHORIZED_CODES.has(String(code));
+};
+
+const redirectToLogin = (message: string) => {
+  removeCache();
+
+  if (isReloginRedirecting) {
+    return;
+  }
+
+  isReloginRedirecting = true;
+  wx.showToast({
+    title: message || "登录已失效，请重新登录",
+    icon: "none",
+    duration: 1500,
+  });
+
+  setTimeout(() => {
+    const currentPages = getCurrentPages();
+    const currentPage = currentPages[currentPages.length - 1];
+    if (currentPage?.route === "pages/index/index") {
+      isReloginRedirecting = false;
+      return;
+    }
+
+    wx.reLaunch({
+      url: "/pages/index/index",
+      complete: () => {
+        setTimeout(() => {
+          isReloginRedirecting = false;
+        }, 300);
+      },
+    });
+  }, 200);
+};
 
 const normalizeResponseData = (rawData: unknown) => {
   if (rawData && typeof rawData === 'object') {
@@ -143,20 +187,27 @@ const request = <T = any>(options: RequestOptions): Promise<ResponseData<T>> => 
       success: (res) => {
         // --- 响应拦截器 ---
         const response = normalizeResponseData(res.data) as ResponseData<T>;
+        const statusCode = res.statusCode || 0;
+        const errorMessage = getResponseMessage(response) || `请求错误 ${statusCode}`;
+
+        if (isUnauthorizedResponse(statusCode, response)) {
+          const unauthorizedMessage = getResponseMessage(response) || '请重新登录';
+          redirectToLogin(unauthorizedMessage);
+          reject({
+            ...response,
+            statusCode: statusCode || 401,
+            message: unauthorizedMessage,
+            toastShown: true,
+          });
+          return;
+        }
 
         // 简单示例：根据后端返回的 code 判断
-        if (res.statusCode >= 200 && res.statusCode < 300) {
+        if (statusCode >= 200 && statusCode < 300) {
           if (response.code === 0 || response.code === 200) { // 假设 0 或 200 为成功
             resolve(response);
-          } else if (response.code === 401) { // 假设 401 为未授权
-            // 清除本地 token
-            wx.removeStorageSync(EnumStorageKey.TOKEN);
-            // 跳转到登录页 (根据你的项目路由配置调整)
-            wx.navigateTo({ url: '/pages/login/index' }); // 示例路径
-            reject(new Error('请重新登录'));
           } else {
             // 其他业务错误
-            const errorMessage = getResponseMessage(response) || '请求失败';
             if (!skipErrorHandler) {
               wx.showToast({
                 title: errorMessage,
@@ -172,7 +223,6 @@ const request = <T = any>(options: RequestOptions): Promise<ResponseData<T>> => 
           }
         } else {
           // HTTP 状态码错误
-          const errorMessage = getResponseMessage(response) || `请求错误 ${res.statusCode}`;
           if (!skipErrorHandler) {
             wx.showToast({
               title: errorMessage,
@@ -182,7 +232,7 @@ const request = <T = any>(options: RequestOptions): Promise<ResponseData<T>> => 
           }
           reject({
             ...response,
-            statusCode: res.statusCode,
+            statusCode,
             message: errorMessage,
             toastShown: !skipErrorHandler,
           });

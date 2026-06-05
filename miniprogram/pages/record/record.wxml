@@ -8,59 +8,95 @@
 <view class="main-content">
   <!-- 每日总计 -->
   <daily-summary timestamp="{{selectedDate}}"></daily-summary>
-  <view class="meal-section" wx:for="{{mealList}}" wx:key="index">
-    <view class="meal-header">
-      <view class="meal-title">
-        <image class="meal-icon" src="{{item.icon}}"></image>
-        <text>{{item.label}}</text>
+  <block wx:if="{{isPageLoading}}">
+    <view class="meal-section skeleton-card" wx:for="{{skeletonMealList}}" wx:key="*this">
+      <view class="meal-header">
+        <view class="meal-title">
+          <view class="meal-icon skeleton-shimmer skeleton-circle"></view>
+          <view class="skeleton-shimmer skeleton-line skeleton-title-line"></view>
+        </view>
+        <view class="skeleton-shimmer skeleton-line skeleton-calorie-line"></view>
       </view>
-      <view class="calories">
-        {{item.totalCalories}}
-        <text class="iconfont icon-reliang"></text>
+      <view class="food-item skeleton-food-item" wx:for="{{skeletonFoodList}}" wx:key="*this">
+        <view class="food-name">
+          <view class="skeleton-shimmer skeleton-line skeleton-food-line"></view>
+        </view>
+        <view class="skeleton-shimmer skeleton-line skeleton-food-calorie-line"></view>
       </view>
+      <view class="add-food-btn skeleton-action-btn"></view>
     </view>
-    <view class="food-item" wx:for="{{item.foods}}" wx:key="index">
-      <view class="food-name">
-        <text>{{item.name}}</text>
-        <text class="serving-text">（{{ item.servingText }}）</text>
+    <view class="exercise-section skeleton-card">
+      <view class="exercise-header">
+        <view class="exercise-title">
+          <view class="exercise-icon skeleton-shimmer skeleton-circle"></view>
+          <view class="skeleton-shimmer skeleton-line skeleton-title-line"></view>
+        </view>
+        <view class="skeleton-shimmer skeleton-line skeleton-calorie-line"></view>
       </view>
-      <view class="food-calories">
-        <text class="text-md calories-color mr-1 font-thin">{{item.calories}}</text>
-        <text class="text-sm">千卡</text>
+      <view class="exercise-item" wx:for="{{skeletonFoodList}}" wx:key="*this">
+        <view class="exercise-name">
+          <view class="skeleton-shimmer skeleton-line skeleton-food-line"></view>
+        </view>
+        <view class="skeleton-shimmer skeleton-line skeleton-food-calorie-line"></view>
       </view>
+      <view class="add-exercise-btn skeleton-action-btn"></view>
     </view>
-    <button class="add-food-btn" bindtap="addFood" data-type="{{item.type}}" data-id="{{item.id}}">
-      <text class="btn-icon">+</text>
-      添加食物
-    </button>
-  </view>
-  <!-- 运动消耗部分 -->
-  <view class="exercise-section">
-    <view class="exercise-header">
-      <view class="exercise-title">
-        <image class="exercise-icon" src="/static/images/icons/exercise-burn.svg"></image>
-        <text>运动消耗</text>
+  </block>
+  <block wx:else>
+    <view class="meal-section" wx:for="{{mealList}}" wx:key="index">
+      <view class="meal-header">
+        <view class="meal-title">
+          <image class="meal-icon" src="{{item.icon}}"></image>
+          <text>{{item.label}}</text>
+        </view>
+        <view class="calories">
+          {{item.totalCalories}}
+          <text class="iconfont icon-reliang"></text>
+        </view>
       </view>
-      <view class="exercise-calories">
-        {{totalExerciseCalories}}
-        <text class="iconfont icon-reliang"></text>
+      <view class="food-item" wx:for="{{item.foods}}" wx:key="index">
+        <view class="food-name">
+          <text>{{item.name}}</text>
+          <text class="serving-text">（{{ item.servingText }}）</text>
+        </view>
+        <view class="food-calories">
+          <text class="text-md calories-color mr-1 font-thin">{{item.calories}}</text>
+          <text class="text-sm">千卡</text>
+        </view>
       </view>
+      <button class="add-food-btn" bindtap="addFood" data-type="{{item.type}}" data-id="{{item.id}}">
+        <text class="btn-icon">+</text>
+        添加食物
+      </button>
     </view>
-    <view class="exercise-item" wx:for="{{exerciseList}}" wx:key="index">
-      <view class="exercise-name">
-        <text>{{item.name}}</text>
-        <text class="exercise-note-text">（{{ item.note }}）</text>
+    <!-- 运动消耗部分 -->
+    <view class="exercise-section">
+      <view class="exercise-header">
+        <view class="exercise-title">
+          <image class="exercise-icon" src="/static/images/icons/exercise-burn.svg"></image>
+          <text>运动消耗</text>
+        </view>
+        <view class="exercise-calories">
+          {{totalExerciseCalories}}
+          <text class="iconfont icon-reliang"></text>
+        </view>
       </view>
-      <view class="exercise-calories-text whitespace-nowrap">
-        <text class="text-md burned-calories-color mr-1 font-thin">{{item.calories}}</text>
-        <text class="text-sm">千卡</text>
+      <view class="exercise-item" wx:for="{{exerciseList}}" wx:key="index">
+        <view class="exercise-name">
+          <text>{{item.name}}</text>
+          <text class="exercise-note-text">（{{ item.note }}）</text>
+        </view>
+        <view class="exercise-calories-text whitespace-nowrap">
+          <text class="text-md burned-calories-color mr-1 font-thin">{{item.calories}}</text>
+          <text class="text-sm">千卡</text>
+        </view>
       </view>
+      <button class="add-exercise-btn" bindtap="addExercise">
+        <text class="btn-icon">+</text>
+        添加运动
+      </button>
     </view>
-    <button class="add-exercise-btn" bindtap="addExercise">
-      <text class="btn-icon">+</text>
-      添加运动
-    </button>
-  </view>
+  </block>
 </view>
 <!-- 日历 -->
 <van-calendar show="{{showCalendar}}" show-subtitle="{{ false }}" 
