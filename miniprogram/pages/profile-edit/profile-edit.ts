@@ -116,11 +116,16 @@ Page({
    * 性别选择变化
    */
   onGenderChange(e: any) {
-    const index = e.detail.value;
+    const index = Number(e.detail.value);
+    const selectedGender = this.data.genderOptions[index];
+    if (!selectedGender) {
+      return;
+    }
+
     this.setData({
       genderIndex: index,
-      "userInfo.gender": index + 1,
-      genderText: this.data.genderOptions[index].label,
+      "userInfo.gender": selectedGender.value,
+      genderText: selectedGender.label,
     });
   },
 
