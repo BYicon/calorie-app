@@ -2,7 +2,7 @@ import { getRecentDays } from '../../shared/index';
 import * as CaloriesApi from '../../api/calories';
 import { getCalorieTargetFromStorage } from '../../shared/helper';
 import dayjs from 'dayjs';
-import * as echarts from 'echarts';
+import * as echarts from '../../vendor/echarts.min';
 
 const DEFAULT_PRESET_KEY = '7d';
 

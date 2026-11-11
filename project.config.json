@@ -40,7 +40,12 @@
   },
   "libVersion": "2.32.3",
   "packOptions": {
-    "ignore": [],
+    "ignore": [
+      { "type": "folder", "value": "miniprogram_npm/echarts" },
+      { "type": "folder", "value": "miniprogram_npm/zrender" },
+      { "type": "folder", "value": "miniprogram_npm/echarts-for-weixin" },
+      { "type": "suffix", "value": ".map" }
+    ],
     "include": []
   },
   "appid": "wx7b0d728ce0226152"
